@@ -1,0 +1,55 @@
+$primary: #d9d9d9e6;
+$primary-emphasis: #ffacdf;
+$primary-emphasis-hover: #fda0d0;
+$secondary: #998398;
+$secondary-emphasis: #9c9a9ac4;
+
+$danger: #ff4a4a;
+
+$backgroud: #0f060f;
+$backgroud-emphasis: #1f101f;
+$hover: #d9d9d9e6;
+
+:root {
+  --background: #ffffff;
+
+  // TEXT
+  --defaultText: #000000;
+  --whiteText: #f0f0f0;
+
+  // DARK
+  --primaryDark: #012340;
+  --secondaryDark: #024059;
+
+  // LIGHT
+  --primaryLight: #f0f0f0;
+  --secondaryLight: #c5d5d9;
+
+  // HIGHLIGHT
+  --highlight: #c28e8e;
+  --secondaryHighlight: #ffe4e4;
+
+  // UTIL
+  --error: #dc143c;
+  --success: #218838;
+  --warning: #ffb74d;
+  --info: #001f54;
+
+  --white: #ffffff;
+  --highlightBlue: #6a5acd;
+  --successSecondary: #f0faf0;
+
+  --buttonBackground: #ffffff;
+  --borders: #012340;
+  --navTextNormal: #012340;
+  --selectedNavText: #ffffff;
+  --selectedNavBackground: #012340;
+  --deleteButton: #ff4d5e;
+
+  --dropdownSelectedBackground: #ffe4e4;
+
+  --tabsBackground: #c5d5d9;
+
+  --black: #000000;
+  --white: #ffffff;
+}

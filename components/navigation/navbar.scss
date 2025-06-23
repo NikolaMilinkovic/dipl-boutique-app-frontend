@@ -1,0 +1,53 @@
+@use '../../global/index.scss' as *;
+@use '../../global/colors.scss' as *;
+@use 'sass:color';
+
+.nav {
+  display: flex;
+  width: 280px;
+  height: 100%;
+  border: 1px solid var(--primaryDark);
+  background: linear-gradient(
+    135deg,
+    var(--secondaryDark) 0%,
+    #1a1a1a 50%,
+    var(--black) 100%
+  );
+  padding: 1.5px;
+  border-radius: 16px;
+
+  .inner {
+    display: flex;
+    border: 2px solid color.mix(#2a2a2a, #ffffff, 50%);
+    border-radius: 16px;
+    height: 100%;
+    width: 100%;
+    padding: 4px;
+
+    .inner-inner {
+      display: flex;
+      border: 12px solid transparent;
+      border-image: linear-gradient(
+        135deg,
+        var(--primaryDark) 0%,
+        #1a1a1a 50%,
+        var(--black) 100%
+      );
+      border-image-slice: 1;
+      border-radius: 16px;
+      height: 100%;
+      width: 100%;
+
+      .white-line {
+        display: flex;
+        width: 80px;
+        background-color: var(--white);
+        border-radius: 16px;
+        border-top-right-radius: 0px;
+        margin-left: auto;
+        margin-top: 22px;
+        height: 100%;
+      }
+    }
+  }
+}

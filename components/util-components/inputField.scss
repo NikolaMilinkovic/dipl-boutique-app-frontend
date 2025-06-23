@@ -1,0 +1,64 @@
+@use '../../global/index.scss' as *;
+@use '../../global/colors.scss' as *;
+
+.input-wrapper {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  font-size: 16px;
+
+  &.has-value,
+  &:focus-within {
+    .input-field-label {
+      top: -16px;
+      background-color: #ffffff;
+      box-sizing: border-box;
+    }
+  }
+
+  .input-field-label {
+    position: absolute;
+    padding: 4px;
+    color: var(--borders);
+    border-radius: 4px;
+    left: 18px;
+    top: 8px;
+    transition:
+      top 0.2s ease,
+      font-size 0.2s ease,
+      color 0.2s ease;
+
+    &:hover {
+      cursor: text;
+    }
+  }
+  .input-field {
+    padding: 12px 22px 12px 22px;
+    border: 0.5px solid var(--borders);
+    border-radius: 4px;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .btn-password-show,
+  .btn-clear {
+    color: var(--primaryDark);
+    position: absolute;
+    right: 22px;
+    top: 8px;
+    background-color: transparent;
+    align-items: center;
+    justify-content: center;
+    border: 0px;
+    outline: none;
+    cursor: pointer;
+    padding: 6px;
+    // transition: transform 0.2s ease;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+}

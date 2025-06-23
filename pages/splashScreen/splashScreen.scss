@@ -1,0 +1,52 @@
+@use '../../global/index.scss' as *;
+@use '../../global/colors.scss' as *;
+
+.splash-screen-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  animation: splashScreenFadeInOutAnimation 3.7s ease-in-out infinite;
+
+  .splash-logo {
+    max-height: 180px;
+    aspect-ratio: 16 / 9;
+    object-fit: contain;
+    margin-bottom: 12px;
+  }
+
+  .splash-text {
+    font-size: 24px;
+    font-weight: bold;
+  }
+}
+
+@keyframes splashScreenFadeInOutAnimation {
+  0% {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  30% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+}
+@keyframes zoomIn {
+  0% {
+    transform: scale(0.8);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
