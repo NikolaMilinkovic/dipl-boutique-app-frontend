@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { ColorTypes } from '../../../global/types';
+import { CategoryTypes, ColorTypes } from '../../../global/types';
 import { useAuth } from '../../../hooks/useAuth';
 import {
   notifyError,
@@ -7,15 +7,15 @@ import {
 } from '../../../components/util-components/Notify';
 import { betterErrorLog } from '../../../util-methods/log-methods';
 import Button from '../../../components/util-components/Button';
-import './ColorItem.scss';
+import './CategoryItem.scss';
 import InputFieldBorderless from '../../../components/util-components/InputFieldBorderless';
 
-function ColorItem({ data }: { data: ColorTypes }) {
+function CategoryItem({ data }: { data: CategoryTypes }) {
   const apiUrl = import.meta.env.VITE_BACKEND_URL;
-  const [colorData, setColorData] = useState<ColorTypes>({
+  const [categoryData, setCategoryData] = useState<CategoryTypes>({
     _id: '',
     name: '',
-    colorCode: '',
+    stockType: '',
   });
   const [newName, setNewName] = useState('');
   const [showEdit, setShowEdit] = useState<Boolean>(false);
@@ -29,32 +29,32 @@ function ColorItem({ data }: { data: ColorTypes }) {
 
   // Set default data to read from
   useEffect(() => {
-    setColorData(data);
+    setCategoryData(data);
     setNewName(data.name);
   }, [data]);
 
   // Updates the current color name in the database
-  async function updateColorHandler() {
+  async function updateCategoryHandler() {
     try {
       if (newName.trim() === data.name) {
         setShowEdit(false);
         return;
       }
       if (newName.trim() === '') {
-        notifyError('Boja mora imati ime!');
+        notifyError('Kategorija mora imati ime!');
         return;
       }
 
-      const response = await fetch(`${apiUrl}/colors/${colorData._id}`, {
+      const response = await fetch(`${apiUrl}/category/${categoryData._id}`, {
         method: 'PATCH',
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          id: colorData._id,
+          id: categoryData._id,
           name: newName,
-          colorCode: colorData.colorCode,
+          stockType: categoryData.stockType,
         }),
       });
 
@@ -74,7 +74,7 @@ function ColorItem({ data }: { data: ColorTypes }) {
   // Deletes the color from the database
   async function removeColorHandler() {
     try {
-      const response = await fetch(`${apiUrl}/colors/${colorData._id}`, {
+      const response = await fetch(`${apiUrl}/category/${categoryData._id}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -88,13 +88,13 @@ function ColorItem({ data }: { data: ColorTypes }) {
         return;
       }
 
-      notifySuccess(`Boja je uspesno obrisana`);
+      notifySuccess(`Kategorija je uspešno obrisana`);
     } catch (error) {
       betterErrorLog('> Error deleting color:', error);
     }
   }
 
-  if (colorData === null) {
+  if (categoryData === null) {
     return <></>;
   }
 
@@ -106,9 +106,9 @@ function ColorItem({ data }: { data: ColorTypes }) {
   }, [showEdit]);
 
   return (
-    <div className="colorItem" onClick={showEditColorHandler}>
+    <div className="CategoryItem" onClick={showEditColorHandler}>
       {showEdit ? (
-        <form className="mainInputsContainer" action={updateColorHandler}>
+        <form className="mainInputsContainer" action={updateCategoryHandler}>
           <InputFieldBorderless
             label="Color name"
             inputText={newName}
@@ -140,7 +140,7 @@ function ColorItem({ data }: { data: ColorTypes }) {
         </form>
       ) : (
         <div className="displayColor">
-          <p className="colorText">{colorData.name}</p>
+          <p className="colorText">{categoryData.name}</p>
           <Button
             label="Delete Color"
             onClick={(e) => {
@@ -155,4 +155,4 @@ function ColorItem({ data }: { data: ColorTypes }) {
   );
 }
 
-export default ColorItem;
+export default CategoryItem;

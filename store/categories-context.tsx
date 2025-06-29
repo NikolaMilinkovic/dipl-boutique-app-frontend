@@ -8,7 +8,7 @@ import React, {
 import { fetchData } from '../util-methods/fetch-methods';
 import { useAuth } from '../hooks/useAuth';
 import { useSocket } from './socket-context';
-import { betterErrorLog } from '../util-methods/log-methods';
+import { betterConsoleLog, betterErrorLog } from '../util-methods/log-methods';
 import { notifyError } from '../components/util-components/Notify';
 
 export interface CategoryTypes {
@@ -44,6 +44,7 @@ export function CategoriesContextProvider({
   async function getCategories() {
     try {
       const response = await fetchData(token, 'category/get', 'GET');
+      betterConsoleLog('> RESPONSE', response);
       if (response && response.ok && response.status !== 304) {
         setCategories(response);
       }
@@ -110,7 +111,6 @@ export function CategoriesContextProvider({
   );
 }
 
-// Optional helper hook
 export function useCategories() {
   return useContext(CategoriesContext);
 }

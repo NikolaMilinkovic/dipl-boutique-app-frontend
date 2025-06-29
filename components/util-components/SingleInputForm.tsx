@@ -9,6 +9,8 @@ interface SingleInputFormTypes {
   formMethod: () => Promise<void> | void;
   title: string;
   borders?: boolean;
+  label: string;
+  btn_label: string;
 }
 
 function SingleInputForm({
@@ -17,6 +19,8 @@ function SingleInputForm({
   formMethod,
   title,
   borders = true,
+  label,
+  btn_label,
 }: SingleInputFormTypes) {
   const borderStyles = {
     borderBottom: '1px solid var(--secondaryLight)',
@@ -26,7 +30,7 @@ function SingleInputForm({
     <section className="controls-section" style={borders ? borderStyles : {}}>
       <h2>{title}</h2>
       <form
-        className="add-color-controls"
+        className="single-input-controls-form"
         onSubmit={(e) => {
           e.preventDefault();
           formMethod();
@@ -34,14 +38,13 @@ function SingleInputForm({
       >
         <InputField
           inputText={data}
-          label="Color"
-          id="new-color-input"
+          label={label}
           setInputText={(text) => setData(text)}
           type="text"
           showClearBtn={true}
           backgroundColor="var(--primaryLight)"
         />
-        <Button label="Add new color" type="submit" className="add-btn" />
+        <Button label={btn_label} type="submit" className="add-btn" />
       </form>
     </section>
   );

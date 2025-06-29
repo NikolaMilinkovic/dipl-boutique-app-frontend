@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Tabs, Tab } from '../../components/tabs/Tabs';
 import ColorsManager from './colors/ColorsManager';
 import './appStup.scss';
+import CategoriesManager from './categories/CategoriesManager';
 
 function AppSetup() {
   return (
@@ -11,7 +12,7 @@ function AppSetup() {
           <ColorsManager />
         </Tab>
         <Tab label="Categories">
-          <p>CATEGORIES</p>
+          <CategoriesManager />
         </Tab>
         <Tab label="Suppliers">
           <p>SUPPLIERS</p>

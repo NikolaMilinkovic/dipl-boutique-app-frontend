@@ -4,3 +4,8 @@
   height: 90vh;
   overflow: hidden;
 }
+
+.app-setup-page-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}

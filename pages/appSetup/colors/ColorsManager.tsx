@@ -40,7 +40,7 @@ function ColorsManager() {
   }
 
   return (
-    <div className="colors-manager-wrapper">
+    <div className="app-setup-page-wrapper">
       <div>
         <SingleInputForm
           data={color}
@@ -48,6 +48,8 @@ function ColorsManager() {
           title="Add new color"
           formMethod={addColor}
           borders={false}
+          label="Color"
+          btn_label="Add color"
         />
         <div style={{ padding: '0rem 3rem' }}>
           <InputField

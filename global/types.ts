@@ -3,3 +3,9 @@ export interface ColorTypes {
   name: string;
   colorCode: string;
 }
+
+export interface CategoryTypes {
+  _id?: string;
+  name: string;
+  stockType: string;
+}

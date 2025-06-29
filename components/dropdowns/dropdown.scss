@@ -1,0 +1,22 @@
+@use '../../global/index.scss' as *;
+@use '../../global/colors.scss' as *;
+
+.react-select__control {
+  &:hover {
+    border: 1px solid var(--primaryDark) !important;
+  }
+}
+.react-select__control--is-focused {
+  border: 1px solid var(--primaryDark) !important;
+  box-shadow: none !important;
+}
+.react-select__dropdown-indicator {
+  &:hover {
+    color: var(--secondaryDark);
+  }
+}
+.react-select__option {
+  &:active {
+    background-color: var(--highlight) !important;
+  }
+}

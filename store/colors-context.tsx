@@ -131,7 +131,6 @@ export function ColorsContextProvider({ children }: ColorsProviderProps) {
   );
 }
 
-// Optional helper hook
 export function useColor() {
   return useContext(ColorContext);
 }

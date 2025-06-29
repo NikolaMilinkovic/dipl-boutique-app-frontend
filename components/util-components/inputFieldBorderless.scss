@@ -22,7 +22,7 @@
 
 .btn-password-show,
 .btn-clear {
-  color: var(--primaryDark);
+  color: var(--secondaryLight);
   position: absolute;
   right: 22px;
   top: 8px;
@@ -36,6 +36,6 @@
   // transition: transform 0.2s ease;
 
   &:hover {
-    transform: scale(1.1);
+    color: var(--secondaryDark);
   }
 }

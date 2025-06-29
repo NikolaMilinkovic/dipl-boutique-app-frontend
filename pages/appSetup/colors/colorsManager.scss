@@ -1,7 +1,2 @@
 @use '../../../global/index.scss' as *;
 @use '../../../global/colors.scss' as *;
-
-.colors-manager-wrapper {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-}
