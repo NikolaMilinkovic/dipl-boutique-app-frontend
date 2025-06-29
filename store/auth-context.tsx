@@ -1,9 +1,6 @@
 import React, { createContext, useState, ReactNode } from 'react';
-import {
-  notifySuccess,
-  notifyError,
-} from '../components/util-components/Notify';
-import { betterErrorLog } from '../util-methods/log-methods';
+import { useNavigate } from 'react-router-dom';
+import { notifyError } from '../components/util-components/Notify';
 interface LoginResultType {
   isAuthenticated: boolean;
   message: string;
@@ -31,6 +28,7 @@ export const AuthContext = createContext<AuthContextTypes>({
 function AuthContextProvider({ children }: AuthContextProviderType) {
   const [authToken, setAuthToken] = useState<string | null>(null);
   const [loginErrorMessage, setLoginErrorMessage] = useState('');
+  const navigate = useNavigate();
 
   // TODO > ADD USER TYPES
   const [user, setUser] = useState<any>(null);
@@ -62,8 +60,9 @@ function AuthContextProvider({ children }: AuthContextProviderType) {
    */
   async function login(username: string, password: string): Promise<void> {
     if (!username || !password) {
-      notifyError('Invalid input, please provide a valid username & password.');
-      return;
+      return notifyError(
+        'Invalid input, please provide a valid username & password.',
+      );
     }
 
     try {
@@ -72,9 +71,12 @@ function AuthContextProvider({ children }: AuthContextProviderType) {
         password,
       });
 
-      if (result.isAuthenticated === false) return notifyError(result.message);
+      if (result.isAuthenticated === false) {
+        return notifyError(result.message);
+      }
 
       authenticate(result.token);
+      navigate('/');
     } catch (err) {
       setLoginErrorMessage(`Issue logging in user: ${err}`);
     }

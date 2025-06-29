@@ -9,6 +9,7 @@
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
+  background-color: var(--white);
 
   .login-form {
     align-self: center;
@@ -27,6 +28,7 @@
       aspect-ratio: 16 / 9;
       object-fit: contain;
       margin-bottom: 24px;
+      pointer-events: none;
     }
 
     .login-inputs-wrapper {

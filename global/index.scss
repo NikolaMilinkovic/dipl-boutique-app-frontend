@@ -12,7 +12,6 @@
 html {
   line-height: 1.15; /* 1 */
   -webkit-text-size-adjust: 100%; /* 2 */
-  width: 100vw;
   min-height: 100vh;
   box-sizing: border-box;
   margin: 0px;
@@ -29,7 +28,6 @@ html {
 body {
   margin: 0px;
   padding: 0px;
-  min-width: 100vw;
   min-height: 100vh;
   box-sizing: border-box;
 }
@@ -357,5 +355,57 @@ template {
  */
 
 [hidden] {
+  display: none;
+}
+
+/**
+* Scrollbar settings
+*/
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1b1b1b;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #313131;
+  border-radius: 12px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #313131;
+}
+
+@keyframes fadeInWithTranslate {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade {
+  animation: pageFadeIn 0.3s ease-out;
+}
+.fade-500 {
+  animation: pageFadeIn 0.5s ease-out;
+}
+
+@keyframes pageFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.hide-scroll {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.hide-scroll::-webkit-scrollbar {
   display: none;
 }

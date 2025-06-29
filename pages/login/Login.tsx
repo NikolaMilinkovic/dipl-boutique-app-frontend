@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState } from 'react';
 import './login.scss';
 import { useUser } from '../../store/user-context';
 import InputField from '../../components/util-components/InputField';
-import { betterConsoleLog } from '../../util-methods/log-methods';
 import Button from '../../components/util-components/Button';
 import { useAuth } from '../../hooks/useAuth';
 import {

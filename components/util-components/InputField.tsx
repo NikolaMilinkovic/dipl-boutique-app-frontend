@@ -5,11 +5,12 @@ import './inputField.scss';
 interface InputFieldProps {
   label: string;
   inputText: string;
-  id: string;
+  id?: string;
   type?: string;
   showPasswordBtn?: boolean;
   showClearBtn?: boolean;
   setInputText: (text: string) => void;
+  backgroundColor?: string;
 }
 
 function InputField({
@@ -20,14 +21,11 @@ function InputField({
   showPasswordBtn = false,
   showClearBtn = false,
   setInputText,
+  backgroundColor = '#ffffff',
 }: InputFieldProps) {
   const [isActive, setIsActive] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [inputType, setInputType] = useState<string>(type);
-
-  useEffect(() => {
-    console.log(`> Input type is: ${inputType}`);
-  }, [inputType]);
 
   function onShowPasswordToggle() {
     if (inputType === 'password') {
@@ -42,7 +40,10 @@ function InputField({
   }
 
   return (
-    <div className={`input-wrapper ${inputText ? 'has-value' : ''}`}>
+    <div
+      className={`input-wrapper ${inputText ? 'has-value' : ''}`}
+      style={{ '--label-bg': backgroundColor } as React.CSSProperties}
+    >
       <label className="input-field-label" htmlFor={id}>
         {label}
       </label>

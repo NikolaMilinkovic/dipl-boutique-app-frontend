@@ -1,4 +1,35 @@
 /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
+/* Regular */
+@font-face {
+  font-family: 'Alfios';
+  src: url('./src/assets/fonts/Alfios.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Bold */
+@font-face {
+  font-family: 'Alfios';
+  src: url('./src/assets/fonts/AlfiosBold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+/* Italic */
+@font-face {
+  font-family: 'Alfios';
+  src: url('./src/assets/fonts/AlfiosItalic.ttf') format('truetype');
+  font-weight: normal;
+  font-style: italic;
+}
+
+/* Bold Italic */
+@font-face {
+  font-family: 'Alfios';
+  src: url('./src/assets/fonts/AlfiosBoldItalic.ttf') format('truetype');
+  font-weight: bold;
+  font-style: italic;
+}
 
 /* Document
    ========================================================================== */
@@ -13,10 +44,18 @@ html {
   -webkit-text-size-adjust: 100%; /* 2 */
   overflow-x: hidden;
   box-sizing: border-box;
+  background-color: var(--primaryLight);
 }
 
 /* Sections
 ========================================================================== */
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'Alfios';
+}
 
 /**
 * Remove the margin in all browsers.
@@ -25,6 +64,7 @@ html {
 body {
   margin: 0;
   box-sizing: border-box;
+  font-family: 'Alfios', Verdana, Geneva, Tahoma, sans-serif;
 }
 
 /**
@@ -65,7 +105,6 @@ hr {
  */
 
 pre {
-  font-family: monospace, monospace; /* 1 */
   font-size: 1em; /* 2 */
 }
 
@@ -108,7 +147,6 @@ strong {
 code,
 kbd,
 samp {
-  font-family: monospace, monospace; /* 1 */
   font-size: 1em; /* 2 */
 }
 
@@ -354,8 +392,6 @@ template {
 }
 
 .app-container {
-  min-width: 100vw;
-  min-height: 100vh;
   box-sizing: border-box;
 }
 
@@ -363,12 +399,18 @@ template {
 .fade-in {
   opacity: 0;
   transform: translateY(10px);
-  animation: fadeIn 0.3s ease-out forwards;
+  animation: fadeInWithTranslate 0.3s ease-out forwards;
+}
+
+@keyframes fadeInWithTranslate {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes fadeIn {
   to {
     opacity: 1;
-    transform: translateY(0);
   }
 }

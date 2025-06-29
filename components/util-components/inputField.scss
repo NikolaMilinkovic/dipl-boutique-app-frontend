@@ -6,12 +6,13 @@
   flex-direction: column;
   position: relative;
   font-size: 16px;
+  width: 100%;
 
   &.has-value,
   &:focus-within {
     .input-field-label {
       top: -16px;
-      background-color: #ffffff;
+      background-color: var(--label-bg);
       box-sizing: border-box;
     }
   }
@@ -23,6 +24,7 @@
     border-radius: 4px;
     left: 18px;
     top: 8px;
+    pointer-events: none;
     transition:
       top 0.2s ease,
       font-size 0.2s ease,
@@ -36,6 +38,7 @@
     padding: 12px 22px 12px 22px;
     border: 0.5px solid var(--borders);
     border-radius: 4px;
+    background-color: var(--label-bg);
 
     &:focus {
       outline: none;

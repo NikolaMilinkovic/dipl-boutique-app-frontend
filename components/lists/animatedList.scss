@@ -1,0 +1,89 @@
+@use '../../global/index.scss' as *;
+@use '../../global/colors.scss' as *;
+
+.animated-list-section {
+  position: relative;
+
+  .no-data-found-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    animation: fadeIn 0.4s ease-in-out forwards;
+  }
+
+  .animated-list {
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    margin: 0px auto;
+    overscroll-behavior: contain;
+
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: var(--primaryDark);
+      border-radius: 4px;
+      transition: background 0.3s ease;
+
+      &:hover {
+        background: color-mix(in srgb, var(--primaryDark) 80%, black 20%);
+      }
+    }
+
+    .list-item {
+      margin-top: 4px;
+      margin-bottom: 4px;
+
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.25s ease-out;
+
+      &.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      &:hover {
+        transform: scale(1.01);
+        transition: transform 0.2s ease-out;
+      }
+    }
+  }
+
+  .scroll-fade {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 20px;
+    pointer-events: none;
+    z-index: 10;
+
+    &.scroll-fade-top {
+      top: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 1),
+        rgba(255, 255, 255, 0)
+      );
+    }
+
+    &.scroll-fade-bottom {
+      bottom: 0;
+      background: linear-gradient(
+        to top,
+        rgba(255, 255, 255, 1),
+        rgba(255, 255, 255, 0)
+      );
+    }
+  }
+}

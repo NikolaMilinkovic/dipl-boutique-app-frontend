@@ -1,14 +1,84 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import './navbar.scss';
 import { useAuth } from '../../hooks/useAuth';
+import { FaBars, FaTimes } from 'react-icons/fa';
+import { MdDashboard, MdInventory2, MdSettings } from 'react-icons/md';
+import { NavLink, useNavigate, useLocation } from 'react-router-dom';
+import { FiLogOut } from 'react-icons/fi';
+import NavButton from './NavButton';
 
 function Navbar() {
-  const { logout } = useAuth();
+  const { isAuthenticated, logout } = useAuth();
+  const navRef = useRef<HTMLElement>(null);
+
+  // HOTKEY NAVIGATION
+  const navigate = useNavigate();
+  const location = useLocation();
+  const navItems = ['/', '/products', '/app-setup'];
+  function showNavbar() {
+    navRef?.current?.classList.toggle('responsive_nav');
+  }
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if (!e.ctrlKey) return;
+      const index = navItems.indexOf(location.pathname);
+
+      if (e.key === 'ArrowRight') {
+        const next = navItems[(index + 1) % navItems.length];
+        navigate(next);
+      } else if (e.key === 'ArrowLeft') {
+        const prev = navItems[(index - 1 + navItems.length) % navItems.length];
+        navigate(prev);
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [location.pathname]);
+
+  if (!isAuthenticated) return null;
 
   return (
-    <>
-      <button onClick={logout}>Logout</button>
-    </>
+    <header className="fade">
+      {/* LOGO */}
+      <NavLink className="nav-link" to="/" onClick={showNavbar}>
+        <img
+          src="../public/img/infinity-white.png"
+          alt="Infinity Boutique Logo"
+          className="nav-logo"
+        />
+      </NavLink>
+
+      <nav ref={navRef}>
+        {/* DASHBOARD */}
+        <NavButton to="/" onClick={showNavbar} icon={<MdDashboard />}>
+          Dashboard
+        </NavButton>
+
+        {/* PRODUCTS */}
+        <NavButton to="/products" onClick={showNavbar} icon={<MdInventory2 />}>
+          Products
+        </NavButton>
+
+        {/* APP SETUP */}
+        <NavButton to="/app-setup" onClick={showNavbar} icon={<MdSettings />}>
+          App setup
+        </NavButton>
+
+        {/* LOGOUT */}
+        <NavButton to="/logout" onClick={logout} icon={<FiLogOut />}>
+          Logout
+        </NavButton>
+
+        <button onClick={showNavbar} className="nav-btn nav-close-btn">
+          <FaTimes />
+        </button>
+      </nav>
+
+      <button onClick={showNavbar} className="nav-btn">
+        <FaBars />
+      </button>
+    </header>
   );
 }
 

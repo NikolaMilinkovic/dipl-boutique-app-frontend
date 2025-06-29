@@ -1,0 +1,77 @@
+@use '../../../global/index.scss' as *;
+@use '../../../global/colors.scss' as *;
+
+.colorItem {
+  padding: 14px 3rem;
+  border-bottom: 1px solid #ccc;
+  background-color: var(--white);
+  margin-bottom: 1px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  border: none;
+  margin-bottom: 4px;
+  cursor: pointer;
+  height: 100px;
+
+  .deleteIcon {
+    margin-left: auto;
+    padding: 0 8px;
+    width: 120px;
+    height: 34px;
+  }
+
+  .displayColor {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .colorText {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--text);
+  }
+
+  .mainInputsContainer {
+    width: 100%;
+    display: flex;
+    gap: 1rem;
+    padding: 1rem 0rem;
+
+    #color-input-field {
+      display: flex;
+      border-bottom: 1px solid var(--secondaryLight);
+      font-size: 16px;
+    }
+
+    .buttons {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      gap: 6px;
+      width: min-content;
+
+      .color-btn {
+        width: 120px;
+        height: 34px;
+        margin-top: auto;
+      }
+    }
+  }
+
+  .error {
+    margin-top: 8px;
+    color: var(--color-error);
+    text-align: center;
+  }
+
+  .success {
+    margin-top: 8px;
+    color: var(--color-success);
+    text-align: center;
+  }
+}

@@ -1,12 +1,11 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import './App.css';
 import { AuthContext } from './store/auth-context';
-import { betterConsoleLog } from './util-methods/log-methods';
 import ContextProvider from './store/context-provider';
-import Login from './pages/login/Login';
 import SplashScreen from './pages/splashScreen/SplashScreen';
-import LandingPage from './pages/landing/LandingPage';
-import { ToastContainer, Bounce } from 'react-toastify';
+import Navigation from './components/navigation/Navigation';
+import Navbar from './components/navigation/Navbar';
+import Footer from './components/footer/Footer';
 
 function Root() {
   const [isAuthenticatingToken, setIsAuthenticatingToken] = useState(true);
@@ -40,56 +39,33 @@ function Root() {
     return () => clearTimeout(timer);
   }, []);
 
+  useEffect(() => {
+    if (authCtx.isAuthenticated) {
+      setShowSplash(true);
+      const timer = setTimeout(() => {
+        setShowSplash(false);
+      }, 1600);
+      return () => clearTimeout(timer);
+    }
+  }, [authCtx.isAuthenticated]);
+
   if (isAuthenticatingToken || showSplash) {
     return <SplashScreen />;
   }
 
-  return <Navigation />;
-}
-
-/**
- * AUTH > Imamo 2 stacka koji se nalaze u Navigation metodi
- *
- * Login tako sto saljemo username i sifru
- * Backend validira credentials i salje nazad token
- * Token se store odredjenu kolicinu vremena na racunaru
- */
-
-/**
- * Handles different Navigation Stack based on isAuthenticated flag in the context
- */
-function Navigation() {
-  const authCtx = useContext(AuthContext);
-  betterConsoleLog('> Logging isAuthenticated', authCtx.isAuthenticated);
-
   return (
-    <>
-      <ToastContainer
-        position="bottom-right"
-        autoClose={1000}
-        hideProgressBar
-        newestOnTop
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-        transition={Bounce}
-        className="toast-container"
-      />
-      {authCtx.isAuthenticated && <LandingPage />}
-      {!authCtx.isAuthenticated && <Login />}
-    </>
+    <main className="fade-in">
+      <Navbar />
+      <Navigation />
+      <Footer />
+    </main>
   );
 }
 
 export default function App() {
   return (
-    <>
-      <ContextProvider>
-        <Root />
-      </ContextProvider>
-    </>
+    <ContextProvider>
+      <Root />
+    </ContextProvider>
   );
 }

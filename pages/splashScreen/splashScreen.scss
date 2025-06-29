@@ -1,26 +1,38 @@
 @use '../../global/index.scss' as *;
 @use '../../global/colors.scss' as *;
 
-.splash-screen-wrapper {
+.splash-screen {
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   box-sizing: border-box;
   align-items: center;
   justify-content: center;
-  animation: splashScreenFadeInOutAnimation 3.7s ease-in-out infinite;
 
-  .splash-logo {
-    max-height: 180px;
-    aspect-ratio: 16 / 9;
-    object-fit: contain;
-    margin-bottom: 12px;
-  }
+  position: absolute;
+  inset: 0 0 0 0;
+  z-index: 9999;
+  background-color: var(--white);
 
-  .splash-text {
-    font-size: 24px;
-    font-weight: bold;
+  .splash-screen-wrapper {
+    display: flex;
+    animation: splashScreenFadeInOutAnimation 3.7s ease-in-out infinite;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .splash-logo {
+      max-height: 180px;
+      aspect-ratio: 16 / 9;
+      object-fit: contain;
+      margin-bottom: 12px;
+    }
+
+    .splash-text {
+      font-size: 24px;
+      font-weight: bold;
+    }
   }
 }
 
