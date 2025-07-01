@@ -1,4 +1,4 @@
-import React, { createContext, useState, ReactNode } from 'react';
+import React, { createContext, useState, ReactNode, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { notifyError } from '../components/util-components/Notify';
 interface LoginResultType {
@@ -45,9 +45,10 @@ function AuthContextProvider({ children }: AuthContextProviderType) {
   /**
    * Logs out the user by clearing the auth token from state and localStorage.
    */
-  function logout(): void {
+  function logout(): any {
     setAuthToken(null);
     localStorage.removeItem('token');
+    return navigate('/login');
   }
 
   /**
@@ -139,6 +140,10 @@ function AuthContextProvider({ children }: AuthContextProviderType) {
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+}
+
+export function useAuth() {
+  return useContext(AuthContext);
 }
 
 export default AuthContextProvider;

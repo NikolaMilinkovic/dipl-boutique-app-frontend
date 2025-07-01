@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import { ColorTypes } from '../../../global/types';
-import { useAuth } from '../../../hooks/useAuth';
 import {
   notifyError,
   notifySuccess,
@@ -9,6 +8,7 @@ import { betterErrorLog } from '../../../util-methods/log-methods';
 import Button from '../../../components/util-components/Button';
 import './ColorItem.scss';
 import InputFieldBorderless from '../../../components/util-components/InputFieldBorderless';
+import { useAuth } from '../../../store/auth-context';
 
 function ColorItem({ data }: { data: ColorTypes }) {
   const apiUrl = import.meta.env.VITE_BACKEND_URL;
@@ -142,7 +142,7 @@ function ColorItem({ data }: { data: ColorTypes }) {
         <div className="displayColor">
           <p className="colorText">{colorData.name}</p>
           <Button
-            label="Delete Color"
+            label="Delete"
             onClick={(e) => {
               e.stopPropagation();
               removeColorHandler();

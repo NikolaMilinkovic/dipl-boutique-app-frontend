@@ -5,13 +5,18 @@ import './animatedList.scss';
 interface AnimatedListProps<T> {
   items: T[];
   searchTerm?: string;
-  searchFunction?: (item: T, searchTerm: string) => boolean;
+  searchFunction?: (
+    item: T,
+    searchTerm: string,
+    stockTypeFilter?: string,
+  ) => boolean;
   renderItem: ComponentType<{ data: T }>;
   noDataImage?: string;
   noDataAlt?: string;
   className?: string;
   maxWidth?: string;
   height?: string;
+  stockTypeFilter?: string;
 }
 
 function AnimatedList<T>({
@@ -24,6 +29,7 @@ function AnimatedList<T>({
   className = '',
   maxWidth = '800px',
   height = '77.5vh',
+  stockTypeFilter,
 }: AnimatedListProps<T>) {
   const [filteredItems, setFilteredItems] = useState<T[]>([]);
 
@@ -37,15 +43,14 @@ function AnimatedList<T>({
   };
 
   useEffect(() => {
-    if (searchTerm && searchTerm.trim()) {
-      const searchFunc = searchFunction || defaultSearchFunction;
-      setFilteredItems(
-        items.filter((item) => searchFunc(item, searchTerm.trim())),
-      );
-    } else {
-      setFilteredItems([...items]);
-    }
-  }, [searchTerm, items, searchFunction]);
+    const searchFunc = searchFunction || defaultSearchFunction;
+
+    const filtered = items.filter((item) =>
+      searchFunc(item, searchTerm?.trim() || '', stockTypeFilter),
+    );
+
+    setFilteredItems(filtered);
+  }, [searchTerm, stockTypeFilter, items, searchFunction]);
 
   // Using the custom hook for scroll animations
   const { visibleItems, containerRef } = useScrollAnimation(filteredItems);

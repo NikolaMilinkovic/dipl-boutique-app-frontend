@@ -1,11 +1,11 @@
 import React, { useRef, useEffect } from 'react';
 import './navbar.scss';
-import { useAuth } from '../../hooks/useAuth';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { MdDashboard, MdInventory2, MdSettings } from 'react-icons/md';
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { FiLogOut } from 'react-icons/fi';
 import NavButton from './NavButton';
+import { useAuth } from '../../store/auth-context';
 
 function Navbar() {
   const { isAuthenticated, logout } = useAuth();

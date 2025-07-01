@@ -1,0 +1,46 @@
+@use '../../global/index.scss' as *;
+@use '../../global/colors.scss' as *;
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  padding: 8px 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  border-radius: 6px;
+
+  &:hover {
+    background-color: var(--secondaryLight);
+  }
+}
+
+.checkbox {
+  height: 20px;
+  width: 20px;
+  border: 2px solid var(--primaryDark);
+  background-color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.checkbox.checked {
+  border-color: var(--primaryDark);
+  background-color: var(--highlight);
+}
+
+.tick {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  transition: background-color 0.2s ease;
+}
+
+.label {
+  font-size: 18px;
+  color: var(--primaryDark);
+  user-select: none;
+}

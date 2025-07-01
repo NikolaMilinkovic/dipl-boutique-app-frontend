@@ -1,7 +1,5 @@
-import { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import './colorsManager.scss';
-import { fetchWithBodyData } from '../../../util-methods/fetch-methods';
-import { useAuth } from '../../../hooks/useAuth';
 import { betterErrorLog } from '../../../util-methods/log-methods';
 import {
   notifyError,
@@ -10,34 +8,37 @@ import {
 import SingleInputForm from '../../../components/util-components/SingleInputForm';
 import ColorsList from './ColorsList';
 import InputField from '../../../components/util-components/InputField';
+import { useAuth } from '../../../store/auth-context';
+import { useFetchData } from '../../../hooks/useFetchData';
 
 function ColorsManager() {
   const [color, setColor] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const { token } = useAuth();
+  const { fetchWithBodyData } = useFetchData();
 
-  async function addColor() {
+  const addColor = React.useCallback(async () => {
     try {
       const response = await fetchWithBodyData(
-        token,
         'colors/add',
         { name: color, colorCode: '' },
         'POST',
       );
-      if (response) {
-        const parsed = await response.json();
 
-        if (response.status === 200) {
-          notifySuccess(parsed.message);
-          setColor('');
-        } else {
-          notifyError(parsed.message);
-        }
+      if (!response) return;
+
+      const parsed = await response.json();
+
+      if (response.status === 200) {
+        notifySuccess(parsed.message);
+        setColor('');
+      } else {
+        notifyError(parsed.message);
       }
     } catch (err) {
       betterErrorLog('> Error while adding a new color', err);
     }
-  }
+  }, [color, token]);
 
   return (
     <div className="app-setup-page-wrapper">
@@ -52,6 +53,7 @@ function ColorsManager() {
           btn_label="Add color"
         />
         <div style={{ padding: '0rem 3rem' }}>
+          <h2>Search colors</h2>
           <InputField
             backgroundColor="var(--primaryLight)"
             label="Search colors"

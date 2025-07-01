@@ -3,11 +3,11 @@ import './login.scss';
 import { useUser } from '../../store/user-context';
 import InputField from '../../components/util-components/InputField';
 import Button from '../../components/util-components/Button';
-import { useAuth } from '../../hooks/useAuth';
 import {
   notifyError,
   notifySuccess,
 } from '../../components/util-components/Notify';
+import { useAuth } from '../../store/auth-context';
 
 function Login() {
   const date = new Date();

@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import { CategoryTypes, ColorTypes } from '../../../global/types';
-import { useAuth } from '../../../hooks/useAuth';
 import {
   notifyError,
   notifySuccess,
 } from '../../../components/util-components/Notify';
 import { betterErrorLog } from '../../../util-methods/log-methods';
 import Button from '../../../components/util-components/Button';
-import './CategoryItem.scss';
 import InputFieldBorderless from '../../../components/util-components/InputFieldBorderless';
+import './categoryItem.scss';
+import { useAuth } from '../../../store/auth-context';
 
 function CategoryItem({ data }: { data: CategoryTypes }) {
   const apiUrl = import.meta.env.VITE_BACKEND_URL;
@@ -72,7 +72,7 @@ function CategoryItem({ data }: { data: CategoryTypes }) {
   }
 
   // Deletes the color from the database
-  async function removeColorHandler() {
+  async function removeCategoryHandler() {
     try {
       const response = await fetch(`${apiUrl}/category/${categoryData._id}`, {
         method: 'DELETE',
@@ -90,7 +90,7 @@ function CategoryItem({ data }: { data: CategoryTypes }) {
 
       notifySuccess(`Kategorija je uspešno obrisana`);
     } catch (error) {
-      betterErrorLog('> Error deleting color:', error);
+      betterErrorLog('> Error deleting category:', error);
     }
   }
 
@@ -106,7 +106,7 @@ function CategoryItem({ data }: { data: CategoryTypes }) {
   }, [showEdit]);
 
   return (
-    <div className="CategoryItem" onClick={showEditColorHandler}>
+    <div className="categorItemStyles" onClick={showEditColorHandler}>
       {showEdit ? (
         <form className="mainInputsContainer" action={updateCategoryHandler}>
           <InputFieldBorderless
@@ -141,11 +141,14 @@ function CategoryItem({ data }: { data: CategoryTypes }) {
       ) : (
         <div className="displayColor">
           <p className="colorText">{categoryData.name}</p>
+          <p className="colorText" style={{ marginLeft: 'auto' }}>
+            {categoryData.stockType}
+          </p>
           <Button
-            label="Delete Color"
+            label="Delete"
             onClick={(e) => {
               e.stopPropagation();
-              removeColorHandler();
+              removeCategoryHandler();
             }}
             className="deleteIcon"
           />

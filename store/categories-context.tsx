@@ -5,11 +5,12 @@ import React, {
   useContext,
   useEffect,
 } from 'react';
-import { fetchData } from '../util-methods/fetch-methods';
-import { useAuth } from '../hooks/useAuth';
 import { useSocket } from './socket-context';
-import { betterConsoleLog, betterErrorLog } from '../util-methods/log-methods';
+import { betterErrorLog } from '../util-methods/log-methods';
 import { notifyError } from '../components/util-components/Notify';
+import { useAuth } from './auth-context';
+import { useFetchData } from '../hooks/useFetchData';
+import { DropdownOptionType } from '../components/dropdowns/dropdown';
 
 export interface CategoryTypes {
   _id: string;
@@ -21,6 +22,7 @@ interface CategoriesContextTypes {
   categories: CategoryTypes[];
   setCategories: React.Dispatch<React.SetStateAction<CategoryTypes[]>>;
   getCategories: () => void;
+  getCategoryDropdownItems: () => DropdownOptionType[];
 }
 
 interface CategoriesProviderProps {
@@ -31,22 +33,26 @@ export const CategoriesContext = createContext<CategoriesContextTypes>({
   categories: [],
   setCategories: () => {},
   getCategories: () => {},
+  getCategoryDropdownItems: () => [],
 });
 
 export function CategoriesContextProvider({
   children,
 }: CategoriesProviderProps) {
-  const { token } = useAuth();
+  const { token, logout } = useAuth();
   const { socket } = useSocket();
   const [categories, setCategories] = useState<CategoryTypes[]>([]);
+  const { fetchData } = useFetchData();
 
   // Fetch method
   async function getCategories() {
     try {
-      const response = await fetchData(token, 'category/get', 'GET');
-      betterConsoleLog('> RESPONSE', response);
-      if (response && response.ok && response.status !== 304) {
+      const response = await fetchData('category/get', 'GET');
+      if (Array.isArray(response)) {
         setCategories(response);
+      } else {
+        notifyError('Podaci o bojama nisu preuzei');
+        setCategories([]);
       }
     } catch (err) {
       notifyError('Error while fetching categories');
@@ -54,28 +60,47 @@ export function CategoriesContextProvider({
     }
   }
 
-  // Initial Fetch
-  useEffect(() => {
-    async function getCategories() {
-      try {
-        const response = await fetchData(token, 'category/get', 'GET');
-        setCategories(response);
-      } catch (err) {}
-    }
-    if (!token) return;
+  async function handleConnect() {
+    if (!token) return logout();
     getCategories();
-  }, [token]);
+  }
+
+  function getCategoryDropdownItems() {
+    const items: DropdownOptionType[] = [];
+    categories.forEach((category) => {
+      items.push({
+        value: category.stockType,
+        label: category.name,
+      });
+    });
+
+    return items;
+  }
 
   useEffect(() => {
     if (socket) {
+      /**
+       * Adds a new category to the state.
+       * @param newCategory - The category to add.
+       */
       const handleCategoryAdded = (newCategory: CategoryTypes) => {
         setCategories((prevCategories) => [...prevCategories, newCategory]);
       };
+
+      /**
+       * Removes a category from the state by ID.
+       * @param categoryId - ID of the category to remove.
+       */
       const handleCategoryRemoved = (categoryId: string) => {
         setCategories((prevCategories) =>
           prevCategories.filter((category) => category._id !== categoryId),
         );
       };
+
+      /**
+       * Updates an existing category in the state.
+       * @param updatedCategory - The updated category data.
+       */
       const handleCategoryUpdated = (updatedCategory: CategoryTypes) => {
         setCategories((prevCategories) =>
           prevCategories.map((category) =>
@@ -84,13 +109,13 @@ export function CategoriesContextProvider({
         );
       };
 
+      socket.on('connect', handleConnect);
       socket.on('categoryAdded', handleCategoryAdded);
       socket.on('categoryRemoved', handleCategoryRemoved);
       socket.on('categoryUpdated', handleCategoryUpdated);
 
-      // Cleans up the listener on unmount
-      // Without this we would get 2x the data as we are rendering multiple times
       return () => {
+        socket.off('connect', handleConnect);
         socket.off('categoryAdded', handleCategoryAdded);
         socket.off('categoryRemoved', handleCategoryRemoved);
         socket.off('categoryUpdated', handleCategoryUpdated);
@@ -102,6 +127,7 @@ export function CategoriesContextProvider({
     categories,
     setCategories,
     getCategories,
+    getCategoryDropdownItems,
   };
 
   return (

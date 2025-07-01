@@ -1,8 +1,8 @@
 import React from 'react';
 import './footer.scss';
 import { FaCode, FaGithub } from 'react-icons/fa';
-import { useAuth } from '../../hooks/useAuth';
 import { NavLink } from 'react-router-dom';
+import { useAuth } from '../../store/auth-context';
 
 function Footer() {
   const { isAuthenticated } = useAuth();
@@ -10,7 +10,7 @@ function Footer() {
   const date = new Date();
 
   return (
-    <footer>
+    <footer style={{ marginTop: '4rem' }}>
       {/* COPYRIGHT */}
       <section>
         <a

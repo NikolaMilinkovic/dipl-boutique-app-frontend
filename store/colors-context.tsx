@@ -5,11 +5,11 @@ import React, {
   useContext,
   useEffect,
 } from 'react';
-import { fetchData } from '../util-methods/fetch-methods';
-import { useAuth } from '../hooks/useAuth';
+import { useFetchData } from '../hooks/useFetchData';
 import { useSocket } from './socket-context';
 import { notifyError } from '../components/util-components/Notify';
 import { betterErrorLog } from '../util-methods/log-methods';
+import { useAuth } from './auth-context';
 
 interface ColorTypes {
   _id?: string;
@@ -34,34 +34,31 @@ export const ColorContext = createContext<ColorsContextTypes>({
 });
 
 export function ColorsContextProvider({ children }: ColorsProviderProps) {
-  const { token } = useAuth();
+  const { token, logout } = useAuth();
   const { socket } = useSocket();
   const [colors, setColors] = useState<ColorTypes[]>([]);
+  const { fetchData } = useFetchData();
 
   // Fetch method
   async function getColors() {
     try {
-      const response = await fetchData(token, 'colors/get', 'GET');
-      if (response && response.ok && response.status !== 304) {
+      const response = await fetchData('colors/get', 'GET');
+      if (Array.isArray(response)) {
         setColors(response);
+      } else {
+        notifyError('Podaci o bojama nisu preuzei');
+        setColors([]);
       }
-    } catch (err) {}
+    } catch (err) {
+      notifyError('Error while fetching colors');
+      betterErrorLog('> Error while fetching colors', err);
+    }
   }
 
-  // Initial Fetch
-  useEffect(() => {
-    async function getColors() {
-      try {
-        const response = await fetchData(token, 'colors/get', 'GET');
-        setColors(response);
-      } catch (err) {
-        notifyError('Error while fetching colors');
-        betterErrorLog('> Error while fetching colors', err);
-      }
-    }
-    if (!token) return;
+  async function handleConnect() {
+    if (!token) return logout();
     getColors();
-  }, [token]);
+  }
 
   /**
    * Adds a new color to the state.
@@ -106,13 +103,13 @@ export function ColorsContextProvider({ children }: ColorsProviderProps) {
 
   useEffect(() => {
     if (socket) {
+      socket.on('connect', handleConnect);
       socket.on('colorAdded', handleColorAdded);
       socket.on('colorRemoved', handleColorRemoved);
       socket.on('colorUpdated', handleColorUpdated);
 
-      // Cleans up the listener on unmount
-      // Without this we would get 2x the data as we are rendering multiple times
       return () => {
+        socket.off('connect', handleConnect);
         socket.off('colorAdded', handleColorAdded);
         socket.off('colorRemoved', handleColorRemoved);
         socket.off('colorUpdated', handleColorUpdated);

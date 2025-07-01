@@ -1,19 +1,34 @@
 import Select from 'react-select';
 import './dropdown.scss';
 
-interface DropdownOptionType {
+export interface DropdownOptionType {
   value: string;
   label: string;
 }
 
 interface DropdownPropTypes {
   options: DropdownOptionType[];
+  onSelect: (value: string) => void;
+  defaultValue?: DropdownOptionType;
+  onResetText?: string;
 }
 
-function Dropdown({ options }: DropdownPropTypes) {
+function Dropdown({
+  options,
+  onSelect,
+  defaultValue,
+  onResetText,
+}: DropdownPropTypes) {
   return (
     <Select
+      defaultValue={defaultValue || 'Select'}
       options={options}
+      onChange={(option) => {
+        if (option?.value === '') {
+          option.label = onResetText ?? 'Select...';
+        }
+        onSelect((option as DropdownOptionType)?.value || '');
+      }}
       classNamePrefix="react-select"
       styles={{
         control: (baseStyles, state) => ({
@@ -34,7 +49,6 @@ function Dropdown({ options }: DropdownPropTypes) {
         }),
         container: (baseStyles, state) => ({
           ...baseStyles,
-          margin: '0rem 3rem',
           cursor: 'pointer',
         }),
         option: (base, state) => ({

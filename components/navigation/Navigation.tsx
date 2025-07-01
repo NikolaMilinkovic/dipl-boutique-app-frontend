@@ -1,12 +1,12 @@
 import { useContext } from 'react';
 import { Bounce, ToastContainer } from 'react-toastify';
 import { AuthContext } from '../../store/auth-context';
-import Products from '../../pages/landing/Products';
 import Login from '../../pages/login/Login';
 import { Route, Routes } from 'react-router-dom';
 import Dashboard from '../../pages/dashboard/Dashboard';
 import AppSetup from '../../pages/appSetup/AppSetup';
 import './navigation.scss';
+import ProductsManager from '../../pages/products/ProductsManager';
 
 /**
  * AUTH > Imamo 2 stacka koji se nalaze u Navigation metodi
@@ -42,7 +42,7 @@ function Navigation() {
       {authCtx.isAuthenticated && (
         <Routes>
           <Route path="/" element={<Dashboard />} />
-          <Route path="/products" element={<Products />} />
+          <Route path="/products" element={<ProductsManager />} />
           <Route path="/app-setup" element={<AppSetup />} />
           <Route path="/logout" element={<Login />} />
         </Routes>

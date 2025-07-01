@@ -7,6 +7,7 @@ interface ButtonPropStyles {
   label: string;
   type?: 'button' | 'submit' | 'reset';
   className?: string;
+  tabIndex?: number;
 }
 
 function Button({
@@ -14,9 +15,15 @@ function Button({
   label,
   type = 'button',
   className = '',
+  tabIndex,
 }: ButtonPropStyles) {
   return (
-    <button className={`button ${className}`} onClick={onClick} type={type}>
+    <button
+      className={`button ${className}`}
+      onClick={onClick}
+      type={type}
+      tabIndex={tabIndex}
+    >
       {label}
     </button>
   );

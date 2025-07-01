@@ -11,6 +11,8 @@ interface SingleInputFormTypes {
   borders?: boolean;
   label: string;
   btn_label: string;
+  tabIndex?: number;
+  btnTabIndex?: number;
 }
 
 function SingleInputForm({
@@ -21,6 +23,8 @@ function SingleInputForm({
   borders = true,
   label,
   btn_label,
+  tabIndex,
+  btnTabIndex,
 }: SingleInputFormTypes) {
   const borderStyles = {
     borderBottom: '1px solid var(--secondaryLight)',
@@ -43,8 +47,14 @@ function SingleInputForm({
           type="text"
           showClearBtn={true}
           backgroundColor="var(--primaryLight)"
+          tabIndex={tabIndex}
         />
-        <Button label={btn_label} type="submit" className="add-btn" />
+        <Button
+          label={btn_label}
+          type="submit"
+          className="add-btn"
+          tabIndex={btnTabIndex}
+        />
       </form>
     </section>
   );

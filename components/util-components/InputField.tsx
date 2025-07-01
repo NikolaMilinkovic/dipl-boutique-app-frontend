@@ -4,13 +4,14 @@ import './inputField.scss';
 
 interface InputFieldProps {
   label: string;
-  inputText: string;
+  inputText: string | number;
   id?: string;
   type?: string;
   showPasswordBtn?: boolean;
   showClearBtn?: boolean;
-  setInputText: (text: string) => void;
+  setInputText: (text: string | number) => void;
   backgroundColor?: string;
+  tabIndex?: number;
 }
 
 function InputField({
@@ -22,6 +23,7 @@ function InputField({
   showClearBtn = false,
   setInputText,
   backgroundColor = '#ffffff',
+  tabIndex,
 }: InputFieldProps) {
   const [isActive, setIsActive] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -55,6 +57,7 @@ function InputField({
         onChange={(e) => setInputText(e.target.value)}
         value={inputText}
         type={inputType}
+        tabIndex={tabIndex}
       ></input>
       {showPasswordBtn && (
         <button

@@ -2,21 +2,22 @@ import { useColor } from '../../../store/colors-context';
 import ColorItem from './ColorItem';
 import { ColorTypes } from '../../../global/types';
 import AnimatedList from '../../../components/lists/AnimatedList';
+import React from 'react';
 
 interface ColorsListProps {
   searchTerm?: string;
 }
 
-function ColorsList({ searchTerm }: ColorsListProps) {
+const ColorsList = React.memo(({ searchTerm }: ColorsListProps) => {
   const { colors } = useColor();
 
   // Custom search function for colors
-  const colorSearchFunction = (
-    color: ColorTypes,
-    searchTerm: string,
-  ): boolean => {
-    return color.name.toLowerCase().includes(searchTerm.toLowerCase());
-  };
+  const colorSearchFunction = React.useCallback(
+    (color: ColorTypes, term: string) => {
+      return color.name.toLowerCase().includes(term.toLowerCase());
+    },
+    [],
+  );
 
   return (
     <AnimatedList
@@ -31,6 +32,6 @@ function ColorsList({ searchTerm }: ColorsListProps) {
       height="77.5vh"
     />
   );
-}
+});
 
 export default ColorsList;
