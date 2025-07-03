@@ -7,6 +7,8 @@ import Dashboard from '../../pages/dashboard/Dashboard';
 import AppSetup from '../../pages/appSetup/AppSetup';
 import './navigation.scss';
 import ProductsManager from '../../pages/products/ProductsManager';
+import Navbar from './Navbar';
+import Footer from '../footer/Footer';
 
 /**
  * AUTH > Imamo 2 stacka koji se nalaze u Navigation metodi
@@ -38,14 +40,19 @@ function Navigation() {
         transition={Bounce}
         className="toast-container"
       />
+
       {!authCtx.isAuthenticated && <Login />}
       {authCtx.isAuthenticated && (
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/products" element={<ProductsManager />} />
-          <Route path="/app-setup" element={<AppSetup />} />
-          <Route path="/logout" element={<Login />} />
-        </Routes>
+        <>
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/products" element={<ProductsManager />} />
+            <Route path="/app-setup" element={<AppSetup />} />
+            <Route path="/logout" element={<Login />} />
+          </Routes>
+          <Footer />
+        </>
       )}
     </>
   );

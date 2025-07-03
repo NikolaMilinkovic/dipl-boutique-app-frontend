@@ -201,6 +201,19 @@ function AddProduct({ isExpanded, setIsExpanded }) {
                 showClearBtn={true}
                 backgroundColor="var(--primaryLight)"
               />
+
+              {/* Kategorija */}
+              <Dropdown
+                options={categoryDropdownItems}
+                onSelect={(value) =>
+                  setProduct((prev) => ({ ...prev, stockType: value }))
+                }
+                // NOTE -> Uzeti iz settings korisnika
+                defaultValue={{
+                  value: 'Boja-Veličina-Količina',
+                  label: 'Haljina',
+                }}
+              />
             </div>
           </div>
         </div>
@@ -209,24 +222,10 @@ function AddProduct({ isExpanded, setIsExpanded }) {
           className="flex-column gap-1"
           style={{ marginTop: isExpanded ? '' : '1rem' }}
         >
-          {/* Kategorija */}
-          <Dropdown
-            options={categoryDropdownItems}
-            onSelect={(value) =>
-              setProduct((prev) => ({ ...prev, stockType: value }))
-            }
-            // NOTE -> Uzeti iz settings korisnika
-            defaultValue={{
-              value: 'Boja-Veličina-Količina',
-              label: 'Haljina',
-            }}
-          />
-
           <ColorsSelect
             selectedColors={selectedColors}
             setSelectedColors={setSelectedColors}
           />
-
           {/* Boje | Velicina | Kolicina lagera */}
           {product && product.colors && product.colors.length > 0 && (
             <ColorAmountInput
@@ -238,7 +237,9 @@ function AddProduct({ isExpanded, setIsExpanded }) {
             />
           )}
           {/* BTN */}
-          <Button label="Add product" type="button" onClick={() => {}} />
+          <div style={{ marginTop: 'auto' }}>
+            <Button label="Add product" type="button" onClick={() => {}} />
+          </div>
         </div>
       </div>
 

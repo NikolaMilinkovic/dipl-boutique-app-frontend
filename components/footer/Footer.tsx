@@ -10,7 +10,7 @@ function Footer() {
   const date = new Date();
 
   return (
-    <footer style={{ marginTop: '4rem' }}>
+    <footer style={{ marginTop: '4rem' }} className="fade">
       {/* COPYRIGHT */}
       <section>
         <a

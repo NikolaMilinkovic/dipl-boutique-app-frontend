@@ -30,16 +30,7 @@ function Root() {
     }
 
     getToken();
-  }, [authCtx]);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowSplash(false);
-    }, 3700);
-    return () => clearTimeout(timer);
-  }, []);
-
-  useEffect(() => {
     if (authCtx.isAuthenticated) {
       setShowSplash(true);
       const timer = setTimeout(() => {
@@ -49,15 +40,23 @@ function Root() {
     }
   }, [authCtx.isAuthenticated]);
 
+  /**
+   * Handles removing the initial splash screen
+   */
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowSplash(false);
+    }, 3700);
+    return () => clearTimeout(timer);
+  }, []);
+
   if (isAuthenticatingToken || showSplash) {
     return <SplashScreen />;
   }
 
   return (
     <main className="fade-in">
-      <Navbar />
       <Navigation />
-      <Footer />
     </main>
   );
 }
