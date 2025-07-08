@@ -1,6 +1,6 @@
 import React, { useState, forwardRef } from 'react';
 import { FaEye, FaEyeSlash, FaTimes } from 'react-icons/fa';
-import './InputFieldBorderless.scss';
+import './inputFieldBorderless.scss';
 
 interface InputFieldBorderlessProps {
   label: string;
