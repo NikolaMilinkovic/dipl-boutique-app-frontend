@@ -24,7 +24,7 @@ function AnimatedList<T>({
   searchTerm,
   searchFunction,
   renderItem: RenderComponent,
-  noDataImage = '../public/img/no_data_found.png',
+  noDataImage = '/img/no_data_found.png',
   noDataAlt = 'No data found',
   className = '',
   maxWidth = '800px',

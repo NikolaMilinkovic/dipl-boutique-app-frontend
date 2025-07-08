@@ -25,7 +25,7 @@ function Footer() {
         <div className="nav-logo">
           <NavLink className="nav-link" to="/">
             <img
-              src="../public/img/infinity-white.png"
+              src="/img/infinity-white.png"
               alt="Infinity Boutique Logo"
               className="nav-logo"
             />

@@ -40,7 +40,7 @@ function Login() {
     <main className="login-page-main">
       <form method="POST" action="" className="login-form">
         <img
-          src="../../public/img/infinity.png"
+          src="/img/infinity.png"
           alt="Infinity Boutique Logo"
           className="login-logo"
         ></img>

@@ -6,7 +6,7 @@ function SplashScreen() {
     <div className="splash-screen">
       <div className="splash-screen-wrapper">
         <img
-          src="../public/img/infinity.png"
+          src="/img/infinity.png"
           alt="Infinity Boutique Logo"
           className="splash-logo"
         ></img>

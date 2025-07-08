@@ -25,7 +25,7 @@ const ColorsList = React.memo(({ searchTerm }: ColorsListProps) => {
       searchTerm={searchTerm}
       searchFunction={colorSearchFunction}
       renderItem={ColorItem}
-      noDataImage="../public/img/no_data_found.png"
+      noDataImage="/img/no_data_found.png"
       noDataAlt="Infinity Boutique Logo"
       className="color-list-section"
       maxWidth="800px"

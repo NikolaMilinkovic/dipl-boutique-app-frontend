@@ -43,7 +43,7 @@ function Navbar() {
       {/* LOGO */}
       <NavLink className="nav-link" to="/" onClick={showNavbar}>
         <img
-          src="../public/img/infinity-white.png"
+          src="/img/infinity-white.png"
           alt="Infinity Boutique Logo"
           className="nav-logo"
         />
