@@ -11,6 +11,7 @@ interface DropdownPropTypes {
   onSelect: (option: DropdownOptionType) => void;
   defaultValue?: DropdownOptionType;
   onResetText?: string;
+  value: DropdownOptionType;
 }
 
 function Dropdown({
@@ -18,18 +19,19 @@ function Dropdown({
   onSelect,
   defaultValue,
   onResetText,
+  value,
 }: DropdownPropTypes) {
   return (
     <Select
       defaultValue={
         defaultValue || { value: '', label: onResetText ?? 'Select...' }
       }
+      value={value}
       options={options}
-      onChange={(option: SingleValue<DropdownOptionType>) => {
-        if (option?.value === '') {
-          option.label = onResetText ?? 'Select...';
-        }
-        if (option) {
+      onChange={(option) => {
+        if (!option) {
+          onSelect({ value: '', label: onResetText ?? 'Select...' });
+        } else {
           onSelect(option);
         }
       }}

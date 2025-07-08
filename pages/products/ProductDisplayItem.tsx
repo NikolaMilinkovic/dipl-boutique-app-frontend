@@ -7,6 +7,7 @@ import {
 import './productDisplayItem.scss';
 import { MdAdd, MdEdit } from 'react-icons/md';
 import DisplayPurseStock from '../../components/product-stock/DisplayPurseStock';
+import DisplayDressStock from '../../components/product-stock/DisplayDressStock';
 
 function ProductDisplayItem({ data, showAddBtn = true }) {
   const [onStock, setOnStock] = useState(false);
@@ -113,7 +114,7 @@ function ProductDisplayItem({ data, showAddBtn = true }) {
         <DisplayPurseStock isExpanded={isExpanded} item={data} />
       )}
       {data.stockType === 'Boja-Veličina-Količina' && (
-        <DisplayPurseStock isExpanded={isExpanded} item={data} />
+        <DisplayDressStock isExpanded={isExpanded} item={data} />
       )}
     </div>
   );

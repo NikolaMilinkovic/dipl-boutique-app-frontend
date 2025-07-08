@@ -14,24 +14,29 @@ import {
   notifyWarrning,
 } from '../components/util-components/Notify';
 
+interface DropdownSelectedItem {
+  value: string;
+  label: string;
+}
+
 interface NewProductTypes {
   name: string;
   active: boolean;
-  category: string;
+  category: DropdownSelectedItem;
   stockType: string;
   price: number | string;
   colors: (DressColorTypes | PurseColorTypes)[];
   image: File | null;
   description?: string;
-  supplier?: string;
+  supplier?: DropdownSelectedItem;
   totalStock?: number | string;
 }
 
 interface NewProductContextTypes {
   newProduct: NewProductTypes;
   setNewProduct: React.Dispatch<React.SetStateAction<NewProductTypes>>;
-  addProduct: () => Promise<void>;
-  clearNewProductData: () => Promise<void>;
+  addProduct: () => Promise<boolean>;
+  clearNewProductData: () => void;
 }
 
 interface NewProductProviderProps {
@@ -42,18 +47,18 @@ export const NewProductContext = createContext<NewProductContextTypes>({
   newProduct: {
     name: '',
     active: true,
-    category: '',
+    category: { label: '', value: '' },
     stockType: '',
     price: '',
     colors: [],
     image: null,
     description: '',
-    supplier: '',
+    supplier: { label: '', value: '' },
     totalStock: '',
   },
   setNewProduct: () => {},
-  addProduct: async () => {},
-  clearNewProductData: async () => {},
+  addProduct: async () => false,
+  clearNewProductData: () => {},
 });
 
 export function NewProductContextProvider({
@@ -63,15 +68,19 @@ export function NewProductContextProvider({
   const [newProduct, setNewProduct] = useState<NewProductTypes>({
     name: '',
     active: true,
-    category: 'Haljina',
+    category: { value: 'Boja-Veličina-Količina', label: 'Haljina' },
     stockType: 'Boja-Veličina-Količina',
     price: '',
     colors: [],
     image: null,
     description: '',
-    supplier: '',
+    supplier: { value: '', label: 'Supplier' },
     totalStock: '',
   });
+
+  useEffect(() => {
+    betterConsoleLog('', newProduct);
+  }, [newProduct]);
 
   function validateInput(): boolean {
     if (!newProduct.name) {
@@ -102,12 +111,18 @@ export function NewProductContextProvider({
     return true;
   }
 
-  async function addProduct() {
+  async function addProduct(): Promise<boolean> {
     try {
+      const preparedProductData = {
+        ...newProduct,
+        category: newProduct.category?.label,
+        supplier: newProduct.supplier?.value,
+      };
+
       const isDataValid = validateInput();
-      if (!isDataValid) return;
+      if (!isDataValid) return false;
       const formData = new FormData();
-      formData.append('product', JSON.stringify(newProduct));
+      formData.append('product', JSON.stringify(preparedProductData));
       formData.append('image', newProduct.image as File);
 
       const response = await handleFetchingWithFormData(
@@ -119,11 +134,14 @@ export function NewProductContextProvider({
       if (response.status === 200) {
         notifySuccess(res.message);
         clearNewProductData();
+        return true;
       } else {
         notifyError(res.message);
+        return false;
       }
     } catch (err) {
       betterErrorLog('Error while creating a new product.', err);
+      return false;
     }
   }
 
@@ -131,13 +149,13 @@ export function NewProductContextProvider({
     setNewProduct({
       name: '',
       active: true,
-      category: '',
+      category: { value: 'Boja-Veličina-Količina', label: 'Haljina' },
       stockType: 'Boja-Veličina-Količina',
       price: '',
       colors: [],
       image: null,
       description: '',
-      supplier: '',
+      supplier: { value: '', label: 'Supplier' },
       totalStock: '',
     });
   }

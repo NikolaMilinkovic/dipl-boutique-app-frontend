@@ -83,6 +83,15 @@ function ImageInput({
   }, []);
 
   useEffect(() => {
+    setImageDisplay('');
+    setText(label);
+    setShowPreview(false);
+    if (reference.current) {
+      reference.current.value = '';
+    }
+  }, [rerenderkey]);
+
+  useEffect(() => {
     if (product?.image?.uri) {
       setImageDisplay(product.image.uri);
       setText(product.image.imageName || 'Image');

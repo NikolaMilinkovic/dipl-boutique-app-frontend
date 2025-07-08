@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import SingleInputForm from '../../../components/util-components/SingleInputForm';
 import InputField from '../../../components/util-components/InputField';
 import CategoriesList from './CategoriesList';
 import './categoriesManager.scss';
 import Dropdown from '../../../components/dropdowns/Dropdown';
-import { betterErrorLog } from '../../../util-methods/log-methods';
+import {
+  betterConsoleLog,
+  betterErrorLog,
+} from '../../../util-methods/log-methods';
 import {
   notifyError,
   notifySuccess,
@@ -73,7 +76,7 @@ function CategoriesManager() {
           <Dropdown
             options={stockTypeOptions}
             onSelect={(value) =>
-              setCategory((prev) => ({ ...prev, stockType: value }))
+              setCategory((prev) => ({ ...prev, stockType: value.value }))
             }
             defaultValue={{
               value: 'Boja-Veličina-Količina',
@@ -100,7 +103,7 @@ function CategoriesManager() {
         <div style={{ margin: '0rem 3rem' }}>
           <Dropdown
             options={stockTypeFilterOptions}
-            onSelect={setStockTypeFilter}
+            onSelect={(value) => setStockTypeFilter(value.value)}
           />
         </div>
       </div>

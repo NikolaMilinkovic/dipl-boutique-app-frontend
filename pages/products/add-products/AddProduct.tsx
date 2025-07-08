@@ -26,6 +26,16 @@ function AddProduct({ isExpanded, setIsExpanded }) {
     addProduct,
   } = useNewProduct();
 
+  async function addProductHandler() {
+    const isAdded = await addProduct();
+
+    if (isAdded) {
+      setImageRerenderKey((prev) => prev + 1);
+      setProduct((prev) => ({ ...prev, image: null }));
+      setSelectedColors([]);
+    }
+  }
+
   useEffect(() => {
     setProduct((prevProduct) => {
       const prevColors = prevProduct.colors;
@@ -150,14 +160,10 @@ function AddProduct({ isExpanded, setIsExpanded }) {
               {/* Dobavljac */}
               <Dropdown
                 options={supplierDropdownItems}
+                value={product.supplier}
                 onSelect={(option) =>
-                  setProduct((prev) => ({ ...prev, supplier: option.value }))
+                  setProduct((prev) => ({ ...prev, supplier: option }))
                 }
-                // NOTE -> Uzeti iz settings korisnika
-                defaultValue={{
-                  value: '',
-                  label: 'Supplier',
-                }}
                 onResetText="Supplier"
               />
 
@@ -182,13 +188,10 @@ function AddProduct({ isExpanded, setIsExpanded }) {
                   setProduct((prev) => ({
                     ...prev,
                     stockType: value,
-                    category: label,
+                    category: { value, label },
                   }))
                 }
-                defaultValue={{
-                  value: 'Boja-Veličina-Količina',
-                  label: 'Haljina',
-                }}
+                value={product.category}
               />
             </div>
           </div>
@@ -214,7 +217,11 @@ function AddProduct({ isExpanded, setIsExpanded }) {
           )}
           {/* BTN */}
           <div style={{ marginTop: 'auto' }}>
-            <Button label="Add product" type="button" onClick={addProduct} />
+            <Button
+              label="Add product"
+              type="button"
+              onClick={addProductHandler}
+            />
           </div>
         </div>
       </div>
