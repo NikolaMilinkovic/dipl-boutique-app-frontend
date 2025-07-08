@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './addProduct.scss';
 import InputField from '../../../components/util-components/InputField';
-import { PurseColorTypes, DressColorTypes } from '../../../global/types';
-import Dropdown from '../../../components/dropdowns/dropdown';
+import Dropdown from '../../../components/dropdowns/Dropdown';
 import { useCategories } from '../../../store/categories-context';
 import { useSuppliers } from '../../../store/suppliers-context';
 import ImageInput from '../../../components/image-input/ImageInput';
