@@ -11,7 +11,7 @@ import { notifyError } from '../components/util-components/Notify';
 import { betterErrorLog } from '../util-methods/log-methods';
 import { useAuth } from './auth-context';
 import { useFetchData } from '../hooks/useFetchData';
-import { DropdownOptionType } from '../components/dropdowns/dropdown';
+import { DropdownOptionType } from '../components/dropdowns/Dropdown';
 
 export interface SupplierTypes {
   _id: string;
