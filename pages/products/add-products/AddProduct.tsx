@@ -13,23 +13,7 @@ import PurseColor from '../../../models/PurseColor';
 import ColorsSelect from '../../../components/colors-select/ColorsSelect';
 import Button from '../../../components/util-components/Button';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
-
-interface NewProductData {
-  name: string;
-  active: boolean;
-  category: string;
-  stockType: string;
-  price: number | string;
-  colors: (DressColorTypes | PurseColorTypes)[];
-  image: {
-    uri: string;
-    imageName: string;
-  };
-  description?: string;
-  displayPriority: number | string;
-  supplier?: string;
-  totalStock?: number | string;
-}
+import { useNewProduct } from '../../../store/new-product-context';
 
 function AddProduct({ isExpanded, setIsExpanded }) {
   const { getCategoryDropdownItems } = useCategories();
@@ -37,22 +21,11 @@ function AddProduct({ isExpanded, setIsExpanded }) {
   const imageInputRef = React.useRef<HTMLInputElement>(null);
   const [imageRerenderKey, setImageRerenderKey] = useState(0);
   const [selectedColors, setSelectedColors] = useState([]);
-  const [product, setProduct] = useState<NewProductData>({
-    name: '',
-    active: true,
-    category: '',
-    stockType: 'Boja-Veličina-Količina',
-    price: '',
-    colors: [],
-    image: {
-      uri: '',
-      imageName: '',
-    },
-    description: '',
-    displayPriority: '',
-    supplier: '',
-    totalStock: '',
-  });
+  const {
+    newProduct: product,
+    setNewProduct: setProduct,
+    addProduct,
+  } = useNewProduct();
 
   useEffect(() => {
     setProduct((prevProduct) => {
@@ -131,6 +104,7 @@ function AddProduct({ isExpanded, setIsExpanded }) {
       className="add-product-section"
       style={{
         width: isExpanded ? '100vw' : '50vw',
+        boxSizing: 'border-box',
       }}
     >
       {isExpanded && <h2 style={{ margin: '0px' }}>Add new product</h2>}
@@ -177,8 +151,8 @@ function AddProduct({ isExpanded, setIsExpanded }) {
               {/* Dobavljac */}
               <Dropdown
                 options={supplierDropdownItems}
-                onSelect={(value) =>
-                  setProduct((prev) => ({ ...prev, stockType: value }))
+                onSelect={(option) =>
+                  setProduct((prev) => ({ ...prev, supplier: option.value }))
                 }
                 // NOTE -> Uzeti iz settings korisnika
                 defaultValue={{
@@ -205,10 +179,13 @@ function AddProduct({ isExpanded, setIsExpanded }) {
               {/* Kategorija */}
               <Dropdown
                 options={categoryDropdownItems}
-                onSelect={(value) =>
-                  setProduct((prev) => ({ ...prev, stockType: value }))
+                onSelect={({ value, label }) =>
+                  setProduct((prev) => ({
+                    ...prev,
+                    stockType: value,
+                    category: label,
+                  }))
                 }
-                // NOTE -> Uzeti iz settings korisnika
                 defaultValue={{
                   value: 'Boja-Veličina-Količina',
                   label: 'Haljina',
@@ -238,7 +215,7 @@ function AddProduct({ isExpanded, setIsExpanded }) {
           )}
           {/* BTN */}
           <div style={{ marginTop: 'auto' }}>
-            <Button label="Add product" type="button" onClick={() => {}} />
+            <Button label="Add product" type="button" onClick={addProduct} />
           </div>
         </div>
       </div>

@@ -6,6 +6,8 @@ import { SocketContextProvider } from './socket-context';
 import { CategoriesContextProvider } from './categories-context';
 import { SuppliersContextProvider } from './suppliers-context';
 import { CouriersContextProvider } from './couriers-context';
+import { NewProductContextProvider } from './new-product-context';
+import { ProductsContextProvider } from './products-context';
 
 interface ContextChildrenType {
   children: ReactNode;
@@ -20,7 +22,13 @@ const ContextProvider: React.FC<ContextChildrenType> = ({ children }) => {
             <ColorsContextProvider>
               <CategoriesContextProvider>
                 <SuppliersContextProvider>
-                  <CouriersContextProvider>{children}</CouriersContextProvider>
+                  <CouriersContextProvider>
+                    <ProductsContextProvider>
+                      <NewProductContextProvider>
+                        {children}
+                      </NewProductContextProvider>
+                    </ProductsContextProvider>
+                  </CouriersContextProvider>
                 </SuppliersContextProvider>
               </CategoriesContextProvider>
             </ColorsContextProvider>

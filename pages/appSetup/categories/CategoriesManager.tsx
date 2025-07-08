@@ -1,13 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import SingleInputForm from '../../../components/util-components/SingleInputForm';
 import InputField from '../../../components/util-components/InputField';
 import CategoriesList from './CategoriesList';
 import './categoriesManager.scss';
-import Dropdown from '../../../components/dropdowns/dropdown';
-import {
-  betterConsoleLog,
-  betterErrorLog,
-} from '../../../util-methods/log-methods';
+import Dropdown from '../../../components/dropdowns/Dropdown';
+import { betterErrorLog } from '../../../util-methods/log-methods';
 import {
   notifyError,
   notifySuccess,

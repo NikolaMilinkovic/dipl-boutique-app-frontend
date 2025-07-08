@@ -6,16 +6,19 @@ import './addAndEditProducts.scss';
 function AddAndEditProducts() {
   const [isExpanded, setIsExpanded] = useState(false);
   return (
-    // EXPAND BUTTONS
-    // > Napravi tako da se add product moze expand i zauzme gotovo ceo ekran
-    <section className="add-edit-products-main">
+    <section
+      className="add-edit-products-main"
+      style={{ width: '100%', boxSizing: 'border-box' }}
+    >
       <AddProduct isExpanded={isExpanded} setIsExpanded={setIsExpanded} />
       <div
         style={{
           position: isExpanded ? 'absolute' : 'unset',
-          left: isExpanded ? '110vw' : '',
+          left: isExpanded ? '100vw' : '',
           transform: isExpanded ? 'translateX(50vw)' : 'translateX(0)',
           transition: 'transform 0.3s ease',
+          display: 'flex',
+          flex: 1,
         }}
       >
         <EditProduct />

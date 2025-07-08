@@ -83,7 +83,7 @@ function AnimatedList<T>({
   return (
     <section
       className={`animated-list-section ${className}`}
-      style={{ height }}
+      style={{ height, width: '100% !important' }}
     >
       {filteredItems && filteredItems.length > 0 ? (
         <>

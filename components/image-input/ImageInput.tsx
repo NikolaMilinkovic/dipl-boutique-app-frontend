@@ -98,22 +98,7 @@ function ImageInput({
     setShowPreview(true);
     setImageDisplay(URL.createObjectURL(file));
 
-    try {
-      const resizedImage = await resizeImage(file);
-
-      const formData = new FormData();
-      formData.append('file', file);
-
-      const response = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData,
-      });
-
-      const result = await response.json();
-      onImageUpload?.({ uri: result.url, imageName: file.name });
-    } catch (err) {
-      console.error('Upload failed:', err);
-    }
+    onImageUpload?.(file);
   };
 
   // const handleDrop = (e) => {
@@ -168,7 +153,7 @@ function ImageInput({
             onDrop={handleDrop}
             onDragOver={(e) => e.preventDefault()}
           >
-            {text}
+            <span>{text}</span>
             <input
               type="file"
               accept="image/*"

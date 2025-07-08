@@ -14,7 +14,7 @@ function Navbar() {
   // HOTKEY NAVIGATION
   const navigate = useNavigate();
   const location = useLocation();
-  const navItems = ['/', '/products', '/app-setup'];
+  const navItems = ['/', '/orders', '/products', '/app-setup'];
   function showNavbar() {
     navRef?.current?.classList.toggle('responsive_nav');
   }
@@ -53,6 +53,11 @@ function Navbar() {
         {/* DASHBOARD */}
         <NavButton to="/" onClick={showNavbar} icon={<MdDashboard />}>
           Dashboard
+        </NavButton>
+
+        {/* ORDERS */}
+        <NavButton to="/orders" onClick={showNavbar} icon={<MdInventory2 />}>
+          Orders
         </NavButton>
 
         {/* PRODUCTS */}

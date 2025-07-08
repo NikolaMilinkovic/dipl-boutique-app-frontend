@@ -7,6 +7,7 @@ import Dashboard from '../../pages/dashboard/Dashboard';
 import AppSetup from '../../pages/appSetup/AppSetup';
 import './navigation.scss';
 import ProductsManager from '../../pages/products/ProductsManager';
+import OrdersManager from '../../pages/orders/OrdersManager';
 import Navbar from './Navbar';
 import Footer from '../footer/Footer';
 
@@ -47,6 +48,7 @@ function Navigation() {
           <Navbar />
           <Routes>
             <Route path="/" element={<Dashboard />} />
+            <Route path="/orders" element={<OrdersManager />} />
             <Route path="/products" element={<ProductsManager />} />
             <Route path="/app-setup" element={<AppSetup />} />
             <Route path="/logout" element={<Login />} />

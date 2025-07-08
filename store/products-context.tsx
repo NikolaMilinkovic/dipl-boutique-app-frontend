@@ -8,7 +8,7 @@ import React, {
 import { useFetchData } from '../hooks/useFetchData';
 import { useSocket } from './socket-context';
 import { notifyError } from '../components/util-components/Notify';
-import { betterErrorLog } from '../util-methods/log-methods';
+import { betterConsoleLog, betterErrorLog } from '../util-methods/log-methods';
 import {
   CourierTypes,
   DressTypes,
@@ -20,7 +20,7 @@ import {
 import { useAuth } from './auth-context';
 
 interface ProductsContextTypes {
-  products: ProductTypes[];
+  products: ProductContextDataTypes;
   setProducts: React.Dispatch<React.SetStateAction<ProductTypes[]>>;
 }
 
@@ -35,7 +35,11 @@ interface ProductContextDataTypes {
 }
 
 export const ProductsContext = createContext<ProductsContextTypes>({
-  products: [],
+  products: {
+    activeProducts: [],
+    inactiveProducts: [],
+    allProducts: [],
+  },
   setProducts: () => {},
 });
 
@@ -55,7 +59,7 @@ export function ProductsContextProvider({ children }: ProductsProviderProps) {
 
   async function handleConnect() {
     try {
-      const response = await fetchData('product/get', 'GET');
+      const response = await fetchData('product/get-all-products', 'GET');
       if (typeof response === 'object') {
         setProducts(response);
       } else {
@@ -66,12 +70,32 @@ export function ProductsContextProvider({ children }: ProductsProviderProps) {
     }
   }
 
+  function handleAddProduct(newProduct: DressTypes | PurseTypes) {
+    setProducts((prev) => ({
+      ...prev,
+
+      // All products
+      allProducts: [...prev.allProducts, newProduct],
+
+      // Active
+      activeProducts: newProduct.active
+        ? [...prev.activeProducts, newProduct]
+        : prev.activeProducts,
+
+      // Inactive
+      inactiveProducts: !newProduct.active
+        ? [...prev.inactiveProducts, newProduct]
+        : prev.inactiveProducts,
+    }));
+  }
   useEffect(() => {
     if (socket) {
       socket.on('connect', handleConnect);
+      socket.on('productAdded', handleAddProduct);
 
       return () => {
         socket.off('connect', handleConnect);
+        socket.off('productAdded', handleAddProduct);
       };
     }
   }, [socket]);

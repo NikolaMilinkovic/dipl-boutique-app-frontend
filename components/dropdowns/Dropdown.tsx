@@ -1,4 +1,4 @@
-import Select from 'react-select';
+import Select, { ActionMeta, SingleValue } from 'react-select';
 import './dropdown.scss';
 
 export interface DropdownOptionType {
@@ -8,7 +8,7 @@ export interface DropdownOptionType {
 
 interface DropdownPropTypes {
   options: DropdownOptionType[];
-  onSelect: (value: string) => void;
+  onSelect: (option: DropdownOptionType) => void;
   defaultValue?: DropdownOptionType;
   onResetText?: string;
 }
@@ -21,13 +21,17 @@ function Dropdown({
 }: DropdownPropTypes) {
   return (
     <Select
-      defaultValue={defaultValue || 'Select'}
+      defaultValue={
+        defaultValue || { value: '', label: onResetText ?? 'Select...' }
+      }
       options={options}
-      onChange={(option) => {
+      onChange={(option: SingleValue<DropdownOptionType>) => {
         if (option?.value === '') {
           option.label = onResetText ?? 'Select...';
         }
-        onSelect((option as DropdownOptionType)?.value || '');
+        if (option) {
+          onSelect(option);
+        }
       }}
       classNamePrefix="react-select"
       styles={{

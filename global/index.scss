@@ -422,6 +422,10 @@ template {
   display: grid;
   grid-template-columns: 1fr 1fr;
 }
+.grid-05-1 {
+  display: grid;
+  grid-template-columns: 0.5fr 1fr;
+}
 
 .gap-1 {
   gap: 1rem;
@@ -434,4 +438,10 @@ template {
 .flex-column {
   display: flex;
   flex-direction: column;
+}
+
+.truncate-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

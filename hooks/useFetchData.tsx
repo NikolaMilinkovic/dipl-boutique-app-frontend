@@ -39,13 +39,15 @@ export function useFetchData() {
           headers: {
             Authorization: `Bearer ${token}`,
             Accept: 'application/json',
-            'content-type': 'multipart/form-data',
           },
           body: formData,
         },
       );
 
-      if (response.status === 401) return logout();
+      if (response.status === 401) {
+        logout();
+      }
+
       return response;
     } catch (error) {
       console.error('Network error details:', {
