@@ -23,8 +23,7 @@ const ColorsList = React.memo(({ searchTerm }: ColorsListProps) => {
     <AnimatedList
       items={colors}
       searchTerm={searchTerm}
-      searchFunction={colorSearchFunction}
-      renderItem={ColorItem}
+      renderItem={(color) => <ColorItem data={color} />}
       noDataImage="/img/no_data_found.png"
       noDataAlt="Infinity Boutique Logo"
       className="color-list-section"

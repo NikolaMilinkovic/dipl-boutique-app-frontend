@@ -31,7 +31,7 @@ const CategoriesList = React.memo(
         items={categories}
         searchTerm={searchTerm}
         searchFunction={categorySearchFunction}
-        renderItem={CategoryItem}
+        renderItem={(category) => <CategoryItem data={category} />}
         noDataImage="/img/no_data_found.png"
         noDataAlt="Infinity Boutique Logo"
         className="color-list-section"

@@ -1,4 +1,3 @@
-import React from 'react';
 import './productsManager.scss';
 import { Tab, Tabs } from '../../components/tabs/Tabs';
 import AddAndEditProducts from './add-products/AddAndEditProducts';

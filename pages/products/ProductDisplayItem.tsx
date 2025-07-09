@@ -5,33 +5,73 @@ import {
   notifySuccess,
 } from '../../components/util-components/Notify';
 import './productDisplayItem.scss';
-import { MdAdd, MdEdit } from 'react-icons/md';
+import { MdAdd, MdEdit, MdDelete } from 'react-icons/md';
 import DisplayPurseStock from '../../components/product-stock/DisplayPurseStock';
 import DisplayDressStock from '../../components/product-stock/DisplayDressStock';
+import {
+  DressColorTypes,
+  DressTypes,
+  PurseColorTypes,
+  PurseTypes,
+} from '../../global/types';
+import { useConfirmationModal } from '../../store/confirmation-modal-context';
+import { useFetchData } from '../../hooks/useFetchData';
 
-function ProductDisplayItem({ data, showAddBtn = true }) {
+interface ProductDisplayItemTypes {
+  data: PurseTypes | DressTypes;
+  showAddBtn: boolean;
+  showEditBtn: boolean;
+  showDeleteBtn: boolean;
+}
+
+function ProductDisplayItem({
+  data,
+  showAddBtn = true,
+  showEditBtn = true,
+  showDeleteBtn = true,
+}: ProductDisplayItemTypes) {
   const [onStock, setOnStock] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
+  const { showConfirmation } = useConfirmationModal();
+  const { fetchWithBodyData } = useFetchData();
+
   // const { createNewOrder } = useContext(NewOrderContext);
   if (data) useCheckStockAvailability(data, setOnStock);
   // if(data) useCheckStockAvailability(data, setOnStock);
 
   function handleOnAddPress(event) {
     event.stopPropagation();
-    if (onStock) {
-      notifySuccess(
-        `${data.name} dodat u porudžbinu.\nTrenuthin artikala u porudžbini: #NUM`,
+  }
+  function handleOnEditPress(event) {
+    event.stopPropagation();
+  }
+  function handleOnDeletePress(event) {
+    event.stopPropagation();
+    showConfirmation(async () => {
+      let colorIdsArr = [];
+      data.colors.forEach((color: PurseColorTypes | DressColorTypes) =>
+        colorIdsArr.push(color._id),
       );
-      //  ${order.productData.length + 1}
-    } else {
-      notifyError(`${data.name} je rasprodati i nije dodat u porudžbinu!`);
-    }
+      const bodyData = {
+        colorIds: colorIdsArr,
+        id: data._id,
+        stockType: data.stockType,
+      };
+      const res = await fetchWithBodyData('product/delete', bodyData, 'DELETE');
+      if (!res) return;
+      const parsed = (await res.json()) as any;
+      if (res.status === 200) {
+        notifySuccess(parsed.message);
+      } else {
+        notifyError(parsed.message);
+      }
+    }, 'Are you sure you want to delete this item?');
   }
 
   return (
     <div
       style={{
-        backgroundColor: onStock ? 'white' : 'var(--secondaryHighlight)',
+        backgroundColor: onStock ? 'white' : 'var(--highlightSold)',
       }}
       onClick={() => setIsExpanded(!isExpanded)}
       className="product-display-item"
@@ -75,14 +115,12 @@ function ProductDisplayItem({ data, showAddBtn = true }) {
 
         {/* Buttons */}
         <div className="product-controls">
+          {/* ADD BTN */}
           {onStock && showAddBtn && (
-            // ADD BTN
             <button
               className="product-control-btn"
               style={{
-                backgroundColor: onStock
-                  ? 'white'
-                  : 'var(--secondaryHighlight)',
+                backgroundColor: onStock ? 'white' : 'var(--highlightSold)',
               }}
               onClick={handleOnAddPress}
             >
@@ -93,15 +131,36 @@ function ProductDisplayItem({ data, showAddBtn = true }) {
           )}
 
           {/* EDIT BTN */}
-          <button
-            className="product-control-btn"
-            style={{
-              backgroundColor: onStock ? 'white' : 'var(--secondaryHighlight)',
-              right: '56px',
-            }}
-          >
-            <MdEdit style={{ color: 'var(--primaryDark)', fontSize: '26px' }} />
-          </button>
+          {showEditBtn && (
+            <button
+              className="product-control-btn"
+              style={{
+                backgroundColor: onStock ? 'white' : 'var(--highlightSold)',
+                right: showAddBtn ? '50px' : '26px',
+              }}
+              onClick={handleOnEditPress}
+            >
+              <MdEdit
+                style={{ color: 'var(--primaryDark)', fontSize: '26px' }}
+              />
+            </button>
+          )}
+
+          {/* DELETE BTN */}
+          {showDeleteBtn && (
+            <button
+              className="product-control-btn"
+              style={{
+                backgroundColor: onStock ? 'white' : 'var(--highlightSold)',
+                right: '100px',
+              }}
+              onClick={handleOnDeletePress}
+            >
+              <MdDelete
+                style={{ color: 'var(--primaryDark)', fontSize: '26px' }}
+              />
+            </button>
+          )}
         </div>
 
         {/* Stock availability */}

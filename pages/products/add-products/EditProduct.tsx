@@ -3,7 +3,7 @@ import './editProduct.scss';
 import ProductsList from '../../../components/lists/products-list/ProductsList';
 
 function EditProduct() {
-  return <ProductsList searchTerm="" />;
+  return <ProductsList />;
 }
 
 export default EditProduct;

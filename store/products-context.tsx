@@ -8,20 +8,12 @@ import React, {
 import { useFetchData } from '../hooks/useFetchData';
 import { useSocket } from './socket-context';
 import { notifyError } from '../components/util-components/Notify';
-import { betterConsoleLog, betterErrorLog } from '../util-methods/log-methods';
-import {
-  CourierTypes,
-  DressTypes,
-  ProductsByCategoryTypes,
-  ProductsBySuppliersTypes,
-  ProductTypes,
-  PurseTypes,
-} from '../global/types';
-import { useAuth } from './auth-context';
+import { betterErrorLog } from '../util-methods/log-methods';
+import { DressTypes, ProductTypes, PurseTypes } from '../global/types';
 
 interface ProductsContextTypes {
   products: ProductContextDataTypes;
-  setProducts: React.Dispatch<React.SetStateAction<ProductTypes[]>>;
+  setProducts: React.Dispatch<React.SetStateAction<ProductContextDataTypes>>;
 }
 
 interface ProductsProviderProps {
@@ -48,7 +40,6 @@ export function ProductsContextProvider({ children }: ProductsProviderProps) {
   //   useState<ProductsBySuppliersTypes>();
   // const [productsByCategory, setProductsByCategory] =
   //   useState<ProductsByCategoryTypes>();
-  const { token, logout } = useAuth();
   const { socket } = useSocket();
   const { fetchData } = useFetchData();
   const [products, setProducts] = useState<ProductContextDataTypes>({
@@ -88,14 +79,32 @@ export function ProductsContextProvider({ children }: ProductsProviderProps) {
         : prev.inactiveProducts,
     }));
   }
+  function handleRemoveProduct(id: string) {
+    setProducts((prev) => ({
+      ...prev,
+
+      allProducts: prev.allProducts.filter((product) => product._id !== id),
+
+      activeProducts: prev.activeProducts.filter(
+        (product) => product._id !== id,
+      ),
+
+      inactiveProducts: prev.inactiveProducts.filter(
+        (product) => product._id !== id,
+      ),
+    }));
+  }
+
   useEffect(() => {
     if (socket) {
       socket.on('connect', handleConnect);
       socket.on('productAdded', handleAddProduct);
+      socket.on('productRemoved', handleRemoveProduct);
 
       return () => {
         socket.off('connect', handleConnect);
         socket.off('productAdded', handleAddProduct);
+        socket.off('productRemoved', handleRemoveProduct);
       };
     }
   }, [socket]);

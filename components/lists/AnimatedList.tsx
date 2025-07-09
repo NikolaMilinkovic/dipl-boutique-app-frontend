@@ -10,7 +10,7 @@ interface AnimatedListProps<T> {
     searchTerm: string,
     stockTypeFilter?: string,
   ) => boolean;
-  renderItem: ComponentType<{ data: T }>;
+  renderItem: (item: T) => React.ReactNode;
   noDataImage?: string;
   noDataAlt?: string;
   className?: string;
@@ -23,7 +23,7 @@ function AnimatedList<T>({
   items,
   searchTerm,
   searchFunction,
-  renderItem: RenderComponent,
+  renderItem,
   noDataImage = '/img/no_data_found.png',
   noDataAlt = 'No data found',
   className = '',
@@ -98,7 +98,7 @@ function AnimatedList<T>({
                 className={`list-item ${visibleItems.has(index) ? 'visible' : ''}`}
                 data-index={index}
               >
-                <RenderComponent data={item} />
+                {renderItem(item)}
               </div>
             ))}
           </div>

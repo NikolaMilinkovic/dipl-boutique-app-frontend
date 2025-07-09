@@ -26,7 +26,7 @@ const SuppliersList = React.memo(({ searchTerm }: SuppliersListProps) => {
       items={suppliers}
       searchTerm={searchTerm}
       searchFunction={colorSearchFunction}
-      renderItem={SupplierItem}
+      renderItem={(supplier) => <SupplierItem data={supplier} />}
       noDataImage="/img/no_data_found.png"
       noDataAlt="Infinity Boutique Logo"
       className="color-list-section"

@@ -27,21 +27,6 @@ function Navigation() {
 
   return (
     <>
-      <ToastContainer
-        position="bottom-right"
-        autoClose={1000}
-        hideProgressBar
-        newestOnTop
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-        transition={Bounce}
-        className="toast-container"
-      />
-
       {!authCtx.isAuthenticated && <Login />}
       {authCtx.isAuthenticated && (
         <>

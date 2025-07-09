@@ -6,6 +6,7 @@ import SplashScreen from './pages/splashScreen/SplashScreen';
 import Navigation from './components/navigation/Navigation';
 import Navbar from './components/navigation/Navbar';
 import Footer from './components/footer/Footer';
+import { Bounce, ToastContainer } from 'react-toastify';
 
 function Root() {
   const [isAuthenticatingToken, setIsAuthenticatingToken] = useState(true);
@@ -55,9 +56,25 @@ function Root() {
   }
 
   return (
-    <main className="fade-in">
-      <Navigation />
-    </main>
+    <>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={1000}
+        hideProgressBar
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+        transition={Bounce}
+        className="toast-container"
+      />
+      <main className="fade-in">
+        <Navigation />
+      </main>
+    </>
   );
 }
 

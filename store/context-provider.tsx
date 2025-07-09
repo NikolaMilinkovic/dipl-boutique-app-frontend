@@ -8,6 +8,7 @@ import { SuppliersContextProvider } from './suppliers-context';
 import { CouriersContextProvider } from './couriers-context';
 import { NewProductContextProvider } from './new-product-context';
 import { ProductsContextProvider } from './products-context';
+import { ConfirmationModalProvider } from './confirmation-modal-context';
 
 interface ContextChildrenType {
   children: ReactNode;
@@ -18,21 +19,23 @@ const ContextProvider: React.FC<ContextChildrenType> = ({ children }) => {
     <>
       <AuthContextProvider>
         <SocketContextProvider>
-          <UserContextProvider>
-            <ColorsContextProvider>
-              <CategoriesContextProvider>
-                <SuppliersContextProvider>
-                  <CouriersContextProvider>
-                    <ProductsContextProvider>
-                      <NewProductContextProvider>
-                        {children}
-                      </NewProductContextProvider>
-                    </ProductsContextProvider>
-                  </CouriersContextProvider>
-                </SuppliersContextProvider>
-              </CategoriesContextProvider>
-            </ColorsContextProvider>
-          </UserContextProvider>
+          <ConfirmationModalProvider>
+            <UserContextProvider>
+              <ColorsContextProvider>
+                <CategoriesContextProvider>
+                  <SuppliersContextProvider>
+                    <CouriersContextProvider>
+                      <ProductsContextProvider>
+                        <NewProductContextProvider>
+                          {children}
+                        </NewProductContextProvider>
+                      </ProductsContextProvider>
+                    </CouriersContextProvider>
+                  </SuppliersContextProvider>
+                </CategoriesContextProvider>
+              </ColorsContextProvider>
+            </UserContextProvider>
+          </ConfirmationModalProvider>
         </SocketContextProvider>
       </AuthContextProvider>
     </>

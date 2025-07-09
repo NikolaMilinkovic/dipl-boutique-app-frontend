@@ -414,3 +414,8 @@ template {
     opacity: 1;
   }
 }
+
+.toast-container > * {
+  background-color: var(--secondaryDark);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+}

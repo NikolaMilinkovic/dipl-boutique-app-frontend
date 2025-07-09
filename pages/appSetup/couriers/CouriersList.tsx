@@ -24,7 +24,7 @@ const CouriersList = React.memo(({ searchTerm }: CouriersListProps) => {
       items={couriers}
       searchTerm={searchTerm}
       searchFunction={couriersSearchFunction}
-      renderItem={CourierItem}
+      renderItem={(courier) => <CourierItem data={courier} />}
       noDataImage="/img/no_data_found.png"
       noDataAlt="Infinity Boutique Logo"
       className="color-list-section"
