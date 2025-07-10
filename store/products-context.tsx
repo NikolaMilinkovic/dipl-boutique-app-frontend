@@ -7,7 +7,11 @@ import React, {
 } from 'react';
 import { useFetchData } from '../hooks/useFetchData';
 import { useSocket } from './socket-context';
-import { notifyError } from '../components/util-components/Notify';
+import {
+  notifyError,
+  notifySuccess,
+  notifyWarrning,
+} from '../components/util-components/Notify';
 import { betterErrorLog } from '../util-methods/log-methods';
 import { DressTypes, ProductTypes, PurseTypes } from '../global/types';
 
@@ -41,7 +45,7 @@ export function ProductsContextProvider({ children }: ProductsProviderProps) {
   // const [productsByCategory, setProductsByCategory] =
   //   useState<ProductsByCategoryTypes>();
   const { socket } = useSocket();
-  const { fetchData } = useFetchData();
+  const { fetchData, handleFetchingWithFormData } = useFetchData();
   const [products, setProducts] = useState<ProductContextDataTypes>({
     activeProducts: [],
     inactiveProducts: [],
@@ -94,17 +98,44 @@ export function ProductsContextProvider({ children }: ProductsProviderProps) {
       ),
     }));
   }
+  function handleUpdateProduct(updatedProduct: DressTypes | PurseTypes) {
+    setProducts((prev) => ({
+      ...prev,
+
+      allProducts: prev.allProducts.map((product) =>
+        product._id === updatedProduct._id ? updatedProduct : product,
+      ),
+
+      activeProducts: updatedProduct.active
+        ? [
+            ...prev.activeProducts.filter((p) => p._id !== updatedProduct._id),
+            updatedProduct,
+          ]
+        : prev.activeProducts.filter((p) => p._id !== updatedProduct._id),
+
+      inactiveProducts: !updatedProduct.active
+        ? [
+            ...prev.inactiveProducts.filter(
+              (p) => p._id !== updatedProduct._id,
+            ),
+            updatedProduct,
+          ]
+        : prev.inactiveProducts.filter((p) => p._id !== updatedProduct._id),
+    }));
+  }
 
   useEffect(() => {
     if (socket) {
       socket.on('connect', handleConnect);
       socket.on('productAdded', handleAddProduct);
       socket.on('productRemoved', handleRemoveProduct);
+      socket.on('productUpdated', handleUpdateProduct);
 
       return () => {
         socket.off('connect', handleConnect);
         socket.off('productAdded', handleAddProduct);
         socket.off('productRemoved', handleRemoveProduct);
+        socket.off('productUpdated', handleUpdateProduct);
       };
     }
   }, [socket]);

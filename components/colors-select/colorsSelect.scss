@@ -9,7 +9,8 @@
   .colors-wrapper {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    max-height: 180px;
+    // max-height: 180px;
+    max-height: 250px;
     padding: 12px;
     border: 1px solid var(--primaryDark);
     overflow: scroll;

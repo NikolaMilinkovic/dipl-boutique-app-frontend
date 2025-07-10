@@ -12,6 +12,7 @@ interface DropdownPropTypes {
   defaultValue?: DropdownOptionType;
   onResetText?: string;
   value: DropdownOptionType;
+  isDisabled?: boolean;
 }
 
 function Dropdown({
@@ -20,9 +21,11 @@ function Dropdown({
   defaultValue,
   onResetText,
   value,
+  isDisabled = false,
 }: DropdownPropTypes) {
   return (
     <Select
+      isDisabled={isDisabled}
       defaultValue={
         defaultValue || { value: '', label: onResetText ?? 'Select...' }
       }

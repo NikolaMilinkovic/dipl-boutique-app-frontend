@@ -1,0 +1,90 @@
+.modal-edit-product-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+
+  .modal-edit-product-content {
+    width: 75vw;
+    padding: 20px;
+    padding-top: 30px;
+    background-color: white;
+    border-radius: 10px;
+    text-align: center;
+    max-height: 85vh;
+    overflow: scroll;
+    overflow-x: hidden;
+
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: var(--primaryDark);
+      border-radius: 4px;
+      transition: background 0.3s ease;
+    }
+
+    .modal-edit-product-header {
+      display: flex;
+      position: relative;
+      align-items: center;
+      justify-content: center;
+
+      > h2 {
+        padding: 0px;
+        margin: 0px;
+        margin-bottom: 20px;
+      }
+
+      .btn-edit-product-close {
+        position: absolute;
+        right: 0;
+        bottom: 18px;
+        border: 0px;
+      }
+    }
+
+    .modal-edit-product-data-input-container {
+      display: flex;
+      flex-direction: column;
+      padding-top: 2rem;
+
+      .modal-edit-product-basic-product-information-container {
+        display: grid;
+        grid-template-columns: 0.7fr 1fr 1.5fr;
+        gap: 1rem;
+        width: 100%;
+        padding-bottom: 2rem;
+
+        .modal-edit-product-basic-product-information-inputs {
+          display: flex;
+          flex-direction: column;
+          width: 100%;
+          gap: 1rem;
+          max-height: 310px;
+        }
+      }
+
+      .modal-edit-product-buttons-container {
+        display: flex;
+        width: 100%;
+        max-width: 320px;
+        gap: 8px;
+        margin-left: auto;
+        margin-top: 1rem;
+      }
+    }
+  }
+}

@@ -155,11 +155,11 @@ function CourierItem({ data }: { data: CourierTypes }) {
           </div>
         </form>
       ) : (
-        <div className="displayColor">
-          <p className="colorText">{couriersData.name}</p>
-          <p className="colorText" style={{ marginLeft: 'auto' }}>
-            {couriersData.deliveryPrice} RSD
-          </p>
+        <div className="displayColor" style={{ width: '100%' }}>
+          <div className="grid-1-1 display-color-info-wrapper">
+            <p className="colorText">{couriersData.name}</p>
+            <p className="colorText">{couriersData.deliveryPrice} RSD</p>
+          </div>
           <Button
             label="Delete"
             onClick={(e) => {

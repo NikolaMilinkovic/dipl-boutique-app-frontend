@@ -24,7 +24,7 @@ function ProductsList() {
       style={{
         paddingTop: '43.6px',
         width: '100%',
-        height: '95.5vh',
+        height: '100.5vh',
         display: 'flex',
         flexDirection: 'column',
         gap: '0.5rem',

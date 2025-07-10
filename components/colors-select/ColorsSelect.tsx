@@ -4,7 +4,7 @@ import Checkbox from '../checkbox/Checkbox';
 import './colorsSelect.scss';
 import InputField from '../util-components/InputField';
 
-function ColorsSelect({ selectedColors, setSelectedColors }) {
+function ColorsSelect({ selectedColors, setSelectedColors, backgroundColor }) {
   const { colors } = useColor();
   const [searchKeyword, setSearchKeyword] = useState('');
 
@@ -22,7 +22,9 @@ function ColorsSelect({ selectedColors, setSelectedColors }) {
     <div className="colors-select-wrapper">
       <InputField
         label="Search colors"
-        backgroundColor="var(--primaryLight)"
+        backgroundColor={
+          backgroundColor ? backgroundColor : 'var(--primaryLight)'
+        }
         inputText={searchKeyword}
         showClearBtn={true}
         setInputText={setSearchKeyword}

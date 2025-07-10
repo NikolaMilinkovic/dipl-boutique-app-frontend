@@ -162,7 +162,7 @@ function ImageInput({
             onDrop={handleDrop}
             onDragOver={(e) => e.preventDefault()}
           >
-            <span>{text}</span>
+            {/* <span>{text}</span> */}
             <input
               type="file"
               accept="image/*"

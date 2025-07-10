@@ -3,6 +3,7 @@ import useCheckStockAvailability from '../../hooks/useCheckStockAvailability';
 import {
   notifyError,
   notifySuccess,
+  notifyWarrning,
 } from '../../components/util-components/Notify';
 import './productDisplayItem.scss';
 import { MdAdd, MdEdit, MdDelete } from 'react-icons/md';
@@ -14,8 +15,9 @@ import {
   PurseColorTypes,
   PurseTypes,
 } from '../../global/types';
-import { useConfirmationModal } from '../../store/confirmation-modal-context';
+import { useConfirmationModal } from '../../store/modals/confirmation-modal-context';
 import { useFetchData } from '../../hooks/useFetchData';
+import { useEditProductModal } from '../../store/modals/edit-product-modal-context';
 
 interface ProductDisplayItemTypes {
   data: PurseTypes | DressTypes;
@@ -33,18 +35,80 @@ function ProductDisplayItem({
   const [onStock, setOnStock] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const { showConfirmation } = useConfirmationModal();
-  const { fetchWithBodyData } = useFetchData();
+  const { fetchWithBodyData, handleFetchingWithFormData } = useFetchData();
+  const { showEditModal } = useEditProductModal();
+
+  function validateInput(updatedProduct): boolean {
+    if (!updatedProduct.name) {
+      notifyWarrning('Product name is missing');
+      return false;
+    }
+    if (!updatedProduct.category) {
+      notifyWarrning('Category missing');
+      return false;
+    }
+    if (!updatedProduct.price) {
+      notifyWarrning('Price is missing');
+      return false;
+    }
+    if (!updatedProduct.stockType) {
+      notifyWarrning('Stock Type is missing');
+      return false;
+    }
+    if (updatedProduct.colors.length === 0) {
+      notifyWarrning('Please select colors');
+      return false;
+    }
+    if (!updatedProduct.image) {
+      notifyWarrning('Please provide product image');
+      return false;
+    }
+
+    return true;
+  }
 
   // const { createNewOrder } = useContext(NewOrderContext);
   if (data) useCheckStockAvailability(data, setOnStock);
   // if(data) useCheckStockAvailability(data, setOnStock);
 
+  // ADD IN ORDER
   function handleOnAddPress(event) {
     event.stopPropagation();
   }
+
+  // EDIT
   function handleOnEditPress(event) {
     event.stopPropagation();
+    showEditModal(data, async (updatedProduct: any) => {
+      const preparedProductData = {
+        ...updatedProduct,
+        category: updatedProduct.category?.label,
+        supplier: updatedProduct.supplier?.value,
+      };
+      if (!validateInput(preparedProductData)) {
+        notifyError('Data validation failed, check all data and try again');
+        return;
+      }
+      const formData = new FormData();
+      formData.append('product', JSON.stringify(preparedProductData));
+      formData.append('image', preparedProductData.image as File);
+
+      const res = await handleFetchingWithFormData(
+        formData,
+        'product/update',
+        'PATCH',
+      );
+      if (!res) return;
+      const parsed = await res.json();
+      if (res.status === 200) {
+        notifySuccess(parsed.message);
+      } else {
+        notifyError(parsed.message);
+      }
+    });
   }
+
+  // DELETE
   function handleOnDeletePress(event) {
     event.stopPropagation();
     showConfirmation(async () => {

@@ -12,7 +12,7 @@ import PurseColor from '../../../models/PurseColor';
 import ColorsSelect from '../../../components/colors-select/ColorsSelect';
 import Button from '../../../components/util-components/Button';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
-import { useNewProduct } from '../../../store/new-product-context';
+import { useProduct } from '../../../store/new-product-context';
 
 function AddProduct({ isExpanded, setIsExpanded }) {
   const { getCategoryDropdownItems } = useCategories();
@@ -20,11 +20,15 @@ function AddProduct({ isExpanded, setIsExpanded }) {
   const imageInputRef = React.useRef<HTMLInputElement>(null);
   const [imageRerenderKey, setImageRerenderKey] = useState(0);
   const [selectedColors, setSelectedColors] = useState([]);
+
+  useEffect(() => {
+    console.log(selectedColors);
+  }, [selectedColors]);
   const {
     newProduct: product,
     setNewProduct: setProduct,
     addProduct,
-  } = useNewProduct();
+  } = useProduct();
 
   async function addProductHandler() {
     const isAdded = await addProduct();

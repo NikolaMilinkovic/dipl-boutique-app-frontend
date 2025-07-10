@@ -140,10 +140,10 @@ function CategoryItem({ data }: { data: CategoryTypes }) {
         </form>
       ) : (
         <div className="displayColor">
-          <p className="colorText">{categoryData.name}</p>
-          <p className="colorText" style={{ marginLeft: 'auto' }}>
-            {categoryData.stockType}
-          </p>
+          <div className="grid-1-1" style={{ width: '100%' }}>
+            <p className="colorText">{categoryData.name}</p>
+            <p className="colorText">{categoryData.stockType}</p>
+          </div>
           <Button
             label="Delete"
             onClick={(e) => {

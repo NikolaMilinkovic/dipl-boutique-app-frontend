@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import ConfirmationModal from '../components/modals/ConfirmationModal';
+import ConfirmationModal from '../../components/modals/ConfirmationModal';
 
 type ConfirmCallback = () => void | Promise<void>;
 

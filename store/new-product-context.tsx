@@ -168,6 +168,6 @@ export function NewProductContextProvider({
   );
 }
 
-export function useNewProduct() {
+export function useProduct() {
   return useContext(NewProductContext);
 }

@@ -21,7 +21,7 @@ const ConfirmationModal: React.FC<ConfirmModalProps> = ({
   if (!isVisible) return null;
 
   return (
-    <div className="modal-overlay" onClick={onCancel}>
+    <div className="modal-overlay fade" onClick={onCancel}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <img src="/img/infinity.png" alt="Infinity" className="modal-image" />
         <p className="modal-text">
