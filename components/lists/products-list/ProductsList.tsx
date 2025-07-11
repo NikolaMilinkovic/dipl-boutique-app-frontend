@@ -3,6 +3,8 @@ import { useProducts } from '../../../store/products-context';
 import AnimatedList from '../AnimatedList';
 import ProductDisplayItem from '../../../pages/products/ProductDisplayItem';
 import InputField from '../../util-components/InputField';
+import Button from '../../util-components/Button';
+import './productsList.scss';
 
 function ProductsList() {
   const { products } = useProducts();
@@ -24,23 +26,29 @@ function ProductsList() {
       style={{
         paddingTop: '43.6px',
         width: '100%',
-        height: '100.5vh',
+        height: '100%',
         display: 'flex',
         flexDirection: 'column',
         gap: '0.5rem',
         boxSizing: 'border-box',
         borderRadius: '4px',
         overflow: 'hidden',
-        paddingBottom: '3rem',
       }}
     >
-      <InputField
-        backgroundColor="var(--primaryLight)"
-        label="Search product | name | category | supplier | price"
-        inputText={searchTerm}
-        setInputText={setSearchTerm}
-        showClearBtn={true}
-      />
+      <div className="product-list-filters-container">
+        <InputField
+          backgroundColor="var(--primaryLight)"
+          label="Search product | name | category | supplier | price"
+          inputText={searchTerm}
+          setInputText={setSearchTerm}
+          showClearBtn={true}
+        />
+        <Button
+          label="Filters"
+          onClick={() => {}}
+          className="product-list-filter-btn"
+        />
+      </div>
       <AnimatedList
         items={products.allProducts}
         searchTerm={searchTerm}
@@ -58,6 +66,7 @@ function ProductsList() {
         className="color-list-section"
         maxWidth="100%"
         height="100%"
+        containerStyles={{ paddingBottom: '3rem' }}
       />
     </div>
   );

@@ -6,7 +6,7 @@
   display: flex;
   flex-direction: column;
   padding-left: 3rem;
-  padding-right: 3rem;
+  padding-right: 1rem;
   gap: 1rem;
   position: relative;
   height: 100%;
@@ -14,7 +14,6 @@
 .add-product-toggle-width-btn {
   position: absolute;
   top: 0;
-  right: 3rem;
   display: flex;
   align-items: center;
   justify-content: center;

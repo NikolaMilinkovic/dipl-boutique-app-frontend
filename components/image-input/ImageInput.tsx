@@ -170,12 +170,29 @@ function ImageInput({
               ref={reference}
               style={{ display: 'none' }}
             />
-            {imageDisplay && showPreview && (
+            {imageDisplay ? (
               <img
                 src={imageDisplay}
                 alt="Preview"
                 className={showPreview ? 'visible' : ''}
               />
+            ) : (
+              <div
+                style={{
+                  display: 'flex',
+                  opacity: '0.65',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  height: '100%',
+                }}
+              >
+                <img
+                  src={'/img/image-placeholder.svg'}
+                  alt="Preview"
+                  className={showPreview ? 'visible' : ''}
+                  style={{ marginTop: 'auto' }}
+                />
+              </div>
             )}
           </button>
         </div>

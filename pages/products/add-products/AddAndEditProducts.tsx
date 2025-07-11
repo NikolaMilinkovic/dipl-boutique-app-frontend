@@ -9,7 +9,10 @@ function AddAndEditProducts() {
     <>
       <section
         className="add-edit-products-main"
-        style={{ width: '100%', boxSizing: 'border-box' }}
+        style={{
+          width: '100%',
+          boxSizing: 'border-box',
+        }}
       >
         <AddProduct isExpanded={isExpanded} setIsExpanded={setIsExpanded} />
         <div
@@ -20,6 +23,7 @@ function AddAndEditProducts() {
             transition: 'transform 0.3s ease',
             display: 'flex',
             flex: 1,
+            paddingLeft: '1rem',
           }}
         >
           <ProductsList />;

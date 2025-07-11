@@ -118,10 +118,14 @@ function AddProduct({ isExpanded, setIsExpanded }) {
       style={{
         width: isExpanded ? '100vw' : '50vw',
         boxSizing: 'border-box',
+        paddingRight: isExpanded ? '3rem' : '1rem',
       }}
     >
       {isExpanded && <h2 style={{ margin: '0px' }}>Add new product</h2>}
-      <div className={isExpanded ? 'grid-1-1 gap-1' : ''}>
+      <div
+        className={isExpanded ? 'grid-1-1 gap-1' : ''}
+        style={{ height: '100%' }}
+      >
         <div>
           {!isExpanded && <h2>Add new product</h2>}
           <div className="grid-1-1 gap-1">
@@ -202,8 +206,13 @@ function AddProduct({ isExpanded, setIsExpanded }) {
         </div>
 
         <div
-          className="flex-column gap-1"
-          style={{ marginTop: isExpanded ? '' : '1rem' }}
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            marginTop: isExpanded ? '' : '1rem',
+            gap: '1rem',
+            height: '100%',
+          }}
         >
           <ColorsSelect
             selectedColors={selectedColors}
@@ -233,6 +242,7 @@ function AddProduct({ isExpanded, setIsExpanded }) {
       <button
         className="add-product-toggle-width-btn"
         onClick={() => setIsExpanded(!isExpanded)}
+        style={{ right: isExpanded ? '3rem' : '1rem' }}
       >
         {isExpanded ? <FiChevronLeft /> : <FiChevronRight />}
       </button>

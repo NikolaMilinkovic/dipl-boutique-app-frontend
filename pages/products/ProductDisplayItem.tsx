@@ -18,6 +18,7 @@ import {
 import { useConfirmationModal } from '../../store/modals/confirmation-modal-context';
 import { useFetchData } from '../../hooks/useFetchData';
 import { useEditProductModal } from '../../store/modals/edit-product-modal-context';
+import { useImagePreviewModal } from '../../store/modals/image-preview-modal-context';
 
 interface ProductDisplayItemTypes {
   data: PurseTypes | DressTypes;
@@ -37,6 +38,7 @@ function ProductDisplayItem({
   const { showConfirmation } = useConfirmationModal();
   const { fetchWithBodyData, handleFetchingWithFormData } = useFetchData();
   const { showEditModal } = useEditProductModal();
+  const { showImagePreview } = useImagePreviewModal();
 
   function validateInput(updatedProduct): boolean {
     if (!updatedProduct.name) {
@@ -132,6 +134,17 @@ function ProductDisplayItem({
     }, 'Are you sure you want to delete this item?');
   }
 
+  const handleImageClick = (e) => {
+    e.stopPropagation();
+    showImagePreview(
+      () => {
+        console.log('Preview callback (optional)');
+      },
+      data.image.uri,
+      data.name,
+    );
+  };
+
   return (
     <div
       style={{
@@ -144,7 +157,7 @@ function ProductDisplayItem({
       <div className="product-top-section">
         {/* Image */}
         <div className="product-image-container">
-          <img src={data.image.uri} alt="Product" />
+          <img src={data.image.uri} alt="Product" onClick={handleImageClick} />
         </div>
 
         {/* Text data */}

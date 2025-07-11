@@ -17,6 +17,7 @@ interface AnimatedListProps<T> {
   maxWidth?: string;
   height?: string;
   stockTypeFilter?: string;
+  containerStyles?: any;
 }
 
 function AnimatedList<T>({
@@ -28,8 +29,8 @@ function AnimatedList<T>({
   noDataAlt = 'No data found',
   className = '',
   maxWidth = '800px',
-  height = '77.5vh',
   stockTypeFilter,
+  containerStyles,
 }: AnimatedListProps<T>) {
   const [filteredItems, setFilteredItems] = useState<T[]>([]);
 
@@ -83,7 +84,7 @@ function AnimatedList<T>({
   return (
     <section
       className={`animated-list-section ${className}`}
-      style={{ height, width: '100% !important' }}
+      style={containerStyles}
     >
       {filteredItems && filteredItems.length > 0 ? (
         <>

@@ -1,2 +1,12 @@
 @use '../../../global/index.scss' as *;
 @use '../../../global/colors.scss' as *;
+
+.product-list-filters-container {
+  display: flex;
+  gap: 8px;
+
+  .product-list-filter-btn {
+    max-width: 220px;
+    height: 41px;
+  }
+}
