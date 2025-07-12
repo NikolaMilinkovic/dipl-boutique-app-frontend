@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './colorsManager.scss';
 import { betterErrorLog } from '../../../util-methods/log-methods';
 import {
@@ -10,12 +10,16 @@ import ColorsList from './ColorsList';
 import InputField from '../../../components/util-components/InputField';
 import { useAuth } from '../../../store/auth-context';
 import { useFetchData } from '../../../hooks/useFetchData';
+import { useFilterByName } from '../../../hooks/useFilterByName';
+import { useColor } from '../../../store/colors-context';
 
 function ColorsManager() {
   const [color, setColor] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const { token } = useAuth();
   const { fetchWithBodyData } = useFetchData();
+  const { colors } = useColor();
+  const filteredColors = useFilterByName(colors, searchTerm);
 
   const addColor = React.useCallback(async () => {
     try {
@@ -63,7 +67,7 @@ function ColorsManager() {
           />
         </div>
       </div>
-      <ColorsList searchTerm={searchTerm} />
+      <ColorsList colors={filteredColors} />
     </div>
   );
 }

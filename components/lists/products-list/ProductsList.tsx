@@ -5,21 +5,19 @@ import ProductDisplayItem from '../../../pages/products/ProductDisplayItem';
 import InputField from '../../util-components/InputField';
 import Button from '../../util-components/Button';
 import './productsList.scss';
+import { useFilterProducts } from '../../../hooks/useFilterProducts';
 
-function ProductsList() {
+function ProductsList({
+  showAddBtn = true,
+  showEditBtn = true,
+  showDeleteBtn = true,
+}) {
   const { products } = useProducts();
   const [searchTerm, setSearchTerm] = useState<string | number>('');
-
-  const productSearchFunction = React.useCallback((product, term: string) => {
-    const lowerTerm = term.toLowerCase();
-
-    return (
-      product.name.toLowerCase().includes(lowerTerm) ||
-      product.category.toLowerCase().includes(lowerTerm) ||
-      product.supplier?.toLowerCase().includes(lowerTerm) ||
-      product.price?.toString().includes(lowerTerm)
-    );
-  }, []);
+  const filteredProducts = useFilterProducts(
+    products.allProducts,
+    searchTerm as string,
+  );
 
   return (
     <div
@@ -49,25 +47,25 @@ function ProductsList() {
           className="product-list-filter-btn"
         />
       </div>
-      <AnimatedList
-        items={products.allProducts}
-        searchTerm={searchTerm}
-        searchFunction={productSearchFunction}
-        renderItem={(item) => (
-          <ProductDisplayItem
-            data={item}
-            showAddBtn
-            showEditBtn
-            showDeleteBtn
-          />
-        )}
-        noDataImage="/img/no_data_found.png"
-        noDataAlt="Infinity Boutique Logo"
-        className="color-list-section"
-        maxWidth="100%"
-        height="100%"
-        containerStyles={{ paddingBottom: '3rem' }}
-      />
+      {products.allProducts.length > 0 && (
+        <AnimatedList
+          items={filteredProducts}
+          renderItem={(item) => (
+            <ProductDisplayItem
+              data={item}
+              showAddBtn={showAddBtn}
+              showEditBtn={showEditBtn}
+              showDeleteBtn={showDeleteBtn}
+            />
+          )}
+          noDataImage="/img/no_data_found.png"
+          noDataAlt="Infinity Boutique Logo"
+          className="color-list-section"
+          maxWidth="100%"
+          height="100%"
+          containerStyles={{ paddingBottom: '3rem' }}
+        />
+      )}
     </div>
   );
 }

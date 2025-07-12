@@ -10,12 +10,16 @@ import InputField from '../../../components/util-components/InputField';
 import SuppliersList from './SuppliersList';
 import { useAuth } from '../../../store/auth-context';
 import { useFetchData } from '../../../hooks/useFetchData';
+import { useSuppliers } from '../../../store/suppliers-context';
+import { useFilterByName } from '../../../hooks/useFilterByName';
 
 function SuppliersManager() {
   const [supplier, setSupplier] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const { token } = useAuth();
   const { fetchWithBodyData } = useFetchData();
+  const { suppliers } = useSuppliers();
+  const filteredSuppliers = useFilterByName(suppliers, searchTerm);
 
   const addSupplier = React.useCallback(async () => {
     try {
@@ -63,7 +67,7 @@ function SuppliersManager() {
           />
         </div>
       </div>
-      <SuppliersList searchTerm={searchTerm} />
+      <SuppliersList suppliers={filteredSuppliers} />
     </div>
   );
 }

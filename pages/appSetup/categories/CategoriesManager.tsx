@@ -14,6 +14,9 @@ import {
 } from '../../../components/util-components/Notify';
 import { useAuth } from '../../../store/auth-context';
 import { useFetchData } from '../../../hooks/useFetchData';
+import { useFilterByName } from '../../../hooks/useFilterByName';
+import { useFilterByStockType } from '../../../hooks/useFilterByStockType';
+import { useCategories } from '../../../store/categories-context';
 
 function CategoriesManager() {
   const [category, setCategory] = useState({
@@ -25,6 +28,13 @@ function CategoriesManager() {
   const [stockTypeFilter, setStockTypeFilter] = useState('');
   const { token } = useAuth();
   const { fetchWithBodyData } = useFetchData();
+  const { categories } = useCategories();
+
+  const filteredByName = useFilterByName(categories, searchTerm);
+  const filteredByStockType = useFilterByStockType(
+    filteredByName,
+    stockTypeFilter,
+  );
 
   const addCategory = React.useCallback(async () => {
     try {
@@ -107,10 +117,7 @@ function CategoriesManager() {
           />
         </div>
       </div>
-      <CategoriesList
-        searchTerm={searchTerm}
-        stockTypeFilter={stockTypeFilter}
-      />
+      <CategoriesList categories={filteredByStockType} />
     </div>
   );
 }

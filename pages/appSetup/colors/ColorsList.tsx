@@ -5,24 +5,13 @@ import AnimatedList from '../../../components/lists/AnimatedList';
 import React from 'react';
 
 interface ColorsListProps {
-  searchTerm?: string;
+  colors: ColorTypes[];
 }
 
-const ColorsList = React.memo(({ searchTerm }: ColorsListProps) => {
-  const { colors } = useColor();
-
-  // Custom search function for colors
-  const colorSearchFunction = React.useCallback(
-    (color: ColorTypes, term: string) => {
-      return color.name.toLowerCase().includes(term.toLowerCase());
-    },
-    [],
-  );
-
+const ColorsList = React.memo(({ colors }: ColorsListProps) => {
   return (
     <AnimatedList
       items={colors}
-      searchTerm={searchTerm}
       renderItem={(color) => <ColorItem data={color} />}
       noDataImage="/img/no_data_found.png"
       noDataAlt="Infinity Boutique Logo"

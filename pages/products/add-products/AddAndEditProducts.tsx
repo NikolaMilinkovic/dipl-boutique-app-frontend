@@ -26,7 +26,7 @@ function AddAndEditProducts() {
             paddingLeft: '1rem',
           }}
         >
-          <ProductsList />;
+          <ProductsList showAddBtn={false} />;
         </div>
       </section>
     </>

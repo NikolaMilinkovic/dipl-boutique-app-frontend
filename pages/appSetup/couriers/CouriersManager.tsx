@@ -11,6 +11,8 @@ import './CouriersManager';
 import CouriersList from './CouriersList';
 import { useAuth } from '../../../store/auth-context';
 import { useFetchData } from '../../../hooks/useFetchData';
+import { useCouriers } from '../../../store/couriers-context';
+import { useFilterByName } from '../../../hooks/useFilterByName';
 
 function CouriersManager() {
   const [courier, setCourier] = useState('');
@@ -18,6 +20,8 @@ function CouriersManager() {
   const [searchTerm, setSearchTerm] = useState('');
   const { token } = useAuth();
   const { fetchWithBodyData } = useFetchData();
+  const { couriers } = useCouriers();
+  const filteredCouriers = useFilterByName(couriers, searchTerm);
 
   const addCourier = React.useCallback(async () => {
     try {
@@ -99,7 +103,7 @@ function CouriersManager() {
           />
         </div>
       </div>
-      <CouriersList searchTerm={searchTerm} />
+      <CouriersList couriers={filteredCouriers} />
     </div>
   );
 }

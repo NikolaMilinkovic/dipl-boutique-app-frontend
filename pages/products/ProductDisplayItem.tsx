@@ -213,7 +213,7 @@ function ProductDisplayItem({
               className="product-control-btn"
               style={{
                 backgroundColor: onStock ? 'white' : 'var(--highlightSold)',
-                right: showAddBtn ? '50px' : '26px',
+                right: showAddBtn ? '50px' : '0px',
               }}
               onClick={handleOnEditPress}
             >
@@ -229,7 +229,7 @@ function ProductDisplayItem({
               className="product-control-btn"
               style={{
                 backgroundColor: onStock ? 'white' : 'var(--highlightSold)',
-                right: '100px',
+                right: showAddBtn ? '100px' : '50px',
               }}
               onClick={handleOnDeletePress}
             >

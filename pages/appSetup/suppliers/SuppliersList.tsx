@@ -8,24 +8,12 @@ import { useSuppliers } from '../../../store/suppliers-context';
 import SupplierItem from './SupplierItem';
 
 interface SuppliersListProps {
-  searchTerm?: string;
+  suppliers: SupplierTypes[];
 }
-const SuppliersList = React.memo(({ searchTerm }: SuppliersListProps) => {
-  const { suppliers } = useSuppliers();
-
-  // Custom search function for colors
-  const colorSearchFunction = React.useCallback(
-    (supplier: SupplierTypes, term: string) => {
-      return supplier.name.toLowerCase().includes(term.toLowerCase());
-    },
-    [],
-  );
-
+const SuppliersList = React.memo(({ suppliers }: SuppliersListProps) => {
   return (
     <AnimatedList
       items={suppliers}
-      searchTerm={searchTerm}
-      searchFunction={colorSearchFunction}
       renderItem={(supplier) => <SupplierItem data={supplier} />}
       noDataImage="/img/no_data_found.png"
       noDataAlt="Infinity Boutique Logo"

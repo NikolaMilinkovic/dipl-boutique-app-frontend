@@ -5,56 +5,27 @@ import './animatedList.scss';
 interface AnimatedListProps<T> {
   items: T[];
   searchTerm?: string;
-  searchFunction?: (
-    item: T,
-    searchTerm: string,
-    stockTypeFilter?: string,
-  ) => boolean;
+  searchFunction?: (item: T) => boolean;
   renderItem: (item: T) => React.ReactNode;
   noDataImage?: string;
   noDataAlt?: string;
   className?: string;
   maxWidth?: string;
   height?: string;
-  stockTypeFilter?: string;
   containerStyles?: any;
 }
 
 function AnimatedList<T>({
   items,
-  searchTerm,
-  searchFunction,
   renderItem,
   noDataImage = '/img/no_data_found.png',
   noDataAlt = 'No data found',
   className = '',
   maxWidth = '800px',
-  stockTypeFilter,
   containerStyles,
 }: AnimatedListProps<T>) {
-  const [filteredItems, setFilteredItems] = useState<T[]>([]);
-
-  // Default search function - assumes items have a 'name' property
-  const defaultSearchFunction = (item: T, searchTerm: string): boolean => {
-    const itemAsAny = item as any;
-    if (itemAsAny.name && typeof itemAsAny.name === 'string') {
-      return itemAsAny.name.toLowerCase().includes(searchTerm.toLowerCase());
-    }
-    return false;
-  };
-
-  useEffect(() => {
-    const searchFunc = searchFunction || defaultSearchFunction;
-
-    const filtered = items.filter((item) =>
-      searchFunc(item, searchTerm?.trim() || '', stockTypeFilter),
-    );
-
-    setFilteredItems(filtered);
-  }, [searchTerm, stockTypeFilter, items, searchFunction]);
-
   // Using the custom hook for scroll animations
-  const { visibleItems, containerRef } = useScrollAnimation(filteredItems);
+  const { visibleItems, containerRef } = useScrollAnimation(items);
 
   useEffect(() => {
     const el = containerRef?.current;
@@ -86,14 +57,14 @@ function AnimatedList<T>({
       className={`animated-list-section ${className}`}
       style={containerStyles}
     >
-      {filteredItems && filteredItems.length > 0 ? (
+      {items && items.length > 0 ? (
         <>
           <div
             className="animated-list"
             ref={containerRef}
             style={{ maxWidth }}
           >
-            {filteredItems.map((item, index) => (
+            {items.map((item, index) => (
               <div
                 key={`item_${index}`}
                 className={`list-item ${visibleItems.has(index) ? 'visible' : ''}`}
