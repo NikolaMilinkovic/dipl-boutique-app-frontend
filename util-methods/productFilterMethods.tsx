@@ -1,23 +1,30 @@
-import { ColorSizeTypes, DressTypes, PurseTypes } from '../global/types';
+import {
+  ColorSizeTypes,
+  DressTypes,
+  ProductTypes,
+  PurseTypes,
+} from '../global/types';
+import { betterConsoleLog } from './log-methods';
 
 type ProductType = DressTypes | PurseTypes;
 interface SearchParamsType {
-  isOnStock: boolean;
-  isNotOnStock: boolean;
-  onStockAndSoldOut: boolean;
+  available: boolean;
+  soldOut: boolean;
+  availableAndSoldOut: boolean;
   onCategorySearch: string;
   onSupplierSearch: string;
   onColorsSearch: string[];
   onSizeSearch: string[];
 }
 
-export function serachProducts(
+export function searchProducts(
   searchData: string,
   allActiveProducts: ProductType[],
   searchParams: SearchParamsType,
 ) {
   if (allActiveProducts === undefined) return [];
   if (allActiveProducts.length === 0) return [];
+
   // Search items by Name
   let nameBasedSearch = allActiveProducts;
   if (searchData) {
@@ -55,9 +62,9 @@ export function serachProducts(
   let stockFilteredResults = colorBasedSearch;
   if (colorBasedSearch.length > 0) {
     stockFilteredResults = colorBasedSearch.filter((result: ProductType) => {
-      if (searchParams.onStockAndSoldOut) return true;
-      if (searchParams.isOnStock) return showItemsOnStock(result);
-      if (searchParams.isNotOnStock) return showItemsNotOnStock(result);
+      if (searchParams.availableAndSoldOut) return true;
+      if (searchParams.available) return showItemsOnStock(result);
+      if (searchParams.soldOut) return showItemsNotOnStock(result);
 
       return true;
     });
@@ -74,16 +81,7 @@ export function serachProducts(
     });
   }
 
-  const sortedResults = sortByDisplayPriority(sizeFilteredResults);
-  return sortedResults;
-}
-
-export function sortByDisplayPriority(products: ProductType[]): ProductType[] {
-  return [...products].sort((a, b) => {
-    const priorityA = a.displayPriority ?? Number.MAX_SAFE_INTEGER;
-    const priorityB = b.displayPriority ?? Number.MAX_SAFE_INTEGER;
-    return priorityB - priorityA;
-  });
+  return sizeFilteredResults;
 }
 
 // Search by inserted name compares inserted query with [Item Name, Item Colors]
@@ -101,6 +99,7 @@ export function searchItemsByName(allActiveProducts: any, searchData: string) {
 
 // FILTER FOR ITEMS ON STOCK
 export function showItemsOnStock(result: ProductType) {
+  console.log('showItemsOnStock called');
   // PURSES
   if (result.stockType === 'Boja-Veličina-Količina') {
     return result.colors.some((colorObj: any) =>
@@ -125,6 +124,7 @@ export function showItemsOnStock(result: ProductType) {
 
 // FILTER FOR ITEMS NOT ON STOCK
 export function showItemsNotOnStock(result: ProductType) {
+  console.log('showItemsNotOnStock called');
   // PURSES
   if (result.stockType === 'Boja-Veličina-Količina') {
     return result.colors.every((colorObj: any) =>
@@ -165,6 +165,8 @@ export function filterBySuppliers(allActiveProducts: any, supplier: string) {
 
 // METHOD FOR FILTERING BY COLOR
 export function filterByColor(allActiveProducts: any, searchData: string[]) {
+  console.log('> filtering by color');
+  betterConsoleLog('> searchData', searchData);
   const colorBasedSearch = allActiveProducts.filter((item: any) =>
     item.colors.some((colorObj: any) =>
       searchData.some((searchColor) =>
@@ -190,4 +192,22 @@ function searchItemsBySize(
     return matches;
   }
   return false;
+}
+
+export function filterProducts(
+  products: ProductTypes[],
+  searchTerm: string,
+): ProductTypes[] {
+  const term = searchTerm.trim().toLowerCase();
+
+  return term
+    ? products.filter((product) => {
+        return (
+          product.name.toLowerCase().includes(term) ||
+          product.category.toLowerCase().includes(term) ||
+          product.supplier?.toLowerCase().includes(term) ||
+          product.price?.toString().includes(term)
+        );
+      })
+    : products;
 }

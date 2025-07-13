@@ -80,3 +80,15 @@ export interface ProductsBySuppliersTypes {
 export interface ProductsByCategoryTypes {
   [cateogry: string]: (DressTypes | PurseTypes)[];
 }
+
+export interface SearchParamsTypes {
+  available: boolean;
+  soldOut: boolean;
+  availableAndSoldOut: boolean;
+  onCategorySearch: string;
+  onSupplierSearch: string;
+  onColorsSearch: string[];
+  onSizeSearch: string[];
+  active: boolean;
+  inactive: boolean;
+}

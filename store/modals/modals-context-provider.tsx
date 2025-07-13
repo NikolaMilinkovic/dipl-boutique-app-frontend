@@ -1,4 +1,5 @@
 import { ConfirmationModalProvider } from './confirmation-modal-context';
+import { DrawerModalProvider } from './drawer-modal-contex';
 import { EditProductModalProvider } from './edit-product-modal-context';
 import { ImagePreviewModalProvider } from './image-preview-modal-context';
 
@@ -8,10 +9,12 @@ export const ModalsContextProvider = ({
   children: React.ReactNode;
 }) => {
   return (
-    <ImagePreviewModalProvider>
-      <ConfirmationModalProvider>
-        <EditProductModalProvider>{children}</EditProductModalProvider>
-      </ConfirmationModalProvider>
-    </ImagePreviewModalProvider>
+    <DrawerModalProvider>
+      <ImagePreviewModalProvider>
+        <ConfirmationModalProvider>
+          <EditProductModalProvider>{children}</EditProductModalProvider>
+        </ConfirmationModalProvider>
+      </ImagePreviewModalProvider>
+    </DrawerModalProvider>
   );
 };

@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useProducts } from '../../../store/products-context';
 import AnimatedList from '../AnimatedList';
 import ProductDisplayItem from '../../../pages/products/ProductDisplayItem';
 import InputField from '../../util-components/InputField';
 import Button from '../../util-components/Button';
 import './productsList.scss';
-import { useFilterProducts } from '../../../hooks/useFilterProducts';
+import { useDrawerModal } from '../../../store/modals/drawer-modal-contex';
+import ProductFilters from '../../filters/ProductFilters';
+import { searchProducts } from '../../../util-methods/productFilterMethods';
+import { SearchParamsTypes } from '../../../global/types';
+import { betterConsoleLog } from '../../../util-methods/log-methods';
 
 function ProductsList({
   showAddBtn = true,
@@ -14,10 +18,53 @@ function ProductsList({
 }) {
   const { products } = useProducts();
   const [searchTerm, setSearchTerm] = useState<string | number>('');
-  const filteredProducts = useFilterProducts(
-    products.allProducts,
-    searchTerm as string,
-  );
+  const { openDrawer, updateDrawerContent, isDrawerOpen } = useDrawerModal();
+  const [searchParams, setSearchParams] = useState<SearchParamsTypes>({
+    available: true,
+    soldOut: false,
+    availableAndSoldOut: false,
+    onCategorySearch: '',
+    onSupplierSearch: '',
+    onColorsSearch: [],
+    onSizeSearch: [],
+    active: true,
+    inactive: false,
+  });
+
+  useEffect(() => {
+    betterConsoleLog('> searchParams', searchParams);
+
+    // Update drawer content when searchParams change and drawer is open
+    if (isDrawerOpen) {
+      updateDrawerContent(
+        <ProductFilters
+          searchParams={searchParams}
+          setSearchParams={setSearchParams}
+        />,
+        JSON.stringify(searchParams),
+      );
+    }
+  }, [searchParams, isDrawerOpen]);
+
+  const filteredData = useMemo(() => {
+    return searchProducts(
+      searchTerm as string,
+      products.activeProducts,
+      searchParams,
+    );
+  }, [
+    products.activeProducts,
+    searchTerm,
+    searchParams.available,
+    searchParams.soldOut,
+    searchParams.availableAndSoldOut,
+    searchParams.onCategorySearch,
+    searchParams.onSupplierSearch,
+    searchParams.onColorsSearch,
+    searchParams.onSizeSearch,
+    searchParams.active,
+    searchParams.inactive,
+  ]);
 
   return (
     <div
@@ -43,13 +90,21 @@ function ProductsList({
         />
         <Button
           label="Filters"
-          onClick={() => {}}
+          onClick={() => {
+            openDrawer(
+              <ProductFilters
+                searchParams={searchParams}
+                setSearchParams={setSearchParams}
+              />,
+              JSON.stringify(searchParams),
+            );
+          }}
           className="product-list-filter-btn"
         />
       </div>
       {products.allProducts.length > 0 && (
         <AnimatedList
-          items={filteredProducts}
+          items={filteredData}
           renderItem={(item) => (
             <ProductDisplayItem
               data={item}
