@@ -228,11 +228,12 @@ function ProductFilters({
 
       <div>
         <h3>Color filter</h3>
+        <br />
         <div>
           <ColorsSelect
             selectedColors={searchParams.onColorsSearch || []}
             setSelectedColors={handleColorSelect}
-            backgroundColor="transparent"
+            backgroundColor="var(--white)"
           />
         </div>
       </div>
