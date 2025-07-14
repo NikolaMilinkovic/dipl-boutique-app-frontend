@@ -25,7 +25,7 @@ const SelectedItem: React.FC<SelectedItemProps> = ({ item, index }) => {
 
   return (
     <div
-      className="selected-item"
+      className="selected-item fade"
       onClick={onClickHandler}
       tabIndex={0}
       role="button"

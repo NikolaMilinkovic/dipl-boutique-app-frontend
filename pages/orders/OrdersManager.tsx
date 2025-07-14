@@ -36,7 +36,14 @@ function OrdersManager() {
           <ProductsList showDeleteBtn={false} styles={{ paddingTop: '1rem' }} />
 
           {/* RIGHT */}
-          <div style={{ paddingTop: '1rem' }}>
+          <div
+            style={{
+              paddingTop: '1rem',
+              gap: '0.3rem',
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          >
             <NewOrderStepAccordion
               title="Selected products"
               ref={step1Ref}
