@@ -26,7 +26,7 @@ function AddAndEditProducts() {
             paddingLeft: '1rem',
           }}
         >
-          <ProductsList showAddBtn={false} />;
+          <ProductsList showAddBtn={false} styles={{ paddingTop: '43.6px' }} />;
         </div>
       </section>
     </>

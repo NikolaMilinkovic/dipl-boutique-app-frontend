@@ -15,6 +15,7 @@ function ProductsList({
   showAddBtn = true,
   showEditBtn = true,
   showDeleteBtn = true,
+  styles = {},
 }) {
   const { products } = useProducts();
   const [searchTerm, setSearchTerm] = useState<string | number>('');
@@ -69,7 +70,6 @@ function ProductsList({
   return (
     <div
       style={{
-        paddingTop: '43.6px',
         width: '100%',
         height: '100%',
         display: 'flex',
@@ -78,12 +78,13 @@ function ProductsList({
         boxSizing: 'border-box',
         borderRadius: '4px',
         overflow: 'hidden',
+        ...styles,
       }}
     >
       <div className="product-list-filters-container">
         <InputField
           backgroundColor="var(--primaryLight)"
-          label="Search product | name | category | supplier | price"
+          label="Search product"
           inputText={searchTerm}
           setInputText={setSearchTerm}
           showClearBtn={true}

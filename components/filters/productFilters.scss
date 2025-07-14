@@ -32,16 +32,16 @@
     grid-template-columns: 1fr 1fr 1fr;
     border: 0.5px solid var(--primaryDark);
     border-radius: 4px;
-    margin-bottom: 1rem;
   }
 
   .product-filter-size {
     display: grid;
-    padding: 1rem;
+    padding: 0.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
     gap: 8px;
     border: 0.5px solid var(--primaryDark);
     border-radius: 4px;
-    margin-bottom: 1rem;
     grid-template-columns: repeat(6, 1fr);
   }
 

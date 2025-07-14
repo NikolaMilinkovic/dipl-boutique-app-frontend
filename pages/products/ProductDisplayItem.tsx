@@ -19,6 +19,7 @@ import { useConfirmationModal } from '../../store/modals/confirmation-modal-cont
 import { useFetchData } from '../../hooks/useFetchData';
 import { useEditProductModal } from '../../store/modals/edit-product-modal-context';
 import { useImagePreviewModal } from '../../store/modals/image-preview-modal-context';
+import { useNewOrder } from '../../store/new-order-context';
 
 interface ProductDisplayItemTypes {
   data: PurseTypes | DressTypes;
@@ -39,6 +40,7 @@ function ProductDisplayItem({
   const { fetchWithBodyData, handleFetchingWithFormData } = useFetchData();
   const { showEditModal } = useEditProductModal();
   const { showImagePreview } = useImagePreviewModal();
+  const { addProductHandler } = useNewOrder();
 
   function validateInput(updatedProduct): boolean {
     if (!updatedProduct.name) {
@@ -76,6 +78,7 @@ function ProductDisplayItem({
   // ADD IN ORDER
   function handleOnAddPress(event) {
     event.stopPropagation();
+    addProductHandler(data);
   }
 
   // EDIT

@@ -127,7 +127,7 @@ function AddProduct({ isExpanded, setIsExpanded }) {
         style={{ height: '100%' }}
       >
         <div>
-          {!isExpanded && <h2>Add new product</h2>}
+          {!isExpanded && <h2>Add, Browse, Update and Delete products</h2>}
           <div className="grid-1-1 gap-1">
             {/* Slika */}
             <ImageInput

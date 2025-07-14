@@ -1,115 +1,74 @@
-import { createContext, ReactNode, useMemo, useState } from 'react';
+import { createContext, ReactNode, useContext, useMemo, useState } from 'react';
 import {
-  BuyerTypes,
   ColorSizeTypes,
-  CourierTypes,
   DressColorTypes,
-  NewOrderContextTypes,
-  OrderProductTypes,
-  ProductImageTypes,
-  ProductTypes,
+  NewOrderData,
+  Product,
   PurseColorTypes,
-} from '../types/allTsTypes';
-import { popupMessage } from '../util-components/PopupMessage';
-import { getMimeType } from '../util-methods/ImageMethods';
+} from '../global/types';
+import { notifyWarrning } from '../components/util-components/Notify';
+
+interface NewOrderContextType {
+  newOrderData: NewOrderData;
+  setNewOrderData: React.Dispatch<React.SetStateAction<NewOrderData>>;
+  createOrderHandler: () => FormData | void;
+  setProductsDataHandler: (productsArr: Product[]) => void;
+  addProductHandler: (product: Product) => void;
+  removeProductByIndexHandler: (index: number) => void;
+  updateProductColorByIndexHandler: (
+    index: number,
+    selectedColorObj: DressColorTypes | PurseColorTypes,
+  ) => void;
+  updateProductSizeByIndexHandler: (
+    index: number,
+    selectedSizeObj: ColorSizeTypes,
+  ) => void;
+  resetOrderDataHandler: () => void;
+}
+
 interface ContextChildrenTypes {
   children: ReactNode;
 }
 
-export const NewOrderContext = createContext<NewOrderContextTypes>({
-  productReferences: [],
-  addProductReference: () => {},
-  removeProductReference: () => {},
-  setProductReferences: () => {},
-  getProductReferences: () => [],
-  updateProductColorByIndex: () => [],
-  updateProductSizeByIndex: () => [],
+export const NewOrderContext = createContext<NewOrderContextType | null>(null);
 
-  productData: [],
-  addProduct: () => {},
-  removeProduct: () => {},
-  setProductsData: () => {},
-  getProductsData: () => [],
-
-  buyerData: null,
-  setBuyerData: () => {},
-  getBuyerData: () => null,
-  resetOrderData: () => null,
-
-  courierData: null,
-  setCourierData: () => {},
-  getCourierData: () => null,
-
-  isReservation: false,
-  setIsReservation: () => {},
-
-  profileImage: null,
-  setProfileImage: () => {},
-
-  createOrderHandler: () => {},
-
-  customPrice: '',
-  setCustomPrice: () => {},
-
-  weight: '0.5',
-  setWeight: () => {},
-  orderValue: '',
-  setOrderValue: () => {},
-  internalRemark: '',
-  setInternalRemark: () => {},
-  deliveryRemark: '',
-  setDeliveryRemark: () => {},
-  orderNotes: '',
-  setOrderNotes: () => {},
-  reservationDate: null,
-  setReservationDate: () => {},
-  // description: '',
-  // setDescription: () => {},
-});
-
-function NewOrderContextProvider({ children }: ContextChildrenTypes) {
-  const [order, setOrder] = useState({
-    productReferences: [],
-    buyerData: {
+export function NewOrderContextProvider({ children }: ContextChildrenTypes) {
+  const [newOrderData, setNewOrderData] = useState<NewOrderData>({
+    buyer: {
       name: '',
       address: '',
       place: '',
       phone: '',
       phone2: '',
       bankNumber: '',
-      profileImage: {
-        uri: '',
-        imageName: '',
-      },
+      profileImage: null,
     },
+    products: [],
+    productsPrice: 0,
+    totalPrice: 0,
+    value: 0,
+    reservation: false,
+    packedIndicator: false,
+    packed: false,
+    processed: false,
+    courier: {
+      name: '',
+      deliveryPrice: 0,
+    },
+    weight: '',
+    internalRemark: '',
+    deliveryRemark: '',
+    orderNotes: '',
+    reservationDate: null,
   });
-  const [productReferences, setProductReferences] = useState<ProductTypes[]>(
-    [],
-  );
-  const [buyerData, setBuyerData] = useState<BuyerTypes | null>(null);
-  const [productData, setProductData] = useState<OrderProductTypes[]>([]);
-  const [courierData, setCourierData] = useState<CourierTypes | null>(null);
-  const [isReservation, setIsReservation] = useState(false);
-  const [profileImage, setProfileImage] = useState<ProductImageTypes | null>(
-    null,
-  );
-  const [customPrice, setCustomPrice] = useState<string | number>('');
-  const [orderValue, setOrderValue] = useState('');
-  const [weight, setWeight] = useState('1');
-  const [internalRemark, setInternalRemark] = useState('');
-  const [deliveryRemark, setDeliveryRemark] = useState('');
-  const [orderNotes, setOrderNotes] = useState('');
-  const [reservationDate, setReservationDate] = useState<Date>(new Date());
-  // const [description, setDescription] = useState('');
 
   // Check to see if all products have selectedColor & selectedSize where applicable
   function validateProductData() {
-    const isValid = productData.every((product) => {
-      // product.itemReference = product.itemReference._id;
+    const isValid = newOrderData.products.every((product) => {
       const hasSelectedColor =
         product.selectedColor !== undefined && product.selectedColor !== '';
       const hasSelectedSize =
-        product.selectedSize !== undefined ? product.selectedSize !== '' : true; // Consider true if selectedSize is missing
+        product.selectedSize !== undefined ? product.selectedSize !== '' : true;
 
       return hasSelectedColor && hasSelectedSize;
     });
@@ -119,85 +78,80 @@ function NewOrderContextProvider({ children }: ContextChildrenTypes) {
   // Validates all inputs | Creates a new form, prepares all data and returns the form
   // Used for sending the data back to server
   function createOrderHandler() {
-    // Validate all data
-    if (productData.length === 0)
-      return popupMessage('Nedostaju podaci o proizvodima', 'danger');
-    if (!buyerData) return popupMessage('Nedostaju podaci o kupcu', 'danger');
-
-    if (!buyerData.address)
-      return popupMessage('Nedostaju podaci o adresi', 'danger');
-    if (!buyerData.name)
-      return popupMessage('Nedostaju podaci o imenu', 'danger');
-    if (!buyerData.phone && !buyerData.phone2)
-      return popupMessage('Nedostaju podaci o broju telefona', 'danger');
-    if (!buyerData.place)
-      return popupMessage('Nedostaju podaci o mestu', 'danger');
-
-    if (!courierData)
-      return popupMessage('Nedostaju podaci o kuriru', 'danger');
-    if (!profileImage)
-      return popupMessage('Nedostaje slika kupčevog profila', 'danger');
+    if (newOrderData.products.length === 0)
+      return notifyWarrning('Nedostaju podaci o proizvodima');
+    if (!newOrderData.buyer) return notifyWarrning('Nedostaju podaci o kupcu');
+    if (!newOrderData.buyer.address)
+      return notifyWarrning('Nedostaju podaci o adresi');
+    if (!newOrderData.buyer.name)
+      return notifyWarrning('Nedostaju podaci o imenu');
+    if (!newOrderData.buyer.phone && !newOrderData.buyer.phone2)
+      return notifyWarrning('Nedostaju podaci o broju telefona');
+    if (!newOrderData.buyer.place)
+      return notifyWarrning('Nedostaju podaci o mestu');
+    if (!newOrderData.courier.name)
+      return notifyWarrning('Nedostaju podaci o kuriru');
+    if (!newOrderData.courier.deliveryPrice)
+      return notifyWarrning('Nedostaju podaci o kuriru');
+    if (!newOrderData.buyer.profileImage)
+      return notifyWarrning('Nedostaje slika kupčevog profila');
     if (!validateProductData())
-      return popupMessage(
+      return notifyWarrning(
         'Svi proizvodi moraju imati selektovane boje i veličine',
-        'danger',
       );
-    if (internalRemark === null) setInternalRemark('');
-    if (deliveryRemark === null) setInternalRemark('');
 
-    // Reshape data
     const price = calculatePriceHandler();
-    if (!price) return popupMessage('Nije moguće izračunati cenu', 'danger');
+    if (!price) return notifyWarrning('Nije moguće izračunati cenu');
 
-    const courier = {
-      name: courierData.name,
-      deliveryPrice: courierData.deliveryPrice,
+    const appendIfDefined = (fd: FormData, key: string, value: any) => {
+      if (value !== undefined && value !== null) {
+        fd.append(
+          key,
+          typeof value === 'object' ? JSON.stringify(value) : String(value),
+        );
+      }
     };
 
-    // Create form data
     const order = new FormData();
-    order.append('buyerData', JSON.stringify(buyerData));
-    order.append('productData', JSON.stringify(productData));
-    if (price.productsPrice !== undefined)
-      order.append('productsPrice', price.productsPrice.toString());
-    if (price.totalPrice !== undefined)
-      order.append('totalPrice', price.totalPrice.toString());
-    order.append('reservation', isReservation.toString());
-    if (isReservation === true)
-      order.append('reservationDate', reservationDate.toISOString());
-    order.append('packedIndicator', 'false');
-    order.append('packed', 'false');
-    order.append('processed', 'false');
-    order.append('value', orderValue);
-    order.append('weight', weight);
-    order.append('internalRemark', internalRemark);
-    order.append('deliveryRemark', deliveryRemark);
-    order.append('courier', JSON.stringify(courier));
-    order.append('orderNotes', orderNotes || '');
-    // order.append('description', description || '');
-    order.append('profileImage', {
-      uri: profileImage.uri,
-      type: getMimeType(profileImage.mimeType, profileImage?.uri || ''),
-      name: profileImage.fileName,
-    } as any);
+    appendIfDefined(order, 'buyerData', newOrderData.buyer);
+    appendIfDefined(order, 'productData', newOrderData.products);
+    appendIfDefined(order, 'productsPrice', price.productsPrice);
+    appendIfDefined(order, 'totalPrice', price.totalPrice);
+    appendIfDefined(order, 'reservation', newOrderData.reservation);
+    appendIfDefined(
+      order,
+      'reservationDate',
+      newOrderData.reservation
+        ? newOrderData.reservationDate?.toISOString()
+        : null,
+    );
+    appendIfDefined(order, 'packedIndicator', newOrderData.packedIndicator);
+    appendIfDefined(order, 'packed', newOrderData.packed);
+    appendIfDefined(order, 'processed', newOrderData.processed);
+    appendIfDefined(order, 'value', newOrderData.value);
+    appendIfDefined(order, 'weight', newOrderData.weight);
+    appendIfDefined(order, 'internalRemark', newOrderData.internalRemark);
+    appendIfDefined(order, 'deliveryRemark', newOrderData.deliveryRemark);
+    appendIfDefined(order, 'courier', newOrderData.courier);
+    appendIfDefined(order, 'orderNotes', newOrderData.orderNotes);
+    order.append('image', newOrderData.buyer.profileImage as File);
 
     return order;
   }
 
   function calculatePriceHandler() {
-    if (productData.length > 0 && courierData?.deliveryPrice) {
-      const productsPrice = productData
-        .map((item) => item.itemReference.price)
+    if (
+      newOrderData.products.length > 0 &&
+      newOrderData.courier?.deliveryPrice
+    ) {
+      const productsPrice = newOrderData.products
+        .map((item) => item.price)
         .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
 
-      const deliveryPrice = courierData.deliveryPrice;
+      const deliveryPrice = newOrderData.courier.deliveryPrice;
 
       let totalPrice;
-      if (customPrice) {
-        totalPrice = customPrice;
-      } else {
-        totalPrice = productsPrice + deliveryPrice;
-      }
+      totalPrice = productsPrice + deliveryPrice;
 
       return {
         productsPrice: productsPrice,
@@ -207,170 +161,141 @@ function NewOrderContextProvider({ children }: ContextChildrenTypes) {
     }
   }
 
-  // PRODUCT REFERENCE => References of selected items
-  const setProductReferencesHandler = (productsArr: ProductTypes[]) => {
-    setProductReferences(productsArr);
-  };
-  const addProductReferenceHandler = (product: ProductTypes) => {
-    setProductReferences((prev) => [...prev, product]);
-  };
-  const removeProductReferenceByIndexHandler = (index: number) => {
-    setProductReferences((prev) => prev.filter((_, i) => i !== index));
-  };
-  const getProductReferencesDataHandler = () => {
-    return productReferences;
+  // PRODUCTS
+  const setProductsDataHandler = (productsArr: Product[]) => {
+    setNewOrderData((prev) => ({
+      ...prev,
+      products: productsArr,
+    }));
   };
 
-  // PRODUCTS
-  const setProductsDataHandler = (productsArr: OrderProductTypes[]) => {
-    setProductData(productsArr);
+  const addProductHandler = (product: Partial<Product>) => {
+    const fullProduct: Product = {
+      category: product.category ?? '',
+      image: product.image ?? { imageName: '', uri: '' },
+      itemReference: product.itemReference ?? '',
+      mongoDB_type: product.mongoDB_type ?? 'Dress',
+      name: product.name ?? '',
+      price: product.price ?? 0,
+      selectedColor: product.selectedColor ?? '',
+      selectedColorId: product.selectedColorId ?? '',
+      selectedSize: product.selectedSize ?? '',
+      selectedSizeId: product.selectedSizeId ?? '',
+      stockType: product.stockType ?? '',
+    };
+
+    setNewOrderData((prev) => ({
+      ...prev,
+      products: [...prev.products, fullProduct],
+    }));
   };
-  const addProductHandler = (product: OrderProductTypes) => {
-    setProductData((prev) => [...prev, product]);
-  };
+
   const removeProductByIndexHandler = (index: number) => {
-    setProductData((prev) => prev.filter((_, i) => i !== index));
-  };
-  const getProductsDataHandler = () => {
-    return productData;
+    setNewOrderData((prev) => ({
+      ...prev,
+      products: prev.products.filter((_, i) => i !== index),
+    }));
   };
   const updateProductColorByIndexHandler = (
     index: number,
     selectedColorObj: DressColorTypes | PurseColorTypes,
   ) => {
-    setProductData((prev) => {
-      const updatedProducts = [...prev]; // Clone the array
+    setNewOrderData((prev) => {
+      const updatedProducts = [...prev.products];
       if (updatedProducts[index]) {
         updatedProducts[index] = {
-          ...updatedProducts[index], // Keep other product fields
+          ...updatedProducts[index],
           selectedColor: selectedColorObj.color,
           selectedColorId: selectedColorObj._id,
         };
       }
-      return updatedProducts;
+      return {
+        ...prev,
+        products: updatedProducts,
+      };
     });
   };
   const updateProductSizeByIndexHandler = (
     index: number,
     selectedSizeObj: ColorSizeTypes,
   ) => {
-    setProductData((prev) => {
-      const updatedProducts = [...prev]; // Clone the array
+    setNewOrderData((prev) => {
+      const updatedProducts = [...prev.products];
       if (updatedProducts[index]) {
         updatedProducts[index] = {
-          ...updatedProducts[index], // Keep other product fields
+          ...updatedProducts[index],
           selectedSize: selectedSizeObj.size,
           selectedSizeId: selectedSizeObj._id,
         };
       }
-      return updatedProducts;
+      return {
+        ...prev,
+        products: updatedProducts,
+      };
     });
-  };
-
-  // BUYER
-  const setBuyerDataHandler = (data: BuyerTypes) => {
-    setBuyerData(data);
-  };
-  const getBuyerDataHandler = () => {
-    return buyerData;
   };
 
   const resetOrderDataHandler = () => {
-    setProductReferences([]);
-    setProductData([]);
-    setBuyerData({
-      name: '',
-      address: '',
-      place: '',
-      phone: '',
-      phone2: '',
-      bankNumber: '',
-      profileImage: {
-        uri: '',
-        imageName: '',
+    setNewOrderData({
+      buyer: {
+        name: '',
+        address: '',
+        place: '',
+        phone: '',
+        phone2: '',
+        bankNumber: '',
+        profileImage: null,
       },
+      products: [
+        {
+          category: '',
+          image: {
+            imageName: '',
+            uri: '',
+          },
+          itemReference: '',
+          mongoDB_type: 'Dress',
+          name: '',
+          price: 0,
+          selectedColor: '',
+          selectedColorId: '',
+          selectedSize: '',
+          selectedSizeId: '',
+          stockType: '',
+        },
+      ],
+      productsPrice: 0,
+      totalPrice: 0,
+      value: 0,
+      reservation: false,
+      packedIndicator: false,
+      packed: false,
+      processed: false,
+      courier: {
+        name: '',
+        deliveryPrice: 0,
+      },
+      weight: '',
+      internalRemark: '',
+      deliveryRemark: '',
+      orderNotes: '',
+      reservationDate: null,
     });
-    setIsReservation(false);
-    setProfileImage(null);
-    setDeliveryRemark('');
-    setInternalRemark('');
-    setOrderNotes('');
   };
-
-  // COURIER
-  function setCourierDataHandler(courierData: CourierTypes) {
-    setCourierData(courierData);
-  }
-  function getCourierDataHandler() {
-    return courierData;
-  }
 
   const value = useMemo(
     () => ({
-      productReferences,
-      setProductReferences: setProductReferencesHandler,
-      addProductReference: addProductReferenceHandler,
-      removeProductReference: removeProductReferenceByIndexHandler,
-      getProductReferences: getProductReferencesDataHandler,
-
-      productData,
-      addProduct: addProductHandler,
-      removeProduct: removeProductByIndexHandler,
-      setProductsData: setProductsDataHandler,
-      getProductsData: getProductsDataHandler,
-      updateProductColorByIndex: updateProductColorByIndexHandler,
-      updateProductSizeByIndex: updateProductSizeByIndexHandler,
-
-      buyerData,
-      setBuyerData: setBuyerDataHandler,
-      getBuyerData: getBuyerDataHandler,
-
-      courierData,
-      setCourierData: setCourierDataHandler,
-      getCourierData: getCourierDataHandler,
-
-      isReservation,
-      setIsReservation: setIsReservation,
-
-      profileImage,
-      setProfileImage: setProfileImage,
-
-      resetOrderData: resetOrderDataHandler,
-      createOrderHandler: createOrderHandler,
-
-      customPrice,
-      setCustomPrice: setCustomPrice,
-
-      weight,
-      setWeight: setWeight,
-      orderValue,
-      setOrderValue: setOrderValue,
-      internalRemark,
-      setInternalRemark: setInternalRemark,
-      deliveryRemark,
-      setDeliveryRemark: setDeliveryRemark,
-      orderNotes,
-      setOrderNotes: setOrderNotes,
-      reservationDate,
-      setReservationDate: setReservationDate,
-      // description,
-      // setDescription: setDescription
+      newOrderData,
+      setNewOrderData,
+      createOrderHandler,
+      setProductsDataHandler,
+      addProductHandler,
+      removeProductByIndexHandler,
+      updateProductColorByIndexHandler,
+      updateProductSizeByIndexHandler,
+      resetOrderDataHandler,
     }),
-    [
-      productData,
-      buyerData,
-      productReferences,
-      courierData,
-      isReservation,
-      profileImage,
-      customPrice,
-      weight,
-      orderValue,
-      internalRemark,
-      deliveryRemark,
-      orderNotes,
-      reservationDate,
-    ],
+    [newOrderData],
   );
 
   return (
@@ -380,4 +305,9 @@ function NewOrderContextProvider({ children }: ContextChildrenTypes) {
   );
 }
 
-export default NewOrderContextProvider;
+export function useNewOrder() {
+  const context = useContext(NewOrderContext);
+  if (!context)
+    throw new Error('useNewOrder must be used within NewOrderContextProvider');
+  return context;
+}

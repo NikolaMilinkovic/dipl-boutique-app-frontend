@@ -1,0 +1,51 @@
+@use '../../../../global/index.scss' as *;
+@use '../../../../global/colors.scss' as *;
+
+.selected-products-container {
+  padding: 1rem;
+  background-color: transparent;
+  border-radius: 6px;
+
+  .selected-products-list {
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    border: 0.5px solid var(--secondaryLight);
+    height: 240px;
+    overflow: scroll;
+    overflow-x: hidden;
+    overscroll-behavior: contain;
+    padding: 1rem;
+    font-weight: bold;
+
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: var(--primaryDark);
+      border-radius: 4px;
+      transition: background 0.3s ease;
+
+      &:hover {
+        background: color-mix(in srgb, var(--primaryDark) 80%, black 20%);
+      }
+    }
+  }
+
+  .on-next-btn {
+    background-color: var(--secondaryLight);
+    border: 0px;
+    color: var(--primaryDark);
+
+    &:hover {
+      background-color: var(--highlight-hover);
+    }
+  }
+}

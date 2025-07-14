@@ -4,14 +4,9 @@ import AddAndEditProducts from './add-products/AddAndEditProducts';
 
 function ProductsManager() {
   return (
-    <Tabs>
-      <Tab label="Add | Edit products">
-        <AddAndEditProducts />
-      </Tab>
-      <Tab label="Create new order">
-        <p>TMP</p>
-      </Tab>
-    </Tabs>
+    <section className="products-manager-section">
+      <AddAndEditProducts />
+    </section>
   );
 }
 

@@ -1,7 +1,8 @@
 @use '../../global/index.scss' as *;
 @use '../../global/colors.scss' as *;
 
-.products-manager-section {
-  min-height: 80vh;
-  padding-top: 1rem;
+.new-order-section {
+  padding: 1rem;
+  padding-top: 0rem;
+  gap: 1rem;
 }

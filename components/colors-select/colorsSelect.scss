@@ -9,14 +9,14 @@
   .colors-wrapper {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    max-height: 140px;
-    // max-height: 250px;
+    max-height: 180px;
     padding: 12px;
     border: 1px solid var(--primaryDark);
     overflow: scroll;
     border-radius: 4px;
     gap: 6px;
     overflow-x: hidden;
+    overscroll-behavior: contain;
   }
 
   .colors-wrapper::-webkit-scrollbar {

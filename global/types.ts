@@ -1,3 +1,4 @@
+/* eslint-disable quotes */
 export interface ColorTypes {
   _id?: string;
   name: string;
@@ -91,4 +92,59 @@ export interface SearchParamsTypes {
   onSizeSearch: string[];
   active: boolean;
   inactive: boolean;
+}
+
+// NEW ORDER
+interface ProfileImage {
+  imageName: string;
+  uri: string;
+}
+
+interface Buyer {
+  name: string;
+  address: string;
+  place: string;
+  phone: string;
+  phone2: string;
+  bankNumber: string;
+  profileImage: File | null;
+}
+
+type MongoDBType = 'Dress' | 'Purse';
+
+export interface Product {
+  category: string;
+  image: ProfileImage;
+  itemReference: string;
+  mongoDB_type: MongoDBType;
+  name: string;
+  price: number;
+  selectedColor: string;
+  selectedColorId: string;
+  selectedSize: string;
+  selectedSizeId: string;
+  stockType: string;
+}
+
+interface Courier {
+  name: string;
+  deliveryPrice: number;
+}
+
+export interface NewOrderData {
+  buyer: Buyer;
+  products: Product[];
+  productsPrice: number;
+  totalPrice: number;
+  value: number;
+  reservation: boolean;
+  packedIndicator: boolean;
+  packed: boolean;
+  processed: boolean;
+  courier: Courier;
+  weight: string;
+  internalRemark: string;
+  deliveryRemark: string;
+  orderNotes: string;
+  reservationDate: Date | null;
 }
