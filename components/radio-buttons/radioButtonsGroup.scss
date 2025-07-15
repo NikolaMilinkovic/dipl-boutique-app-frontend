@@ -1,0 +1,61 @@
+@use '../../global/index.scss' as *;
+@use '../../global/colors.scss' as *;
+
+.radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.radio-button {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+
+  .dot {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--primaryDark);
+    border-radius: 50%;
+    margin-right: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .dot::after {
+    content: '';
+    width: 10px;
+    height: 10px;
+    background-color: transparent;
+    border-radius: 50%;
+    transition: background-color 0.2s ease;
+    opacity: 0;
+    transform: scale(0);
+    transition: all 0.2s ease;
+  }
+
+  .label {
+    font-weight: 500;
+    color: var(--primaryDark);
+    font-size: 16px;
+  }
+
+  &.radio-btn-selected {
+    border-color: var(--primaryDark);
+
+    .dot::after {
+      background-color: var(--highlight);
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .label {
+      color: var(--primaryDark);
+    }
+  }
+}

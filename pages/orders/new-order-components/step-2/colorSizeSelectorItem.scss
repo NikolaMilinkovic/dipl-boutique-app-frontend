@@ -1,0 +1,47 @@
+@use '../../../../global/index.scss' as *;
+@use '../../../../global/colors.scss' as *;
+
+.css-container {
+  border: 1px solid var(--primary-dark);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.css-header {
+  background-color: var(--secondaryLight);
+  color: var(--primaryDark);
+  padding: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+
+  &-title {
+    font-weight: bold;
+    font-size: 18px;
+  }
+}
+
+.css-icon {
+  color: var(--primaryDark);
+}
+
+.css-body {
+  padding: 12px;
+  padding-bottom: 0px;
+}
+
+.css-group {
+  margin-bottom: 12px;
+
+  &-label {
+    font-weight: bold;
+    margin-bottom: 6px;
+    color: var(--primary-dark);
+  }
+}
+
+.css-missing {
+  background-color: var(--errorBackgroundHighlight);
+  border: 0.5px solid var(--secondaryLight);
+}

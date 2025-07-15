@@ -115,7 +115,7 @@ type MongoDBType = 'Dress' | 'Purse';
 export interface Product {
   category: string;
   image: ProfileImage;
-  itemReference: string;
+  itemReference: ProductTypes | null;
   mongoDB_type: MongoDBType;
   name: string;
   price: number;
@@ -147,4 +147,9 @@ export interface NewOrderData {
   deliveryRemark: string;
   orderNotes: string;
   reservationDate: Date | null;
+}
+export interface RadioButtonOption {
+  id: string;
+  label: string;
+  value: string;
 }

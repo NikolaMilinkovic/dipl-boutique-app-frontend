@@ -4,9 +4,13 @@ import {
   DressColorTypes,
   NewOrderData,
   Product,
+  ProductTypes,
   PurseColorTypes,
 } from '../global/types';
-import { notifyWarrning } from '../components/util-components/Notify';
+import {
+  notifySuccess,
+  notifyWarrning,
+} from '../components/util-components/Notify';
 
 interface NewOrderContextType {
   newOrderData: NewOrderData;
@@ -21,7 +25,7 @@ interface NewOrderContextType {
   ) => void;
   updateProductSizeByIndexHandler: (
     index: number,
-    selectedSizeObj: ColorSizeTypes,
+    selectedSizeObj: { _id: string; size: string },
   ) => void;
   resetOrderDataHandler: () => void;
 }
@@ -169,18 +173,22 @@ export function NewOrderContextProvider({ children }: ContextChildrenTypes) {
     }));
   };
 
-  const addProductHandler = (product: Partial<Product>) => {
+  const addProductHandler = (product: ProductTypes) => {
+    function getMondoDBType(stockType: string) {
+      if (stockType === 'Boja-Veličina-Količina') return 'Dress';
+      return 'Purse';
+    }
     const fullProduct: Product = {
       category: product.category ?? '',
       image: product.image ?? { imageName: '', uri: '' },
-      itemReference: product.itemReference ?? '',
-      mongoDB_type: product.mongoDB_type ?? 'Dress',
+      itemReference: product ?? null,
+      mongoDB_type: getMondoDBType(product.stockType),
       name: product.name ?? '',
       price: product.price ?? 0,
-      selectedColor: product.selectedColor ?? '',
-      selectedColorId: product.selectedColorId ?? '',
-      selectedSize: product.selectedSize ?? '',
-      selectedSizeId: product.selectedSizeId ?? '',
+      selectedColor: '',
+      selectedColorId: '',
+      selectedSize: '',
+      selectedSizeId: '',
       stockType: product.stockType ?? '',
     };
 
@@ -188,6 +196,9 @@ export function NewOrderContextProvider({ children }: ContextChildrenTypes) {
       ...prev,
       products: [...prev.products, fullProduct],
     }));
+    notifySuccess(
+      `${product.name} added to the order. Current number of orders: ${newOrderData.products.length + 1}`,
+    );
   };
 
   const removeProductByIndexHandler = (index: number) => {
@@ -217,7 +228,7 @@ export function NewOrderContextProvider({ children }: ContextChildrenTypes) {
   };
   const updateProductSizeByIndexHandler = (
     index: number,
-    selectedSizeObj: ColorSizeTypes,
+    selectedSizeObj: { _id: string; size: string },
   ) => {
     setNewOrderData((prev) => {
       const updatedProducts = [...prev.products];
@@ -253,7 +264,7 @@ export function NewOrderContextProvider({ children }: ContextChildrenTypes) {
             imageName: '',
             uri: '',
           },
-          itemReference: '',
+          itemReference: null,
           mongoDB_type: 'Dress',
           name: '',
           price: 0,

@@ -12,6 +12,7 @@ interface InputFieldProps {
   setInputText: (text: string | number) => void;
   backgroundColor?: string;
   tabIndex?: number;
+  customClass?: any;
 }
 
 function InputField({
@@ -24,6 +25,7 @@ function InputField({
   setInputText,
   backgroundColor = '#ffffff',
   tabIndex,
+  customClass,
 }: InputFieldProps) {
   const [isActive, setIsActive] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -43,7 +45,7 @@ function InputField({
 
   return (
     <div
-      className={`input-wrapper ${inputText ? 'has-value' : ''}`}
+      className={`input-wrapper ${inputText ? 'has-value' : ''} ${customClass ? customClass : ''}`}
       style={{ '--label-bg': backgroundColor } as React.CSSProperties}
     >
       <label className="input-field-label" htmlFor={id}>

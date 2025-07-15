@@ -16,10 +16,11 @@ interface AccordionProps {
   title: React.ReactNode;
   children: React.ReactNode;
   initialOpen?: boolean;
+  id?: string;
 }
 
 const NewOrderStepAccordion = forwardRef<AccordionRef, AccordionProps>(
-  ({ title, children, initialOpen }, ref) => {
+  ({ title, children, initialOpen, id }, ref) => {
     const [isOpen, setIsOpen] = useState(initialOpen ?? false);
     const contentRef = useRef<HTMLDivElement>(null);
     const [height, setHeight] = useState('0px');
@@ -36,7 +37,7 @@ const NewOrderStepAccordion = forwardRef<AccordionRef, AccordionProps>(
     }));
 
     return (
-      <div className="accordion">
+      <div className="accordion" id={id}>
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="accordionButton"

@@ -12,6 +12,8 @@ import DisplayDressStock from '../../components/product-stock/DisplayDressStock'
 import {
   DressColorTypes,
   DressTypes,
+  Product,
+  ProductTypes,
   PurseColorTypes,
   PurseTypes,
 } from '../../global/types';
@@ -78,7 +80,7 @@ function ProductDisplayItem({
   // ADD IN ORDER
   function handleOnAddPress(event) {
     event.stopPropagation();
-    addProductHandler(data);
+    addProductHandler(data as any);
   }
 
   // EDIT

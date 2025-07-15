@@ -1,10 +1,11 @@
 import { Tab, Tabs } from '../../components/tabs/Tabs';
 import ProductsList from '../../components/lists/products-list/ProductsList';
 import './ordersManager.scss';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import NewOrderStepAccordion from '../../components/accordion/new-order-step-accordion';
-import Button from '../../components/util-components/Button';
 import SelectedItemsList from './new-order-components/step-1/SelectedItemsList';
+import ColorSizeSelectorsList from './new-order-components/step-2/ColorSizeSelectorList';
+import BuyerInformationInputs from './new-order-components/step-3/BuyerInformationInputs';
 
 export interface AccordionRef {
   open: () => void;
@@ -20,6 +21,7 @@ function OrdersManager() {
   function onNextStep(
     closeRef: { current: { close?: () => void } | null },
     openRef: { current: { open?: () => void } | null },
+    scrollElId: string,
   ) {
     if (closeRef.current && closeRef.current.close) {
       closeRef.current.close();
@@ -27,6 +29,8 @@ function OrdersManager() {
     if (openRef.current && openRef.current.open) {
       openRef.current.open();
     }
+    const el = document.getElementById(scrollElId);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
   }
   return (
     <Tabs>
@@ -44,31 +48,53 @@ function OrdersManager() {
               flexDirection: 'column',
             }}
           >
+            {/* STEP 1 - ITEMS LIST */}
             <NewOrderStepAccordion
               title="Selected products"
               ref={step1Ref}
               initialOpen={true}
+              id="step-1"
             >
               <SelectedItemsList
-                onNext={() => onNextStep(step1Ref, step2Ref)}
+                onNext={() => onNextStep(step1Ref, step2Ref, 'step-1')}
               />
             </NewOrderStepAccordion>
-            <NewOrderStepAccordion title="Colors and sizes" ref={step2Ref}>
-              <button onClick={() => onNextStep(step2Ref, step3Ref)}>
+
+            {/* STEP 2 - COLOR SIZE SELECTORS */}
+            <NewOrderStepAccordion
+              title="Colors and sizes"
+              ref={step2Ref}
+              id="step-2"
+            >
+              <ColorSizeSelectorsList
+                onNext={() => onNextStep(step2Ref, step3Ref, 'step-2')}
+              />
+            </NewOrderStepAccordion>
+
+            {/* STEP 3 - BUYER INFORMATION INPUTS */}
+            <NewOrderStepAccordion
+              title="Buyer information"
+              ref={step3Ref}
+              id="step-3"
+            >
+              <BuyerInformationInputs
+                onNext={() => onNextStep(step3Ref, step4Ref, 'step-3')}
+              />
+            </NewOrderStepAccordion>
+
+            {/* STEP 4 - COURIER SELECTOR */}
+            <NewOrderStepAccordion title="Courier" ref={step4Ref} id="step-4">
+              <button onClick={() => onNextStep(step4Ref, step5Ref, 'step-4')}>
                 Next
               </button>
             </NewOrderStepAccordion>
-            <NewOrderStepAccordion title="Buyer information" ref={step3Ref}>
-              <button onClick={() => onNextStep(step3Ref, step4Ref)}>
-                Next
-              </button>
-            </NewOrderStepAccordion>
-            <NewOrderStepAccordion title="Courier" ref={step4Ref}>
-              <button onClick={() => onNextStep(step4Ref, step5Ref)}>
-                Next
-              </button>
-            </NewOrderStepAccordion>
-            <NewOrderStepAccordion title="New order overview" ref={step5Ref}>
+
+            {/* STEP 5 - ORDER OVERVIEW */}
+            <NewOrderStepAccordion
+              title="New order overview"
+              ref={step5Ref}
+              id="step-5"
+            >
               <p>OVERVIEW OF ALL ORDER DATA</p>
             </NewOrderStepAccordion>
           </div>

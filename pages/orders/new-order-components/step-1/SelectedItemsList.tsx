@@ -1,4 +1,5 @@
 import Button from '../../../../components/util-components/Button';
+import { notifyError } from '../../../../components/util-components/Notify';
 import { useNewOrder } from '../../../../store/new-order-context';
 import SelectedItem from './SelectedItem';
 import './selectedItemsList.scss';
@@ -9,6 +10,11 @@ interface SelectedItemsListPropTypes {
 
 function SelectedItemsList({ onNext }: SelectedItemsListPropTypes) {
   const { newOrderData } = useNewOrder();
+  function handleOnNext() {
+    if (newOrderData.products.length === 0)
+      return notifyError('Please add at least one product to the order');
+    onNext();
+  }
 
   return (
     <div className="selected-products-container">
@@ -16,13 +22,13 @@ function SelectedItemsList({ onNext }: SelectedItemsListPropTypes) {
         {newOrderData.products.map((item, index) => (
           <SelectedItem
             key={`${index}-${item.itemReference}`}
-            item={item}
+            item={item as any}
             index={index}
           />
         ))}
       </div>
 
-      <Button label="Next" onClick={onNext} className="on-next-btn" />
+      <Button label="Next" onClick={handleOnNext} className="on-next-btn" />
     </div>
   );
 }
