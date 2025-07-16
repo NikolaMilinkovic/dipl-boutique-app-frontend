@@ -232,13 +232,11 @@ export function ProductsContextProvider({ children }: ProductsProviderProps) {
   useEffect(() => {
     if (!socket) return;
     if (socket) {
-      console.log('✅ Setting up socket listeners...');
       socket.on('connect', handleConnect);
       socket.on('productAdded', handleAddProduct);
       socket.on('productRemoved', handleRemoveProduct);
       socket.on('productUpdated', handleUpdateProduct);
       socket.on('handleProductStockDecrease', handleStockDecrease);
-      socket.listeners('handleProductStockDecrease');
 
       return () => {
         socket.off('connect', handleConnect);
