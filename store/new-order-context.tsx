@@ -15,16 +15,19 @@ import {
   PurseColorTypes,
 } from '../global/types';
 import {
+  notifyError,
   notifySuccess,
   notifyWarrning,
 } from '../components/util-components/Notify';
+import { useFetchData } from '../hooks/useFetchData';
 
 interface NewOrderContextType {
   newOrderData: NewOrderData;
+  addOrder: () => Promise<boolean>;
   setNewOrderData: React.Dispatch<React.SetStateAction<NewOrderData>>;
   createOrderHandler: () => FormData | void;
   setProductsDataHandler: (productsArr: Product[]) => void;
-  addProductHandler: (product: Product) => void;
+  addProductHandler: (product: ProductTypes) => void;
   removeProductByIndexHandler: (index: number) => void;
   updateProductColorByIndexHandler: (
     index: number,
@@ -44,6 +47,7 @@ interface ContextChildrenTypes {
 export const NewOrderContext = createContext<NewOrderContextType | null>(null);
 
 export function NewOrderContextProvider({ children }: ContextChildrenTypes) {
+  const { handleFetchingWithFormData } = useFetchData();
   const [newOrderData, setNewOrderData] = useState<NewOrderData>({
     buyer: {
       name: '',
@@ -93,13 +97,20 @@ export function NewOrderContextProvider({ children }: ContextChildrenTypes) {
   // Check to see if all products have selectedColor & selectedSize where applicable
   function validateProductData() {
     const isValid = newOrderData.products.every((product) => {
-      const hasSelectedColor =
-        product.selectedColor !== undefined && product.selectedColor !== '';
-      const hasSelectedSize =
-        product.selectedSize !== undefined ? product.selectedSize !== '' : true;
+      const hasColor = !!product.selectedColor;
 
-      return hasSelectedColor && hasSelectedSize;
+      if (product.stockType === 'Boja-Veličina-Količina') {
+        const hasSize = !!product.selectedSize;
+        return hasColor && hasSize;
+      }
+
+      if (product.stockType === 'Boja-Količina') {
+        return hasColor;
+      }
+
+      return false;
     });
+
     return isValid;
   }
 
@@ -107,29 +118,24 @@ export function NewOrderContextProvider({ children }: ContextChildrenTypes) {
   // Used for sending the data back to server
   function createOrderHandler() {
     if (newOrderData.products.length === 0)
-      return notifyWarrning('Nedostaju podaci o proizvodima');
-    if (!newOrderData.buyer) return notifyWarrning('Nedostaju podaci o kupcu');
-    if (!newOrderData.buyer.address)
-      return notifyWarrning('Nedostaju podaci o adresi');
-    if (!newOrderData.buyer.name)
-      return notifyWarrning('Nedostaju podaci o imenu');
+      return notifyWarrning('Missing product data');
+    if (!newOrderData.buyer) return notifyWarrning('Missing buyer data');
+    if (!newOrderData.buyer.address) return notifyWarrning('Missing address');
+    if (!newOrderData.buyer.name) return notifyWarrning('Missing buyer name');
     if (!newOrderData.buyer.phone && !newOrderData.buyer.phone2)
-      return notifyWarrning('Nedostaju podaci o broju telefona');
-    if (!newOrderData.buyer.place)
-      return notifyWarrning('Nedostaju podaci o mestu');
+      return notifyWarrning('Missing phone number');
+    if (!newOrderData.buyer.place) return notifyWarrning('Missing city/place');
     if (!newOrderData.courier.name)
-      return notifyWarrning('Nedostaju podaci o kuriru');
+      return notifyWarrning('Missing courier data');
     if (!newOrderData.courier.deliveryPrice)
-      return notifyWarrning('Nedostaju podaci o kuriru');
+      return notifyWarrning('Missing courier data');
     if (!newOrderData.buyer.profileImage)
-      return notifyWarrning('Nedostaje slika kupčevog profila');
+      return notifyWarrning("Buyer's profile image is missing");
     if (!validateProductData())
-      return notifyWarrning(
-        'Svi proizvodi moraju imati selektovane boje i veličine',
-      );
+      return notifyWarrning('All products must have selected colors and sizes');
 
     const price = calculatePriceHandler();
-    if (!price) return notifyWarrning('Nije moguće izračunati cenu');
+    if (!price) return notifyWarrning('Price could not be calculated');
 
     const appendIfDefined = (fd: FormData, key: string, value: any) => {
       if (value !== undefined && value !== null) {
@@ -165,6 +171,32 @@ export function NewOrderContextProvider({ children }: ContextChildrenTypes) {
     order.append('image', newOrderData.buyer.profileImage as File);
 
     return order;
+  }
+
+  async function addOrder() {
+    try {
+      const order = createOrderHandler();
+      if (!order) return;
+
+      const response = await handleFetchingWithFormData(
+        order,
+        'orders/add',
+        'POST',
+      );
+      const res = await response.json();
+      if (response.status === 200) {
+        notifySuccess(res.message);
+        resetOrderDataHandler();
+        return true;
+      } else {
+        notifyError(res.message);
+        return false;
+      }
+    } catch (err) {
+      console.error(err);
+      notifyError('Error while creating a new product.');
+      return false;
+    }
   }
 
   function calculatePriceHandler() {
@@ -250,6 +282,7 @@ export function NewOrderContextProvider({ children }: ContextChildrenTypes) {
       };
     });
   };
+
   const updateProductSizeByIndexHandler = (
     index: number,
     selectedSizeObj: { _id: string; size: string },
@@ -312,6 +345,7 @@ export function NewOrderContextProvider({ children }: ContextChildrenTypes) {
       updateProductColorByIndexHandler,
       updateProductSizeByIndexHandler,
       resetOrderDataHandler,
+      addOrder,
     }),
     [newOrderData],
   );

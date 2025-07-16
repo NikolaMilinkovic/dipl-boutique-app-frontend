@@ -25,11 +25,6 @@ function ColorSizeSelectorItem({ product, index }: PropTypes) {
     updateProductColorByIndexHandler,
     updateProductSizeByIndexHandler,
   } = useNewOrder();
-
-  useEffect(() => {
-    console.log(newOrderData);
-  }, [newOrderData]);
-
   const [productColors, setProductColors] = useState<
     (DressColorTypes | PurseColorTypes)[]
   >([]);
@@ -39,11 +34,13 @@ function ColorSizeSelectorItem({ product, index }: PropTypes) {
   const [sizeButtons, setSizeButtons] = useState<RadioButtonOption[]>([]);
 
   useEffect(() => {
-    console.log(colorButtons);
-  }, [colorButtons]);
-  useEffect(() => {
-    console.log(sizeButtons);
-  }, [sizeButtons]);
+    const hasSize = product.stockType === 'Boja-Veličina-Količina';
+    const isReady = product.selectedColor && (!hasSize || product.selectedSize);
+
+    if (isReady) {
+      setIsExpanded(false);
+    }
+  }, [product.selectedColor, product.selectedSize]);
 
   // Parse available product colors based on stock values
   useEffect(() => {
@@ -110,10 +107,10 @@ function ColorSizeSelectorItem({ product, index }: PropTypes) {
   }, [product.selectedColor]);
 
   const handleColorSelect = (id: string) => {
-    console.log(`Id: ${id}`);
     if (!product.itemReference)
       return notifyError('Product reference is missing!');
     const colorObj = product.itemReference.colors.find((c) => c._id === id);
+    console.log('> colorObj is:');
     console.log(colorObj);
     if (colorObj) {
       setSelectedColorObj(colorObj as DressColorTypes);

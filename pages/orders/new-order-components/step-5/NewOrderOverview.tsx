@@ -10,15 +10,16 @@ interface NewOrderOverviewPropTypes {
 }
 
 function NewOrderOverview({ onReset }: NewOrderOverviewPropTypes) {
-  const { newOrderData, setNewOrderData, resetOrderDataHandler } =
+  const { newOrderData, setNewOrderData, resetOrderDataHandler, addOrder } =
     useNewOrder();
   const { showAlert } = useAlertModal();
   function handleOnReset() {
-    console.log('> Resetting data');
     resetOrderDataHandler();
-
-    console.log('> Running on reset');
     onReset();
+  }
+  async function handleOnAdd() {
+    const success = await addOrder();
+    if (success) handleOnReset();
   }
   return (
     <div>
@@ -154,7 +155,12 @@ function NewOrderOverview({ onReset }: NewOrderOverviewPropTypes) {
           className="new-order-cancel-btn"
           onClick={handleOnReset}
         />
-        <Button label="Add Order" type="button" className="new-order-add-btn" />
+        <Button
+          label="Add Order"
+          type="button"
+          className="new-order-add-btn"
+          onClick={handleOnAdd}
+        />
       </div>
     </div>
   );

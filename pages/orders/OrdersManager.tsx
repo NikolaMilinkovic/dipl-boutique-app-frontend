@@ -20,6 +20,8 @@ function OrdersManager() {
   const step3Ref = useRef<AccordionRef>(null);
   const step4Ref = useRef<AccordionRef>(null);
   const step5Ref = useRef<AccordionRef>(null);
+  const buyerProfileImageRef = useRef<{ resetImage: () => void }>(null);
+
   function onNextStep(
     closeRef: { current: { close?: () => void } | null },
     openRef: { current: { open?: () => void } | null },
@@ -41,6 +43,7 @@ function OrdersManager() {
     step3Ref.current?.close();
     step4Ref.current?.close();
     step5Ref.current?.close();
+    buyerProfileImageRef.current?.resetImage();
     document.getElementById('step-1')?.scrollIntoView({ behavior: 'smooth' });
   }
   return (
@@ -90,6 +93,7 @@ function OrdersManager() {
             >
               <BuyerInformationInputs
                 onNext={() => onNextStep(step3Ref, step4Ref, 'step-3')}
+                ref={buyerProfileImageRef}
               />
             </NewOrderStepAccordion>
 

@@ -12,8 +12,17 @@ import {
   notifySuccess,
   notifyWarrning,
 } from '../components/util-components/Notify';
-import { betterErrorLog } from '../util-methods/log-methods';
+import { betterConsoleLog, betterErrorLog } from '../util-methods/log-methods';
 import { DressTypes, ProductTypes, PurseTypes } from '../global/types';
+import {
+  decreaseDressStock,
+  decreasePurseStock,
+  DressStockDataDecrease,
+  increaseDressStock,
+  increasePurseStock,
+  PurseStockDataDecrease,
+} from '../util-methods/stockMethods';
+import { VscActivateBreakpoints } from 'react-icons/vsc';
 
 interface ProductsContextTypes {
   products: ProductContextDataTypes;
@@ -51,6 +60,13 @@ export function ProductsContextProvider({ children }: ProductsProviderProps) {
     inactiveProducts: [],
     allProducts: [],
   });
+
+  useEffect(() => {
+    setProducts((prev) => ({
+      ...prev,
+      allProducts: [...products.activeProducts, ...products.inactiveProducts],
+    }));
+  }, [products.activeProducts, products.inactiveProducts]);
 
   async function handleConnect() {
     try {
@@ -124,18 +140,112 @@ export function ProductsContextProvider({ children }: ProductsProviderProps) {
     }));
   }
 
+  // function decreasePurseStockHandler(data: any) {
+  //   console.log('> decreasePurseStockHandler called');
+  //   if (data.stockType === 'Boja-Količina') {
+  //     decreasePurseStock(
+  //       data,
+  //       setActivePurses as React.Dispatch<React.SetStateAction<PurseTypes[]>>,
+  //     );
+  //   }
+  // }
+  // function increasePurseStockHandler(data: any) {
+  //   console.log('> increasePurseStockHandler called');
+  //   if (data.stockType === 'Boja-Količina') {
+  //     increasePurseStock(
+  //       data,
+  //       setActivePurses as React.Dispatch<React.SetStateAction<PurseTypes[]>>,
+  //     );
+  //   }
+  // }
+
+  // function decreaseDressStockHandler(data: any) {
+  //   if (data.length > 0) {
+  //     for (const dress of data) {
+  //       decreaseDressStock(
+  //         dress,
+  //         setActiveDresses as React.Dispatch<
+  //           React.SetStateAction<DressTypes[]>
+  //         >,
+  //       );
+  //     }
+  //   }
+  // }
+  // function increaseDressStockHandler(data: any) {
+  //   if (data.stockType === 'Boja-Veličina-Količina') {
+  //     increaseDressStock(
+  //       data,
+  //       setActiveDresses as React.Dispatch<React.SetStateAction<DressTypes[]>>,
+  //     );
+  //   }
+  // }
+  function handleStockDecrease(
+    data: (DressStockDataDecrease | PurseStockDataDecrease)[],
+  ) {
+    console.log('handleStockDecrease called');
+    console.log(data);
+    setProducts((prev) => {
+      const updated = prev.activeProducts.map((product) => {
+        const match = data.find(
+          (d) => d.dressId === product._id || d.purseId === product._id,
+        );
+        if (!match) return product;
+
+        const newProduct = { ...product, totalStock: product.totalStock - 1 };
+
+        if ('sizeId' in match) {
+          // Dress update
+          newProduct.colors = newProduct.colors.map((color) =>
+            color._id === match.colorId
+              ? {
+                  ...color,
+                  sizes: color.sizes.map((size) =>
+                    size._id === match.sizeId
+                      ? { ...size, stock: size.stock - 1 }
+                      : size,
+                  ),
+                }
+              : color,
+          );
+        } else {
+          // Purse update
+          newProduct.colors = newProduct.colors.map((color) =>
+            color._id === match.colorId
+              ? {
+                  ...color,
+                  stock:
+                    color.stock - match.decrement >= 0
+                      ? color.stock - match.decrement
+                      : color.stock,
+                }
+              : color,
+          );
+        }
+
+        return newProduct;
+      });
+
+      return { ...prev, activeProducts: updated };
+    });
+  }
+
   useEffect(() => {
+    if (!socket) return;
     if (socket) {
+      console.log('✅ Setting up socket listeners...');
       socket.on('connect', handleConnect);
       socket.on('productAdded', handleAddProduct);
       socket.on('productRemoved', handleRemoveProduct);
       socket.on('productUpdated', handleUpdateProduct);
+      socket.on('handleProductStockDecrease', handleStockDecrease);
+      socket.listeners('handleProductStockDecrease');
 
       return () => {
         socket.off('connect', handleConnect);
         socket.off('productAdded', handleAddProduct);
         socket.off('productRemoved', handleRemoveProduct);
         socket.off('productUpdated', handleUpdateProduct);
+        socket.off('handleProductStockDecrease', handleStockDecrease);
       };
     }
   }, [socket]);
