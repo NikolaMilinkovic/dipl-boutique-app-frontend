@@ -1,4 +1,11 @@
-import { createContext, ReactNode, useContext, useMemo, useState } from 'react';
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import {
   ColorSizeTypes,
   DressColorTypes,
@@ -65,6 +72,23 @@ export function NewOrderContextProvider({ children }: ContextChildrenTypes) {
     orderNotes: '',
     reservationDate: null,
   });
+
+  useEffect(() => {
+    const total = newOrderData.products.reduce(
+      (sum, product) => sum + Number(product.price || 0),
+      0,
+    );
+
+    setNewOrderData((prev) => ({ ...prev, productsPrice: total }));
+  }, [newOrderData.products]);
+  useEffect(() => {
+    setNewOrderData((prev) => ({
+      ...prev,
+      totalPrice:
+        (newOrderData.courier.deliveryPrice || 0) +
+        (newOrderData.productsPrice || 0),
+    }));
+  }, [newOrderData.productsPrice, newOrderData.courier.deliveryPrice]);
 
   // Check to see if all products have selectedColor & selectedSize where applicable
   function validateProductData() {
@@ -257,24 +281,7 @@ export function NewOrderContextProvider({ children }: ContextChildrenTypes) {
         bankNumber: '',
         profileImage: null,
       },
-      products: [
-        {
-          category: '',
-          image: {
-            imageName: '',
-            uri: '',
-          },
-          itemReference: null,
-          mongoDB_type: 'Dress',
-          name: '',
-          price: 0,
-          selectedColor: '',
-          selectedColorId: '',
-          selectedSize: '',
-          selectedSizeId: '',
-          stockType: '',
-        },
-      ],
+      products: [],
       productsPrice: 0,
       totalPrice: 0,
       value: 0,
@@ -322,3 +329,20 @@ export function useNewOrder() {
     throw new Error('useNewOrder must be used within NewOrderContextProvider');
   return context;
 }
+
+//  {
+//           category: '',
+//           image: {
+//             imageName: '',
+//             uri: '',
+//           },
+//           itemReference: null,
+//           mongoDB_type: 'Dress',
+//           name: '',
+//           price: 0,
+//           selectedColor: '',
+//           selectedColorId: '',
+//           selectedSize: '',
+//           selectedSizeId: '',
+//           stockType: '',
+//         },

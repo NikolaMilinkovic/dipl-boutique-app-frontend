@@ -63,7 +63,7 @@ function CourierSelection({ onNext }: CourierSelectionPropTypes) {
       />
 
       <p className="courier-delivery-price-display">
-        Courier delivery price <b>{newOrderData.courier.deliveryPrice}</b>
+        Courier delivery price <b>{newOrderData.courier.deliveryPrice} rsd.</b>
       </p>
 
       {/* ON NEXT BUTTON */}

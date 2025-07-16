@@ -1,3 +1,4 @@
+import { AlertModalProvider } from './alert-modal-context';
 import { ConfirmationModalProvider } from './confirmation-modal-context';
 import { DrawerModalProvider } from './drawer-modal-contex';
 import { EditProductModalProvider } from './edit-product-modal-context';
@@ -10,11 +11,13 @@ export const ModalsContextProvider = ({
 }) => {
   return (
     <DrawerModalProvider>
-      <ImagePreviewModalProvider>
-        <ConfirmationModalProvider>
-          <EditProductModalProvider>{children}</EditProductModalProvider>
-        </ConfirmationModalProvider>
-      </ImagePreviewModalProvider>
+      <AlertModalProvider>
+        <ImagePreviewModalProvider>
+          <ConfirmationModalProvider>
+            <EditProductModalProvider>{children}</EditProductModalProvider>
+          </ConfirmationModalProvider>
+        </ImagePreviewModalProvider>
+      </AlertModalProvider>
     </DrawerModalProvider>
   );
 };

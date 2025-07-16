@@ -1,2 +1,78 @@
 @use '../../../../global/index.scss' as *;
 @use '../../../../global/colors.scss' as *;
+
+.new-order-buyer-information {
+  padding: 1rem;
+  margin-top: 0.5rem;
+  border: 1px solid var(--primaryDark);
+  border-radius: 4px;
+  height: min-content;
+}
+.new-order-selected-products {
+  padding: 1rem;
+  margin-top: 0.5rem;
+  border: 1px solid var(--primaryDark);
+  border-radius: 4px;
+  overscroll-behavior: contain;
+
+  max-height: 40vh;
+  overflow: scroll;
+  overflow-x: hidden;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--primaryDark);
+    border-radius: 4px;
+    transition: background 0.3s ease;
+
+    &:hover {
+      background: color-mix(in srgb, var(--primaryDark) 80%, black 20%);
+    }
+
+    * {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+}
+
+.new-order-controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.new-order-other-information-container {
+  padding: 1rem;
+  margin-top: 0.5rem;
+  border: 1px solid var(--primaryDark);
+  border-radius: 4px;
+}
+
+.new-order-inner-wrapper {
+  padding: 0.5rem;
+}
+.with-top-border {
+  border-top: 1px solid var(--secondaryLight);
+}
+.new-order-first-product-in-list {
+  margin-top: 0.5rem;
+}
+
+.new-order-total-price-input-container {
+  margin-top: 1.6rem;
+}
+
+.new-order-products-even-bg {
+  background-color: color-mix(in srgb, var(--primaryLight), white 35%);
+}

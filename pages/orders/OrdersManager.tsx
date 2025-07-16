@@ -7,6 +7,7 @@ import SelectedItemsList from './new-order-components/step-1/SelectedItemsList';
 import ColorSizeSelectorsList from './new-order-components/step-2/ColorSizeSelectorList';
 import BuyerInformationInputs from './new-order-components/step-3/BuyerInformationInputs';
 import CourierSelection from './new-order-components/step-4/CourierSelection';
+import NewOrderOverview from './new-order-components/step-5/NewOrderOverview';
 
 export interface AccordionRef {
   open: () => void;
@@ -32,6 +33,15 @@ function OrdersManager() {
     }
     const el = document.getElementById(scrollElId);
     if (el) el.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function onReset() {
+    step1Ref.current?.open();
+    step2Ref.current?.close();
+    step3Ref.current?.close();
+    step4Ref.current?.close();
+    step5Ref.current?.close();
+    document.getElementById('step-1')?.scrollIntoView({ behavior: 'smooth' });
   }
   return (
     <Tabs>
@@ -96,7 +106,7 @@ function OrdersManager() {
               ref={step5Ref}
               id="step-5"
             >
-              <p>OVERVIEW OF ALL ORDER DATA</p>
+              <NewOrderOverview onReset={onReset} />
             </NewOrderStepAccordion>
           </div>
         </section>

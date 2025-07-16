@@ -1,0 +1,59 @@
+@use '../../global/index.scss' as *;
+@use '../../global/colors.scss' as *;
+
+.alert-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+.alert-modal-content {
+  width: 300px;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.alert-modal-image {
+  height: 80px;
+  margin-bottom: 10px;
+}
+
+.alert-modal-text {
+  font-size: 16px;
+  margin-bottom: 20px;
+  color: var(--primaryDark);
+}
+
+.alert-button-container {
+  display: flex;
+  justify-content: center;
+}
+
+.alert-modal-button {
+  width: 100%;
+  height: 40px;
+  background-color: var(--primaryDark);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: transform 0.1s linear;
+
+  &:hover {
+    background-color: var(--secondaryDark);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}

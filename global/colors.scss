@@ -26,12 +26,14 @@ $errorBackgroundHighlight: '#C28E8E';
   --primaryLight: #f0f0f0;
   --primaryLightHover: color-mix(in srgb, var(--secondaryLight) 90%, black);
   --secondaryLight: #c5d5d9;
+  --secondaryLightHover: color-mix(in srgb, var(--secondaryLight) 90%, black);
 
   // HIGHLIGHT
   --highlight: #4db6ac;
   --highlight-hover: #66c1bb;
   --nav-hover-color: rgba(102, 193, 187, 0.2);
   --highlightSold: #ffe4e4;
+  --highlightSoldDark: #c28e8e;
 
   --secondaryHighlight: rgba(77, 182, 172, 0.3);
   // --secondaryHighlight: #ffe4e4;
