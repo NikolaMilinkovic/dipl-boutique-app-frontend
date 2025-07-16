@@ -1,3 +1,6 @@
+@use '../../../../global/index.scss' as *;
+@use '../../../../global/colors.scss' as *;
+
 .buyer-information-inputs-container {
   display: flex;
   flex-direction: column;
@@ -45,7 +48,7 @@
     margin-bottom: 1rem;
   }
 
-  #courier-note-input-field,
+  #delivery-note-input-field,
   #internal-note-input-field {
     margin-bottom: 1rem;
     height: 80px;

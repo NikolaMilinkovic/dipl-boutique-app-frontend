@@ -1,0 +1,64 @@
+@use '../../global/index.scss' as *;
+@use '../../global/colors.scss' as *;
+
+.profile-drop-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 9999;
+  background-color: transparent;
+  pointer-events: all;
+}
+.profile-image-input-container {
+  border: none;
+
+  .profile-image-input-button {
+    padding: 12px 12px;
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+    cursor: pointer;
+    background-color: transparent;
+    border: 1px solid var(--primaryDark);
+    border-radius: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    height: 200px;
+
+    &:hover {
+      background-color: var(--secondaryLight);
+    }
+    &:focus {
+      border: 1px solid var(--secondaryLight);
+      outline: none;
+    }
+
+    input[Type='file'] {
+      display: none;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+      display: block;
+      user-select: none;
+      -webkit-user-drag: none;
+      -webkit-user-select: none;
+    }
+  }
+}
+.image-placeholder-text {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  color: var(--primaryDark);
+  opacity: 0.6;
+  text-align: center;
+  padding: 0 1rem;
+}

@@ -1,0 +1,27 @@
+@use '../../../../global/index.scss' as *;
+@use '../../../../global/colors.scss' as *;
+
+.courier-selection-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 30vh;
+  padding: 1rem;
+  color: var(--primaryDark);
+
+  .courier-delivery-price-display {
+    margin-top: 0.5rem;
+    color: var(--primaryDark);
+    margin-left: 1rem;
+  }
+
+  .on-next-btn {
+    margin-top: auto;
+    background-color: var(--secondaryLight);
+    border: 0px;
+    color: var(--primaryDark);
+
+    &:hover {
+      background-color: var(--primaryLightHover);
+    }
+  }
+}

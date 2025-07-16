@@ -6,6 +6,7 @@ import NewOrderStepAccordion from '../../components/accordion/new-order-step-acc
 import SelectedItemsList from './new-order-components/step-1/SelectedItemsList';
 import ColorSizeSelectorsList from './new-order-components/step-2/ColorSizeSelectorList';
 import BuyerInformationInputs from './new-order-components/step-3/BuyerInformationInputs';
+import CourierSelection from './new-order-components/step-4/CourierSelection';
 
 export interface AccordionRef {
   open: () => void;
@@ -84,9 +85,9 @@ function OrdersManager() {
 
             {/* STEP 4 - COURIER SELECTOR */}
             <NewOrderStepAccordion title="Courier" ref={step4Ref} id="step-4">
-              <button onClick={() => onNextStep(step4Ref, step5Ref, 'step-4')}>
-                Next
-              </button>
+              <CourierSelection
+                onNext={() => onNextStep(step4Ref, step5Ref, 'step-4')}
+              />
             </NewOrderStepAccordion>
 
             {/* STEP 5 - ORDER OVERVIEW */}
