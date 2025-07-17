@@ -4,7 +4,7 @@ import { OrderTypes } from '../../../global/types';
 import { useFetchData } from '../../../hooks/useFetchData';
 import { notifySuccess } from '../../util-components/Notify';
 import BatchModeOrderControlls from './BatchModeOrderControls';
-import OrderItem from './orderItem';
+import OrderItem from './OrderItem';
 import AnimatedList from '../AnimatedList';
 // setEditedOrder
 const OrdersList = ({ data }) => {
