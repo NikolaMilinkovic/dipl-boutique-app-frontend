@@ -46,7 +46,7 @@ function SuppliersManager() {
 
   return (
     <div className="app-setup-page-wrapper">
-      <div>
+      <div style={{ paddingRight: '3rem' }}>
         <SingleInputForm
           data={supplier}
           setData={setSupplier}
@@ -56,16 +56,14 @@ function SuppliersManager() {
           label="Supplier"
           btn_label="Add supplier"
         />
-        <div style={{ padding: '0rem 3rem' }}>
-          <h2>Search suppliers</h2>
-          <InputField
-            backgroundColor="var(--primaryLight)"
-            label="Search suppliers"
-            inputText={searchTerm}
-            setInputText={setSearchTerm}
-            showClearBtn={true}
-          />
-        </div>
+        <h2>Search suppliers</h2>
+        <InputField
+          backgroundColor="var(--primaryLight)"
+          label="Search suppliers"
+          inputText={searchTerm}
+          setInputText={setSearchTerm}
+          showClearBtn={true}
+        />
       </div>
       <SuppliersList suppliers={filteredSuppliers} />
     </div>

@@ -1,0 +1,146 @@
+.order-item {
+  position: relative;
+  padding: 14px 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: white;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+}
+
+.expandable-content {
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  max-height: 0;
+}
+
+.inner-content {
+  padding-top: 10px;
+}
+
+.order-item.highlighted {
+  background-color: #a3b9cc !important;
+}
+.order-item-highlighted {
+  background-color: #a3b9cc !important;
+}
+
+.timestamp {
+  position: absolute;
+  // top: 8px;
+  right: 16px;
+  font-size: 14px;
+  color: #666;
+}
+
+.info-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.profile-image {
+  height: 120px;
+  width: 220px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.order-item-info {
+  flex: 1;
+  position: relative;
+}
+
+.buttons-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  min-width: 60px;
+  gap: 6px;
+}
+
+.products-container {
+}
+
+.note-container {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.note-label {
+  font-weight: bold;
+  min-width: 85px;
+}
+
+.note-text {
+  font-weight: bold;
+  color: red;
+}
+
+.order-item-header {
+  font-weight: bold;
+  margin-bottom: 1.2rem;
+}
+
+.colored-order-product {
+  padding: 0.2rem;
+  border-radius: 4px;
+  background-color: var(--alternatingBackgroundColor);
+}
+.non-colored-order-product {
+  padding: 0.2rem;
+  border-radius: 4px;
+}
+
+.order-item-control-btn {
+  position: absolute;
+  right: 12px;
+  padding: 8px;
+  border-radius: 50%;
+  border: 0.5px solid var(--secondaryLight);
+  cursor: pointer;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  &:hover {
+    background-color: var(--alternatingBackgroundColor);
+  }
+}
+.order-item-control-highlighted-btn {
+  border: 0.5px solid var(--primaryDark);
+
+  &:hover {
+    background-color: color-mix(
+      in srgb,
+      var(--secondaryLight) 40%,
+      var(--primaryDark)
+    );
+
+    > * {
+      color: var(--white) !important;
+    }
+  }
+}
+
+.packed-text {
+  position: absolute;
+  color: green;
+  font-weight: bold;
+  font-size: 16px;
+  right: 12px;
+  top: 120px;
+}
+.note-indicator {
+  position: absolute;
+  right: 12px;
+  top: 100px;
+  font-weight: bold;
+  color: red;
+}

@@ -70,7 +70,7 @@ function CategoriesManager() {
   ];
   return (
     <div className="app-setup-page-wrapper">
-      <div>
+      <div style={{ paddingRight: '3rem' }}>
         <SingleInputForm
           data={category.name}
           setData={(value) =>
@@ -82,21 +82,18 @@ function CategoriesManager() {
           label="Category"
           btn_label="Add category"
         />
-        <div style={{ margin: '0rem 3rem' }}>
-          <Dropdown
-            options={stockTypeOptions}
-            onSelect={(value) =>
-              setCategory((prev) => ({ ...prev, stockType: value.value }))
-            }
-            defaultValue={{
-              value: 'Boja-Veličina-Količina',
-              label: 'Boja Veličina Količina',
-            }}
-          />
-        </div>
+        <Dropdown
+          options={stockTypeOptions}
+          onSelect={(value) =>
+            setCategory((prev) => ({ ...prev, stockType: value.value }))
+          }
+          defaultValue={{
+            value: 'Boja-Veličina-Količina',
+            label: 'Boja Veličina Količina',
+          }}
+        />
         <div
           style={{
-            padding: '0rem 3rem',
             marginTop: '1rem',
             marginBottom: '1rem',
           }}
@@ -110,12 +107,10 @@ function CategoriesManager() {
             showClearBtn={true}
           />
         </div>
-        <div style={{ margin: '0rem 3rem' }}>
-          <Dropdown
-            options={stockTypeFilterOptions}
-            onSelect={(value) => setStockTypeFilter(value.value)}
-          />
-        </div>
+        <Dropdown
+          options={stockTypeFilterOptions}
+          onSelect={(value) => setStockTypeFilter(value.value)}
+        />
       </div>
       <CategoriesList categories={filteredByStockType} />
     </div>

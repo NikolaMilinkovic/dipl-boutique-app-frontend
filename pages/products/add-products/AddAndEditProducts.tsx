@@ -12,6 +12,8 @@ function AddAndEditProducts() {
         style={{
           width: '100%',
           boxSizing: 'border-box',
+          paddingLeft: '3rem',
+          paddingRight: '3rem',
         }}
       >
         <AddProduct isExpanded={isExpanded} setIsExpanded={setIsExpanded} />
@@ -23,10 +25,10 @@ function AddAndEditProducts() {
             transition: 'transform 0.3s ease',
             display: 'flex',
             flex: 1,
-            paddingLeft: '1rem',
+            paddingLeft: '2rem',
           }}
         >
-          <ProductsList showAddBtn={false} styles={{ paddingTop: '43.6px' }} />;
+          <ProductsList showAddBtn={false} styles={{ paddingTop: '43.6px' }} />
         </div>
       </section>
     </>

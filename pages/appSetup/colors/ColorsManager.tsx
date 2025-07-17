@@ -46,7 +46,7 @@ function ColorsManager() {
 
   return (
     <div className="app-setup-page-wrapper">
-      <div>
+      <div style={{ paddingRight: '3rem' }}>
         <SingleInputForm
           data={color}
           setData={setColor}
@@ -56,7 +56,7 @@ function ColorsManager() {
           label="Color"
           btn_label="Add color"
         />
-        <div style={{ padding: '0rem 3rem' }}>
+        <div>
           <h2>Search colors</h2>
           <InputField
             backgroundColor="var(--primaryLight)"

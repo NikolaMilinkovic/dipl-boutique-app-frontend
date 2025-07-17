@@ -14,7 +14,7 @@ export interface SupplierTypes {
   name: string;
 }
 export interface CourierTypes {
-  _id: string;
+  _id?: string;
   name: string;
   deliveryPrice: number | string;
 }
@@ -100,7 +100,7 @@ interface ProfileImage {
   uri: string;
 }
 
-interface Buyer {
+interface NewBuyerData {
   name: string;
   address: string;
   place: string;
@@ -108,6 +108,15 @@ interface Buyer {
   phone2: string;
   bankNumber: string;
   profileImage: File | null;
+}
+interface Buyer {
+  name: string;
+  address: string;
+  place: string;
+  phone: string;
+  phone2: string;
+  bankNumber: string;
+  profileImage: ProfileImage;
 }
 
 type MongoDBType = 'Dress' | 'Purse';
@@ -132,7 +141,7 @@ interface Courier {
 }
 
 export interface NewOrderData {
-  buyer: Buyer;
+  buyer: NewBuyerData;
   products: Product[];
   productsPrice: number;
   totalPrice: number;
@@ -152,4 +161,25 @@ export interface RadioButtonOption {
   id: string;
   label: string;
   value: string;
+}
+
+export interface OrderTypes {
+  _id: string;
+  buyer: Buyer;
+  courier?: CourierTypes;
+  products: ProductTypes[];
+  productsPrice: number;
+  totalPrice: number;
+  reservation: boolean;
+  packedIndicator: boolean;
+  packed: boolean;
+  processed: boolean;
+  createdAt: string;
+  updatedAt: string;
+  value: string;
+  weight: string;
+  internalRemark: string;
+  deliveryRemark: string;
+  orderNotes: string;
+  reservationDate: Date;
 }

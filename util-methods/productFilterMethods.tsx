@@ -99,7 +99,6 @@ export function searchItemsByName(allActiveProducts: any, searchData: string) {
 
 // FILTER FOR ITEMS ON STOCK
 export function showItemsOnStock(result: ProductType) {
-  console.log('showItemsOnStock called');
   // PURSES
   if (result.stockType === 'Boja-Veličina-Količina') {
     return result.colors.some((colorObj: any) =>
@@ -124,7 +123,6 @@ export function showItemsOnStock(result: ProductType) {
 
 // FILTER FOR ITEMS NOT ON STOCK
 export function showItemsNotOnStock(result: ProductType) {
-  console.log('showItemsNotOnStock called');
   // PURSES
   if (result.stockType === 'Boja-Veličina-Količina') {
     return result.colors.every((colorObj: any) =>
@@ -165,7 +163,6 @@ export function filterBySuppliers(allActiveProducts: any, supplier: string) {
 
 // METHOD FOR FILTERING BY COLOR
 export function filterByColor(allActiveProducts: any, searchData: string[]) {
-  console.log('> filtering by color');
   betterConsoleLog('> searchData', searchData);
   const colorBasedSearch = allActiveProducts.filter((item: any) =>
     item.colors.some((colorObj: any) =>

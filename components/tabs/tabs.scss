@@ -1,5 +1,5 @@
 .tabs {
-  min-height: 100vh;
+  min-height: 80vh;
 
   .tab-headers {
     display: flex;
@@ -29,6 +29,8 @@
   }
 
   .tab-content {
+    padding-left: 3rem;
+    padding-right: 3rem;
     opacity: 0;
     transform: translateY(10px);
     animation: fadeIn 0.3s ease-out forwards;

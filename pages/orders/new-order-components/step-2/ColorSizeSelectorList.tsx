@@ -12,7 +12,6 @@ function ColorSizeSelectorsList({ onNext }: PropTypes) {
   const { newOrderData } = useNewOrder();
 
   function handleOnNext() {
-    console.log(newOrderData.products);
     if (newOrderData.products.length === 0)
       return notifyError('At least one product is required per order');
 
@@ -29,7 +28,6 @@ function ColorSizeSelectorsList({ onNext }: PropTypes) {
         order.stockType === 'Boja-Veličina-Količina' &&
         order.selectedSize === '',
     );
-    console.log(missingSize);
     if (missingSize) return notifyError('Size is required for every product');
 
     onNext();

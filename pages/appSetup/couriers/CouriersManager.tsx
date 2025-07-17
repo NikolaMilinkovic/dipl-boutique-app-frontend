@@ -70,7 +70,7 @@ function CouriersManager() {
 
   return (
     <div className="app-setup-page-wrapper">
-      <div>
+      <div style={{ paddingRight: '3rem' }}>
         <SingleInputForm
           data={courier}
           setData={setCourier}
@@ -82,17 +82,15 @@ function CouriersManager() {
           tabIndex={1}
           btnTabIndex={3}
         />
-        <div style={{ padding: '0rem 3rem' }}>
-          <InputField
-            backgroundColor="var(--primaryLight)"
-            label="Delivery price per package"
-            inputText={price}
-            setInputText={(value) => setPrice(value as string)}
-            showClearBtn={true}
-            tabIndex={2}
-          />
-        </div>
-        <div style={{ padding: '0rem 3rem', marginTop: '1rem' }}>
+        <InputField
+          backgroundColor="var(--primaryLight)"
+          label="Delivery price per package"
+          inputText={price}
+          setInputText={(value) => setPrice(value as string)}
+          showClearBtn={true}
+          tabIndex={2}
+        />
+        <div style={{ marginTop: '1rem' }}>
           <h2>Search couriers</h2>
           <InputField
             backgroundColor="var(--primaryLight)"

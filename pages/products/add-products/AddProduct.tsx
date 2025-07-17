@@ -21,9 +21,6 @@ function AddProduct({ isExpanded, setIsExpanded }) {
   const [imageRerenderKey, setImageRerenderKey] = useState(0);
   const [selectedColors, setSelectedColors] = useState([]);
 
-  useEffect(() => {
-    console.log(selectedColors);
-  }, [selectedColors]);
   const {
     newProduct: product,
     setNewProduct: setProduct,
@@ -118,7 +115,7 @@ function AddProduct({ isExpanded, setIsExpanded }) {
       style={{
         width: isExpanded ? '100vw' : '50vw',
         boxSizing: 'border-box',
-        paddingRight: isExpanded ? '3rem' : '1rem',
+        paddingRight: isExpanded ? '0rem' : '2rem',
       }}
     >
       {isExpanded && <h2 style={{ margin: '0px' }}>Add new product</h2>}
@@ -217,6 +214,7 @@ function AddProduct({ isExpanded, setIsExpanded }) {
           <ColorsSelect
             selectedColors={selectedColors}
             setSelectedColors={setSelectedColors}
+            backgroundColor="transparent"
           />
           {/* Boje | Velicina | Kolicina lagera */}
           {product && product.colors && product.colors.length > 0 && (
@@ -242,7 +240,7 @@ function AddProduct({ isExpanded, setIsExpanded }) {
       <button
         className="add-product-toggle-width-btn"
         onClick={() => setIsExpanded(!isExpanded)}
-        style={{ right: isExpanded ? '3rem' : '1rem' }}
+        style={{ right: isExpanded ? '0rem' : '2rem' }}
       >
         {isExpanded ? <FiChevronLeft /> : <FiChevronRight />}
       </button>

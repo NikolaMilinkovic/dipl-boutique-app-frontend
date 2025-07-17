@@ -11,7 +11,7 @@ interface TabsProps {
 }
 
 export function Tab({ children }: TabProps) {
-  return <>{children}</>; // just renders its children
+  return <>{children}</>;
 }
 
 export function Tabs({ children }: TabsProps) {

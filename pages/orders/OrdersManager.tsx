@@ -1,13 +1,16 @@
 import { Tab, Tabs } from '../../components/tabs/Tabs';
 import ProductsList from '../../components/lists/products-list/ProductsList';
 import './ordersManager.scss';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import NewOrderStepAccordion from '../../components/accordion/new-order-step-accordion';
 import SelectedItemsList from './new-order-components/step-1/SelectedItemsList';
 import ColorSizeSelectorsList from './new-order-components/step-2/ColorSizeSelectorList';
 import BuyerInformationInputs from './new-order-components/step-3/BuyerInformationInputs';
 import CourierSelection from './new-order-components/step-4/CourierSelection';
 import NewOrderOverview from './new-order-components/step-5/NewOrderOverview';
+import OrdersList from '../../components/lists/orders-list/OrdersList';
+import { OrderTypes } from '../../global/types';
+import { useOrders } from '../../store/orders-context';
 
 export interface AccordionRef {
   open: () => void;
@@ -46,10 +49,17 @@ function OrdersManager() {
     buyerProfileImageRef.current?.resetImage();
     document.getElementById('step-1')?.scrollIntoView({ behavior: 'smooth' });
   }
+
+  // TEMPORARY FOR TESTING > PUT INTO A MODAL
+  const { orders } = useOrders();
+  const [editedOrder, setEditedOrder] = useState<OrderTypes | null>(null);
+  console.log(orders.unprocessedOrders.length);
+
   return (
     <Tabs>
+      {/* CREATE NEW ORDER */}
       <Tab label="Create new order">
-        <section className="grid-1-1 new-order-section">
+        <section className="grid-1-1 orders-manager-section">
           {/* LEFT */}
           <ProductsList showDeleteBtn={false} styles={{ paddingTop: '1rem' }} />
 
@@ -115,9 +125,16 @@ function OrdersManager() {
           </div>
         </section>
       </Tab>
+
+      {/* ORDERS AND PACKAGING */}
       <Tab label="Orders and Packaging">
-        <section className="grid-1-1">
-          <p>Levo lista porudzbina sa dugmicima za Edit / Delete</p>
+        <section className="grid-1-1 orders-manager-section">
+          <div>
+            <OrdersList
+              data={orders.unprocessedOrders}
+              setEditedOrder={setEditedOrder}
+            />
+          </div>
           <p>
             Desno Pakovanje sa indikatorima i dugmetom za zavrsavanje pakovanja
           </p>

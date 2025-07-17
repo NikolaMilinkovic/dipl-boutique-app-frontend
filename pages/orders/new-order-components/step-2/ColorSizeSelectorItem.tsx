@@ -110,8 +110,6 @@ function ColorSizeSelectorItem({ product, index }: PropTypes) {
     if (!product.itemReference)
       return notifyError('Product reference is missing!');
     const colorObj = product.itemReference.colors.find((c) => c._id === id);
-    console.log('> colorObj is:');
-    console.log(colorObj);
     if (colorObj) {
       setSelectedColorObj(colorObj as DressColorTypes);
       updateProductColorByIndexHandler(index, colorObj);

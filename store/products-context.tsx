@@ -7,22 +7,13 @@ import React, {
 } from 'react';
 import { useFetchData } from '../hooks/useFetchData';
 import { useSocket } from './socket-context';
-import {
-  notifyError,
-  notifySuccess,
-  notifyWarrning,
-} from '../components/util-components/Notify';
-import { betterConsoleLog, betterErrorLog } from '../util-methods/log-methods';
+import { notifyError } from '../components/util-components/Notify';
+import { betterErrorLog } from '../util-methods/log-methods';
 import { DressTypes, ProductTypes, PurseTypes } from '../global/types';
 import {
-  decreaseDressStock,
-  decreasePurseStock,
   DressStockDataDecrease,
-  increaseDressStock,
-  increasePurseStock,
   PurseStockDataDecrease,
 } from '../util-methods/stockMethods';
-import { VscActivateBreakpoints } from 'react-icons/vsc';
 
 interface ProductsContextTypes {
   products: ProductContextDataTypes;
@@ -54,13 +45,14 @@ export function ProductsContextProvider({ children }: ProductsProviderProps) {
   // const [productsByCategory, setProductsByCategory] =
   //   useState<ProductsByCategoryTypes>();
   const { socket } = useSocket();
-  const { fetchData, handleFetchingWithFormData } = useFetchData();
+  const { fetchData } = useFetchData();
   const [products, setProducts] = useState<ProductContextDataTypes>({
     activeProducts: [],
     inactiveProducts: [],
     allProducts: [],
   });
 
+  // Update all products upon active / inactive product changes
   useEffect(() => {
     setProducts((prev) => ({
       ...prev,
@@ -74,7 +66,7 @@ export function ProductsContextProvider({ children }: ProductsProviderProps) {
       if (typeof response === 'object') {
         setProducts(response);
       } else {
-        notifyError('Podaci o proizvodima nisu preuzei');
+        notifyError('Fetching products failed');
       }
     } catch (err) {
       betterErrorLog('> Error while fetching products', err);
@@ -182,8 +174,6 @@ export function ProductsContextProvider({ children }: ProductsProviderProps) {
   function handleStockDecrease(
     data: (DressStockDataDecrease | PurseStockDataDecrease)[],
   ) {
-    console.log('handleStockDecrease called');
-    console.log(data);
     setProducts((prev) => {
       const updated = prev.activeProducts.map((product) => {
         const match = data.find(

@@ -141,13 +141,7 @@ function ProductDisplayItem({
 
   const handleImageClick = (e) => {
     e.stopPropagation();
-    showImagePreview(
-      () => {
-        console.log('Preview callback (optional)');
-      },
-      data.image.uri,
-      data.name,
-    );
+    showImagePreview(() => {}, data.image.uri, data.name);
   };
 
   return (

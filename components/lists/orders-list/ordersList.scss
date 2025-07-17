@@ -1,0 +1,22 @@
+.order-items-wrapper {
+  width: 100%;
+}
+
+.order-items-header {
+  font-weight: bold;
+  font-size: 14px;
+  text-align: center;
+  background-color: var(--white);
+  padding: 6px 0px;
+}
+
+.order-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-bottom: 22px;
+
+  &.batch {
+    padding-bottom: 82px;
+  }
+}

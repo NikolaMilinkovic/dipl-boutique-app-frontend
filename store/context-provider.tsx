@@ -10,6 +10,7 @@ import { NewProductContextProvider } from './new-product-context';
 import { ProductsContextProvider } from './products-context';
 import { ModalsContextProvider } from './modals/modals-context-provider';
 import { NewOrderContextProvider } from './new-order-context';
+import OrdersContextProvider from './orders-context';
 
 interface ContextChildrenType {
   children: ReactNode;
@@ -29,7 +30,9 @@ const ContextProvider: React.FC<ContextChildrenType> = ({ children }) => {
                       <ProductsContextProvider>
                         <NewProductContextProvider>
                           <NewOrderContextProvider>
-                            {children}
+                            <OrdersContextProvider>
+                              {children}
+                            </OrdersContextProvider>
                           </NewOrderContextProvider>
                         </NewProductContextProvider>
                       </ProductsContextProvider>

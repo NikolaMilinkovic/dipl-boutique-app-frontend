@@ -20,6 +20,7 @@ $errorBackgroundHighlight: '#C28E8E';
 
   // DARK
   --primaryDark: #012340;
+  --primaryDarkHover: color-mix(in srgb, var(--primaryDark) 80%, white);
   --secondaryDark: #024059;
 
   // LIGHT
@@ -63,4 +64,9 @@ $errorBackgroundHighlight: '#C28E8E';
   --white: #ffffff;
 
   --errorBackgroundHighlight: #ffe4e4;
+  --alternatingBackgroundColor: color-mix(
+    in srgb,
+    var(--primaryDark) 6%,
+    white
+  );
 }
