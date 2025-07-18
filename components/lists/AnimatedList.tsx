@@ -66,7 +66,7 @@ function AnimatedList<T>({
           >
             {items.map((item, index) => (
               <div
-                key={`item_${index}`}
+                key={(item as any)._id || `item_${index}`}
                 className={`list-item ${visibleItems.has(index) ? 'visible' : ''}`}
                 data-index={index}
               >

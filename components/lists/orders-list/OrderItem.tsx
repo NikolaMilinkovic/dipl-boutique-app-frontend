@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './orderItem.scss';
-import { OrderTypes } from '../../../global/types';
+import { OrderTypes, ProductTypes } from '../../../global/types';
 import { getFormattedDate } from '../../../util-methods/dateFormatters';
 import { MdCheck, MdEdit } from 'react-icons/md';
 import DisplayOrderProduct from './DisplayOrderProduct';
 import { useImagePreviewModal } from '../../../store/modals/image-preview-modal-context';
+import { useEditOrder } from '../../../store/modals/edit-order-modal-context';
 
 interface SelectedOrdersTypes {
   _id: string;
@@ -17,6 +18,7 @@ interface PropTypes {
   onRemoveHighlight: (order: OrderTypes) => void;
   onPress: (order: OrderTypes) => void;
   onLongPress: (order: OrderTypes) => void;
+  key: string;
 }
 
 const OrderItem: React.FC<PropTypes> = ({
@@ -31,6 +33,7 @@ const OrderItem: React.FC<PropTypes> = ({
   const [isExpanded, setIsExpanded] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
   const [contentHeight, setContentHeight] = useState('0px');
+  const { openDrawer, closeDrawer } = useEditOrder();
 
   useEffect(() => {
     if (contentRef.current) {
@@ -132,6 +135,7 @@ const OrderItem: React.FC<PropTypes> = ({
             className={`order-item-control-btn ${isHighlighted ? 'order-item-control-highlighted-btn' : ''}`}
             onClick={(e) => {
               e.stopPropagation();
+              openDrawer(order);
             }}
           >
             <MdEdit style={{ color: 'var(--primaryDark)', fontSize: '26px' }} />
@@ -174,12 +178,11 @@ const OrderItem: React.FC<PropTypes> = ({
                   : 'colored-order-product'
               }  ${isHighlighted ? 'order-item-highlighted' : ''}`}
               style={{ marginTop: '0.5rem' }}
+              key={`product_item_${product._id}`}
             >
               <DisplayOrderProduct
-                key={`${index}-${product._id}`}
-                product={product}
-                index={index}
-                isHighlighted={isHighlighted}
+                passedKey={`${index}-${product._id}`}
+                product={product as any}
               />
             </div>
           ))}

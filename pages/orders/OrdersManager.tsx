@@ -1,7 +1,7 @@
 import { Tab, Tabs } from '../../components/tabs/Tabs';
 import ProductsList from '../../components/lists/products-list/ProductsList';
 import './ordersManager.scss';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import NewOrderStepAccordion from '../../components/accordion/new-order-step-accordion';
 import SelectedItemsList from './new-order-components/step-1/SelectedItemsList';
 import ColorSizeSelectorsList from './new-order-components/step-2/ColorSizeSelectorList';
@@ -53,7 +53,6 @@ function OrdersManager() {
   // TEMPORARY FOR TESTING > PUT INTO A MODAL
   const { orders } = useOrders();
   const [editedOrder, setEditedOrder] = useState<OrderTypes | null>(null);
-  console.log(orders.unprocessedOrders.length);
 
   return (
     <Tabs>

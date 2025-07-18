@@ -22,9 +22,13 @@ export interface ProductItem {
 }
 interface DisplayOrderProductPropTypes {
   product: ProductItem;
+  passedKey: string;
 }
 
-function DisplayOrderProduct({ product }: DisplayOrderProductPropTypes) {
+function DisplayOrderProduct({
+  product,
+  passedKey,
+}: DisplayOrderProductPropTypes) {
   const { showImagePreview } = useImagePreviewModal();
   const handleImageClick = (e) => {
     e.stopPropagation();
@@ -32,7 +36,7 @@ function DisplayOrderProduct({ product }: DisplayOrderProductPropTypes) {
   };
 
   return (
-    <div className="order-product-container">
+    <div className="order-product-container" key={passedKey}>
       {product?.image && (
         <img
           src={product.image.uri}

@@ -8,7 +8,7 @@ import OrderItem from './OrderItem';
 import AnimatedList from '../AnimatedList';
 // setEditedOrder
 const OrdersList = ({ data }) => {
-  const [editedOrder, setEditedOrder] = useState([]);
+  const [editedOrder, setEditedOrder] = useState<OrderTypes | null>(null);
   const { fetchWithBodyData } = useFetchData();
   const [batchMode, setBatchMode] = useState(false);
   const [selectedOrders, setSelectedOrders] = useState<OrderTypes[]>([]);
@@ -116,13 +116,14 @@ const OrdersList = ({ data }) => {
         {/* {data.map((item) => ( */}
         <AnimatedList
           items={data}
-          renderItem={(item) => (
+          renderItem={(item: OrderTypes) => (
             <div
               onClick={() => handlePress(item)}
               onContextMenu={(e) => {
                 e.preventDefault();
                 handleLongPress(item);
               }}
+              key={`order-${item._id}`}
             >
               <OrderItem
                 order={item as OrderTypes}
@@ -132,6 +133,7 @@ const OrdersList = ({ data }) => {
                 onRemoveHighlight={handlePress}
                 onPress={handlePress}
                 onLongPress={handleLongPress}
+                key={`order-${item._id}`}
               />
             </div>
           )}

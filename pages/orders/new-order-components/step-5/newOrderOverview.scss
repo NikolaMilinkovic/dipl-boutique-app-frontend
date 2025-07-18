@@ -76,3 +76,9 @@
 .new-order-products-even-bg {
   background-color: color-mix(in srgb, var(--primaryLight), white 35%);
 }
+
+.new-order-is-reservation {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-bottom: 12px;
+}
