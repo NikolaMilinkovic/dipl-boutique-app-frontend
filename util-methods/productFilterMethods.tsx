@@ -4,7 +4,6 @@ import {
   ProductTypes,
   PurseTypes,
 } from '../global/types';
-import { betterConsoleLog } from './log-methods';
 
 type ProductType = DressTypes | PurseTypes;
 interface SearchParamsType {
@@ -163,7 +162,6 @@ export function filterBySuppliers(allActiveProducts: any, supplier: string) {
 
 // METHOD FOR FILTERING BY COLOR
 export function filterByColor(allActiveProducts: any, searchData: string[]) {
-  betterConsoleLog('> searchData', searchData);
   const colorBasedSearch = allActiveProducts.filter((item: any) =>
     item.colors.some((colorObj: any) =>
       searchData.some((searchColor) =>

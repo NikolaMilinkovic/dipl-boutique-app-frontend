@@ -1,7 +1,5 @@
-import React, { useEffect, useMemo } from 'react';
 import './dressStockInput.scss';
 import { DressColorTypes } from '../../../global/types';
-import { betterConsoleLog } from '../../../util-methods/log-methods';
 
 interface PropTypes {
   colorsData: DressColorTypes[];

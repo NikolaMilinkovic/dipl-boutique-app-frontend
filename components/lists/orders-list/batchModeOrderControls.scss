@@ -1,6 +1,6 @@
 .batch-controls-wrapper {
   padding: 8px;
-  background-color: var(--white);
+  background-color: var(--text-w);
   display: flex;
   flex-direction: row-reverse;
   gap: 10px;
@@ -37,6 +37,6 @@
 
   &.danger {
     background-color: var(--deleteButton);
-    color: var(--white);
+    color: var(--text-w);
   }
 }

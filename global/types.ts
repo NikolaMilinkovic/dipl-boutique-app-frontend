@@ -1,4 +1,20 @@
 /* eslint-disable quotes */
+
+// ENUMS
+export const StockTypeValues = [
+  'Boja-Veličina-Količina',
+  'Boja-Količina',
+] as const;
+type StockTypes = (typeof StockTypeValues)[number];
+
+// \ENUMS
+
+export interface User {
+  id: string;
+  name: string;
+  role: string;
+}
+
 export interface ColorTypes {
   _id?: string;
   name: string;
@@ -7,7 +23,7 @@ export interface ColorTypes {
 export interface CategoryTypes {
   _id?: string;
   name: string;
-  stockType: string;
+  stockType: StockTypes;
 }
 export interface SupplierTypes {
   _id?: string;
@@ -40,7 +56,7 @@ export interface DressTypes {
   name: string;
   active: boolean;
   category: string;
-  stockType: string;
+  stockType: StockTypes;
   price: number;
   colors: DressColorTypes[];
   image: ImageTypes;
@@ -62,7 +78,7 @@ export interface PurseTypes {
   name: string;
   active: boolean;
   category: string;
-  stockType: string;
+  stockType: StockTypes;
   price: number;
   colors: PurseColorTypes[];
   image: ImageTypes;
@@ -132,7 +148,7 @@ export interface Product {
   selectedColorId: string;
   selectedSize: string;
   selectedSizeId: string;
-  stockType: string;
+  stockType: StockTypes;
 }
 
 interface Courier {

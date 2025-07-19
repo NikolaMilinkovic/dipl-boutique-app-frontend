@@ -6,9 +6,11 @@ import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { FiLogOut } from 'react-icons/fi';
 import NavButton from './NavButton';
 import { useAuth } from '../../store/auth-context';
+import { useUser } from '../../store/user-context';
 
 function Navbar() {
   const { isAuthenticated, logout } = useAuth();
+  const { clearUser } = useUser();
   const navRef = useRef<HTMLElement>(null);
 
   // HOTKEY NAVIGATION
@@ -71,7 +73,14 @@ function Navbar() {
         </NavButton>
 
         {/* LOGOUT */}
-        <NavButton to="/logout" onClick={logout} icon={<FiLogOut />}>
+        <NavButton
+          to="/logout"
+          onClick={() => {
+            clearUser();
+            logout();
+          }}
+          icon={<FiLogOut />}
+        >
           Logout
         </NavButton>
 

@@ -306,7 +306,6 @@ export const increasePurseBatchStock = (
           totalStock: purse.totalStock + itemData.increment,
           colors: purse.colors.map((color) => {
             if (color._id.toString() === itemData.colorId.toString()) {
-              console.log('> Color object found for increment', color);
               return {
                 ...color,
                 stock: color.stock + itemData.increment,
@@ -345,7 +344,6 @@ export const decreasePurseBatchStock = (
           totalStock: purse.totalStock + itemData.increment,
           colors: purse.colors.map((color) => {
             if (color._id.toString() === itemData.colorId.toString()) {
-              console.log('> Color object found for increment', color);
               return {
                 ...color,
                 stock: color.stock - itemData.increment,

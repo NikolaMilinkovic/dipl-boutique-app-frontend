@@ -11,10 +11,9 @@ import DressColor from '../../../models/DressColor';
 import PurseColor from '../../../models/PurseColor';
 import ColorsSelect from '../../../components/colors-select/ColorsSelect';
 import Button from '../../../components/util-components/Button';
-import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { useProduct } from '../../../store/new-product-context';
 
-function AddProduct({ isExpanded, setIsExpanded }) {
+function AddProduct() {
   const { getCategoryDropdownItems } = useCategories();
   const { getSupplierDropdownItems } = useSuppliers();
   const imageInputRef = React.useRef<HTMLInputElement>(null);
@@ -110,140 +109,113 @@ function AddProduct({ isExpanded, setIsExpanded }) {
   const supplierDropdownItems = getSupplierDropdownItems();
 
   return (
-    <section
-      className="add-product-section"
-      style={{
-        width: isExpanded ? '100vw' : '50vw',
-        boxSizing: 'border-box',
-        paddingRight: isExpanded ? '0rem' : '2rem',
-      }}
-    >
-      {isExpanded && <h2 style={{ margin: '0px' }}>Add new product</h2>}
-      <div
-        className={isExpanded ? 'grid-1-1 gap-1' : ''}
-        style={{ height: '100%' }}
-      >
-        <div>
-          {!isExpanded && <h2>Add, Browse, Update and Delete products</h2>}
-          <div className="grid-1-1 gap-1">
-            {/* Slika */}
-            <ImageInput
-              reference={imageInputRef}
-              rerenderkey={imageRerenderKey}
-              product={product}
-              onImageUpload={(img) => {
+    <section className="add-product-section">
+      {/* TITLE, IMAGE INPUT & RIGHT SIDE INPUTS */}
+      <div className="add-product-image-and-inputs-container">
+        <h2>Add, Browse, Update and Delete products</h2>
+        <div className="grid-1-1 gap-1">
+          {/* Slika */}
+          <ImageInput
+            reference={imageInputRef}
+            rerenderkey={imageRerenderKey}
+            product={product}
+            onImageUpload={(img) => {
+              setProduct((prev) => ({
+                ...prev,
+                image: img,
+              }));
+            }}
+          />
+
+          <div className="data-container">
+            {/* Naziv */}
+            <InputField
+              label="Product name"
+              inputText={product.name}
+              setInputText={(value) =>
+                setProduct((prev) => ({ ...prev, name: value as string }))
+              }
+              showClearBtn={true}
+              backgroundColor="var(--primaryLight)"
+            />
+
+            {/* Cena */}
+            <InputField
+              label="Price"
+              inputText={product.price as any}
+              setInputText={(value) =>
+                setProduct((prev) => ({ ...prev, price: value as any }))
+              }
+              showClearBtn={true}
+              backgroundColor="var(--primaryLight)"
+            />
+
+            {/* Dobavljac */}
+            <Dropdown
+              options={supplierDropdownItems}
+              value={product.supplier}
+              onSelect={(option) =>
+                setProduct((prev) => ({ ...prev, supplier: option }))
+              }
+              onResetText="Supplier"
+            />
+
+            {/* Opis */}
+            <TextArea
+              label="Description"
+              inputText={product.description as string}
+              setInputText={(value) =>
                 setProduct((prev) => ({
                   ...prev,
-                  image: img,
-                }));
-              }}
-            />
-
-            <div className="data-container">
-              {/* Naziv */}
-              <InputField
-                label="Product name"
-                inputText={product.name}
-                setInputText={(value) =>
-                  setProduct((prev) => ({ ...prev, name: value as string }))
-                }
-                showClearBtn={true}
-                backgroundColor="var(--primaryLight)"
-              />
-
-              {/* Cena */}
-              <InputField
-                label="Price"
-                inputText={product.price as any}
-                setInputText={(value) =>
-                  setProduct((prev) => ({ ...prev, price: value as any }))
-                }
-                showClearBtn={true}
-                backgroundColor="var(--primaryLight)"
-              />
-
-              {/* Dobavljac */}
-              <Dropdown
-                options={supplierDropdownItems}
-                value={product.supplier}
-                onSelect={(option) =>
-                  setProduct((prev) => ({ ...prev, supplier: option }))
-                }
-                onResetText="Supplier"
-              />
-
-              {/* Opis */}
-              <TextArea
-                label="Description"
-                inputText={product.description as string}
-                setInputText={(value) =>
-                  setProduct((prev) => ({
-                    ...prev,
-                    description: value as string,
-                  }))
-                }
-                showClearBtn={true}
-                backgroundColor="var(--primaryLight)"
-              />
-
-              {/* Kategorija */}
-              <Dropdown
-                options={categoryDropdownItems}
-                onSelect={({ value, label }) =>
-                  setProduct((prev) => ({
-                    ...prev,
-                    stockType: value,
-                    category: { value, label },
-                  }))
-                }
-                value={product.category}
-              />
-            </div>
-          </div>
-        </div>
-
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            marginTop: isExpanded ? '' : '1rem',
-            gap: '1rem',
-            height: '100%',
-          }}
-        >
-          <ColorsSelect
-            selectedColors={selectedColors}
-            setSelectedColors={setSelectedColors}
-            backgroundColor="transparent"
-          />
-          {/* Boje | Velicina | Kolicina lagera */}
-          {product && product.colors && product.colors.length > 0 && (
-            <ColorAmountInput
-              stockType={product.stockType}
-              colors={product.colors}
-              setColors={(newColors) =>
-                setProduct((prev) => ({ ...prev, colors: newColors }))
+                  description: value as string,
+                }))
               }
+              showClearBtn={true}
+              backgroundColor="var(--primaryLight)"
             />
-          )}
-          {/* BTN */}
-          <div style={{ marginTop: 'auto' }}>
-            <Button
-              label="Add product"
-              type="button"
-              onClick={addProductHandler}
+
+            {/* Kategorija */}
+            <Dropdown
+              options={categoryDropdownItems}
+              onSelect={({ value, label }) =>
+                setProduct((prev) => ({
+                  ...prev,
+                  stockType: value,
+                  category: { value, label },
+                }))
+              }
+              value={product.category}
             />
           </div>
         </div>
       </div>
 
-      <button
-        className="add-product-toggle-width-btn"
-        onClick={() => setIsExpanded(!isExpanded)}
-        style={{ right: isExpanded ? '0rem' : '2rem' }}
-      >
-        {isExpanded ? <FiChevronLeft /> : <FiChevronRight />}
-      </button>
+      {/* LOWER SECTION | COLORS */}
+      <div className="add-product-lower-section">
+        <ColorsSelect
+          selectedColors={selectedColors}
+          setSelectedColors={setSelectedColors}
+          backgroundColor="transparent"
+        />
+        {/* Boje | Velicina | Kolicina lagera */}
+        {product && product.colors && product.colors.length > 0 && (
+          <ColorAmountInput
+            stockType={product.stockType}
+            colors={product.colors}
+            setColors={(newColors) =>
+              setProduct((prev) => ({ ...prev, colors: newColors }))
+            }
+          />
+        )}
+        {/* BTN */}
+        <div className="add-product-button-container">
+          <Button
+            label="Add product"
+            type="button"
+            onClick={addProductHandler}
+          />
+        </div>
+      </div>
     </section>
   );
 }

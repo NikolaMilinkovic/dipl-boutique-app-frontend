@@ -12,7 +12,7 @@ function Footer() {
   return (
     <footer style={{ marginTop: '4rem' }} className="fade">
       {/* COPYRIGHT */}
-      <section>
+      <section className="footer-section">
         <a
           href="https://github.com/NikolaMilinkovic"
           className="copyright-link"

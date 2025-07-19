@@ -4,14 +4,15 @@ import { AuthContext } from './store/auth-context';
 import ContextProvider from './store/context-provider';
 import SplashScreen from './pages/splashScreen/SplashScreen';
 import Navigation from './components/navigation/Navigation';
-import Navbar from './components/navigation/Navbar';
-import Footer from './components/footer/Footer';
 import { Bounce, ToastContainer } from 'react-toastify';
+import { useFetchData } from './hooks/useFetchData';
+import { useUser } from './store/user-context';
 
 function Root() {
   const [isAuthenticatingToken, setIsAuthenticatingToken] = useState(true);
   const [showSplash, setShowSplash] = useState(true);
   const authCtx = useContext(AuthContext);
+  const { setUser } = useUser();
 
   /**
    * Checks the token in the localStorage upon app startup
@@ -21,8 +22,16 @@ function Root() {
   useEffect(() => {
     async function getToken() {
       const token = localStorage.getItem('token');
-      if (token) {
-        authCtx.authenticate(token);
+      const user = localStorage.getItem('user');
+
+      if (token && user) {
+        try {
+          const parsedUser = JSON.parse(user);
+          setUser(parsedUser);
+          authCtx.authenticate(token);
+        } catch {
+          authCtx.logout();
+        }
       } else {
         authCtx.logout();
       }

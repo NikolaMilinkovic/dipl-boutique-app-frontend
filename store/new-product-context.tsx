@@ -1,12 +1,6 @@
-import React, {
-  createContext,
-  useState,
-  ReactNode,
-  useContext,
-  useEffect,
-} from 'react';
+import React, { createContext, useState, ReactNode, useContext } from 'react';
 import { useFetchData } from '../hooks/useFetchData';
-import { betterConsoleLog, betterErrorLog } from '../util-methods/log-methods';
+import { betterErrorLog } from '../util-methods/log-methods';
 import { DressColorTypes, PurseColorTypes } from '../global/types';
 import {
   notifyError,
@@ -77,10 +71,6 @@ export function NewProductContextProvider({
     supplier: { value: '', label: 'Supplier' },
     totalStock: '',
   });
-
-  useEffect(() => {
-    betterConsoleLog('', newProduct);
-  }, [newProduct]);
 
   function validateInput(): boolean {
     if (!newProduct.name) {

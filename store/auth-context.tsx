@@ -1,10 +1,13 @@
 import React, { createContext, useState, ReactNode, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { notifyError } from '../components/util-components/Notify';
+import { useUser } from './user-context';
+import { User } from '../global/types';
 interface LoginResultType {
   isAuthenticated: boolean;
   message: string;
   token: string;
+  user: User;
 }
 interface AuthContextTypes {
   token: string | null;
@@ -29,9 +32,7 @@ function AuthContextProvider({ children }: AuthContextProviderType) {
   const [authToken, setAuthToken] = useState<string | null>(null);
   const [loginErrorMessage, setLoginErrorMessage] = useState('');
   const navigate = useNavigate();
-
-  // TODO > ADD USER TYPES
-  const [user, setUser] = useState<any>(null);
+  const { setUser, clearUser } = useUser();
 
   /**
    * Authenticates the user, stores token in localStorage, and updates auth state.
@@ -47,8 +48,10 @@ function AuthContextProvider({ children }: AuthContextProviderType) {
    */
   function logout(): any {
     setAuthToken(null);
+    clearUser();
     localStorage.removeItem('token');
-    return navigate('/login');
+    localStorage.removeItem('user');
+    return navigate('/logout');
   }
 
   /**
@@ -77,6 +80,9 @@ function AuthContextProvider({ children }: AuthContextProviderType) {
       }
 
       authenticate(result.token);
+      setUser(result.user);
+      localStorage.setItem('user', JSON.stringify(result.user));
+
       navigate('/');
     } catch (err) {
       setLoginErrorMessage(`Issue logging in user: ${err}`);
@@ -107,6 +113,7 @@ function AuthContextProvider({ children }: AuthContextProviderType) {
           isAuthenticated: response.ok,
           message: parsedResponse.message || 'Login failed. Please try again.',
           token: '',
+          user: null,
         };
         return authStatus;
 
@@ -116,6 +123,7 @@ function AuthContextProvider({ children }: AuthContextProviderType) {
           isAuthenticated: response.ok,
           message: parsedResponse.message || 'Login successful.',
           token: parsedResponse.token || '',
+          user: parsedResponse.user || null,
         };
 
         return authStatus;

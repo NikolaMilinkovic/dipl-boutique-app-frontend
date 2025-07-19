@@ -2,7 +2,7 @@
 @use '../../../global/colors.scss' as *;
 
 .container {
-  // background-color: var(--white);
+  // background-color: var(--text-w);
   padding: 4px;
   border-radius: 4px;
   border: 0.5px solid var(--primaryDark);
@@ -45,7 +45,7 @@
     margin: 0 4px;
     // flex: 1;
     text-align: center;
-    background-color: var(--white); /* Replace if needed */
+    background-color: var(--text-w); /* Replace if needed */
     width: 100%;
     min-width: 70px;
     padding-left: 16px;

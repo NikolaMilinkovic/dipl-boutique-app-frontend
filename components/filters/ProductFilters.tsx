@@ -3,7 +3,6 @@ import Checkbox from '../checkbox/Checkbox';
 import { SearchParamsTypes } from '../../global/types';
 import Dropdown from '../dropdowns/Dropdown';
 import { useCategories } from '../../store/categories-context';
-import { betterConsoleLog } from '../../util-methods/log-methods';
 import { useEffect, useState } from 'react';
 import { useSuppliers } from '../../store/suppliers-context';
 import ColorsSelect from '../colors-select/ColorsSelect';

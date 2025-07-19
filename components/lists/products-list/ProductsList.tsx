@@ -9,7 +9,6 @@ import { useDrawerModal } from '../../../store/modals/drawer-modal-contex';
 import ProductFilters from '../../filters/ProductFilters';
 import { searchProducts } from '../../../util-methods/productFilterMethods';
 import { SearchParamsTypes } from '../../../global/types';
-import { betterConsoleLog } from '../../../util-methods/log-methods';
 
 function ProductsList({
   showAddBtn = true,
@@ -33,8 +32,6 @@ function ProductsList({
   });
 
   useEffect(() => {
-    betterConsoleLog('> searchParams', searchParams);
-
     // Update drawer content when searchParams change and drawer is open
     if (isDrawerOpen) {
       updateDrawerContent(

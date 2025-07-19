@@ -1,5 +1,11 @@
-import React, { createContext, useState, ReactNode, useContext } from 'react';
-import { User } from '../types/user-types';
+import React, {
+  createContext,
+  useState,
+  ReactNode,
+  useContext,
+  useEffect,
+} from 'react';
+import { User } from '../global/types';
 
 interface UserContextTypes {
   user: User | null;
@@ -20,7 +26,7 @@ export const UserContext = createContext<UserContextTypes>({
 export function UserContextProvider({ children }: UserProviderProps) {
   const [user, setUserState] = useState<User | null>(null);
 
-  function setUser(user: User) {
+  function setUser(user: User | null) {
     setUserState(user);
   }
 

@@ -18,13 +18,13 @@
 
   &:hover {
     background-color: var(--secondaryDark);
-    color: var(--white);
+    color: var(--text-w);
     cursor: pointer;
   }
 
   &:focus {
     background-color: var(--secondaryDark);
-    color: var(--white);
+    color: var(--text-w);
   }
 
   &:active {

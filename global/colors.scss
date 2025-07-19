@@ -25,6 +25,7 @@ $errorBackgroundHighlight: '#C28E8E';
 
   // LIGHT
   --primaryLight: #f0f0f0;
+  --primaryLightDarken: #e4e2e2;
   --primaryLightHover: color-mix(in srgb, var(--secondaryLight) 90%, black);
   --secondaryLight: #c5d5d9;
   --secondaryLightHover: color-mix(in srgb, var(--secondaryLight) 90%, black);
@@ -47,6 +48,7 @@ $errorBackgroundHighlight: '#C28E8E';
 
   --white: #ffffff;
   --highlightBlue: #6a5acd;
+  --highlightBlueLighten: #c8c3e9;
   --successSecondary: #f0faf0;
 
   --buttonBackground: #ffffff;

@@ -1,0 +1,197 @@
+@use '../../global/index.scss' as *;
+@use '../../global/colors.scss' as *;
+
+.chatbox-active-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  display: flex;
+  justify-content: flex-end;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+
+  &.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  &.hide-overlay {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+.agent-chat {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--background);
+  box-shadow: 0 4px 12px rgba(131, 123, 123, 0.3);
+  z-index: 999999;
+  position: fixed;
+  bottom: 4rem;
+  right: 4rem;
+  transition:
+    height 0.2s linear,
+    width 0.2s linear,
+    opacity 0.2s linear;
+  border-radius: 10px;
+  overflow: hidden;
+
+  .chat-header {
+    background-color: var(--primaryDark);
+    color: var(--text-w);
+    padding: 0.75rem 1rem;
+    font-weight: 600;
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--highlight);
+
+    h3 {
+      margin: 0;
+    }
+
+    &:hover {
+      background-color: var(--primaryDarkHover);
+    }
+  }
+
+  .chat-controls {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+    padding: 8px;
+    background-color: var(--white);
+
+    .chat-controls-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      background-color: var(--secondaryLight);
+      color: var(--secondaryDark);
+      padding: 4px;
+      font-size: 22px;
+      border-radius: 4px;
+      min-width: 50px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: var(--secondaryLightHover);
+      }
+      &:active {
+        transform: scale(0.95);
+      }
+    }
+  }
+
+  .chat-messages-container {
+    flex: 1;
+    padding: 1rem;
+    overflow-y: auto;
+    background-color: var(--primaryLight);
+    color: var(--primaryDark);
+    font-size: 1rem;
+    overscroll-behavior: contain;
+    position: relative;
+    overflow-x: hidden;
+
+    // Optional scrollbar styling
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: var(--primaryDark);
+      border-radius: 4px;
+      transition: background 0.3s ease;
+
+      &:hover {
+        background: color-mix(in srgb, var(--primaryDark) 80%, black 20%);
+      }
+    }
+
+    .chat-no-messages-icon {
+      position: absolute;
+      height: 30vh;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -60%);
+      opacity: 0;
+      animation: fadeIn 0.4s ease-in-out forwards;
+    }
+    .no-messages-header {
+      position: absolute;
+      bottom: 6vh;
+      left: 50%;
+      transform: translate(-50%, -120%);
+      animation: fadeIn 0.4s ease-in-out forwards;
+      color: var(--secondaryLightHover);
+    }
+  }
+
+  .chat-input-container {
+    .chat-input-text-area-styles {
+      border: 0px solid transparent;
+      border-top: 1px solid var(--secondaryLightHover);
+      border-radius: 0px;
+      box-shadow: 0 4px 12px rgba(131, 123, 123, 0.3);
+    }
+  }
+}
+.agent-chat-open {
+  height: 75vh;
+  width: 30vw;
+  opacity: 1;
+  pointer-events: all;
+}
+.agent-chat-closed {
+  height: 0vh;
+  width: 0vw;
+  opacity: 0;
+  pointer-events: none;
+}
+
+// BUTTON
+.agent-chat-button-container {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 999999;
+
+  .agent-chat-button {
+    border: 0px solid var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: var(--primaryDark);
+    color: var(--text-w);
+    padding: 12px;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+
+    &:hover {
+      transform: scale(1.08);
+      background-color: var(--primaryDarkHover);
+    }
+
+    &:active {
+      transform: scale(1);
+    }
+
+    .agent-chat-icon {
+      font-size: 32px;
+      color: var(--text-w);
+    }
+  }
+}

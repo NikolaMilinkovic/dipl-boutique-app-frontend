@@ -12,6 +12,7 @@ import { ModalsContextProvider } from './modals/modals-context-provider';
 import { NewOrderContextProvider } from './new-order-context';
 import OrdersContextProvider from './orders-context';
 import { EditOrderDrawerModalProvider } from './modals/edit-order-modal-context';
+import { AgentContextProvider } from './agent-context';
 
 interface ContextChildrenType {
   children: ReactNode;
@@ -33,7 +34,9 @@ const ContextProvider: React.FC<ContextChildrenType> = ({ children }) => {
                           <NewOrderContextProvider>
                             <EditOrderDrawerModalProvider>
                               <OrdersContextProvider>
-                                {children}
+                                <AgentContextProvider>
+                                  {children}
+                                </AgentContextProvider>
                               </OrdersContextProvider>
                             </EditOrderDrawerModalProvider>
                           </NewOrderContextProvider>

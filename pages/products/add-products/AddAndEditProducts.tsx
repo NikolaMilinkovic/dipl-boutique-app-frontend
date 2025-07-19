@@ -4,7 +4,6 @@ import './addAndEditProducts.scss';
 import ProductsList from '../../../components/lists/products-list/ProductsList';
 
 function AddAndEditProducts() {
-  const [isExpanded, setIsExpanded] = useState(false);
   return (
     <>
       <section
@@ -16,12 +15,10 @@ function AddAndEditProducts() {
           paddingRight: '3rem',
         }}
       >
-        <AddProduct isExpanded={isExpanded} setIsExpanded={setIsExpanded} />
+        <AddProduct />
         <div
           style={{
-            position: isExpanded ? 'absolute' : 'unset',
-            left: isExpanded ? '100vw' : '',
-            transform: isExpanded ? 'translateX(50vw)' : 'translateX(0)',
+            transform: 'translateX(0)',
             transition: 'transform 0.3s ease',
             display: 'flex',
             flex: 1,

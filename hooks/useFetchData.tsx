@@ -1,8 +1,10 @@
 import { notifyError } from '../components/util-components/Notify';
 import { useAuth } from '../store/auth-context';
+import { useUser } from '../store/user-context';
 
 export function useFetchData() {
   const { token, logout } = useAuth();
+  const { setUser } = useUser();
 
   async function fetchWithBodyData(api: string, data: any, method = 'POST') {
     try {
@@ -67,7 +69,9 @@ export function useFetchData() {
   async function fetchData(api: string, method: string = 'GET') {
     try {
       if (token === null)
-        return notifyError('Auth token nedostaje kako bi se izvršio fetch.');
+        return notifyError(
+          'Auth token is required for talking with backend services.',
+        );
 
       const response = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/${api}`,
@@ -97,5 +101,44 @@ export function useFetchData() {
     }
   }
 
-  return { fetchData, handleFetchingWithFormData, fetchWithBodyData };
+  async function fetchUserData() {
+    try {
+      if (token === null)
+        return notifyError(
+          'Auth token is required for talking with backend services.',
+        );
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/user/get`,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+            'Cache-Control': 'no-cache',
+          },
+        },
+      );
+
+      if (!response.ok) {
+        if (response.status === 401) return logout();
+        const parsedResponse = await response.json();
+        notifyError(parsedResponse?.message);
+        return false;
+      }
+
+      const data = await response.json();
+      setUser(data);
+    } catch (error) {
+      console.error('There was an error while fetching data: ', error);
+      notifyError('Error while fetching data');
+      return false;
+    }
+  }
+
+  return {
+    fetchData,
+    handleFetchingWithFormData,
+    fetchWithBodyData,
+    fetchUserData,
+  };
 }

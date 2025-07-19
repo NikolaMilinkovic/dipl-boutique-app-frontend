@@ -6,7 +6,7 @@ import {
   useContext,
 } from 'react';
 import { io, Socket } from 'socket.io-client';
-import { betterConsoleLog, betterErrorLog } from '../util-methods/log-methods';
+import { betterErrorLog } from '../util-methods/log-methods';
 import {
   notifySuccess,
   notifyWarrning,
@@ -52,22 +52,18 @@ export const SocketContextProvider: React.FC<SocketProviderProps> = ({
 
     newSocket.on('connect', () => {
       notifySuccess('Connected to the server');
-      console.log('> Connected to the server');
     });
 
     newSocket.on('reconnect', (attempt) => {
-      betterConsoleLog('> SOCKET:', `> Reconnected after ${attempt} attempts`);
       notifySuccess('> Reconnected!');
     });
 
     newSocket.on('disconnect', (reason) => {
       notifyWarrning('Disconnected from the server..');
-      betterErrorLog('> SOCKET disconnected:', reason);
     });
 
     newSocket.on('connect_error', (err) => {
       notifyWarrning('Error connecting to the server..');
-      betterErrorLog('> SOCKET connection error:', err);
     });
 
     newSocket.on('reconnect_failed', (err) => {
