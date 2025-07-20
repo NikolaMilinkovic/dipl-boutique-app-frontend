@@ -54,7 +54,11 @@ function AgentChatComponent() {
 
         {/* CONSTROLS */}
         <div className="chat-controls">
-          <button onClick={resetChat} className="chat-controls-button">
+          <button
+            onClick={resetChat}
+            className="chat-controls-button"
+            title="Clear chat"
+          >
             <MdDeleteOutline />
           </button>
         </div>

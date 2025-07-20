@@ -20,7 +20,7 @@ type AuthorRole = (typeof AuthorValues)[number];
 export type MessageTypes = {
   author: AuthorRole;
   role: 'user' | 'assistant' | 'function' | 'system';
-  content: string | null;
+  content: string;
   function_call?: { name: string; arguments: string };
 };
 
@@ -66,10 +66,10 @@ export function AgentContextProvider({ children }: AgentProviderProps) {
   function resetChat() {
     setMessages([]);
   }
+
   useEffect(() => {
-    if (!user) {
-      resetChat();
-    }
+    const user = localStorage.getItem('user');
+    if (!user) resetChat();
   }, [user]);
 
   async function handleNewUserQuery() {
@@ -90,7 +90,7 @@ export function AgentContextProvider({ children }: AgentProviderProps) {
 
     // Send as authenticated user
     try {
-      const updatedMessages = [...messages, newMsg];
+      const updatedMessages = [...messages, newMsg, thinkingMsg];
       const response = await fetchWithBodyData('agent/message', {
         messages: updatedMessages,
         token: token || null,
