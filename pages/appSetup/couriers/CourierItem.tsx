@@ -116,6 +116,7 @@ function CourierItem({ data }: { data: CourierTypes }) {
       {showEdit ? (
         <form className="mainInputsContainer" action={updateSupplierHandler}>
           <InputFieldBorderless
+            customClass="courier-item-input"
             label="Courier name"
             inputText={newName}
             setInputText={setNewName}
@@ -126,6 +127,7 @@ function CourierItem({ data }: { data: CourierTypes }) {
             }}
           />
           <InputFieldBorderless
+            customClass="courier-item-input"
             label="Courier price"
             inputText={newPrice}
             setInputText={setNewPrice}

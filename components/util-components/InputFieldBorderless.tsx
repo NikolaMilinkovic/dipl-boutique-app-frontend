@@ -12,6 +12,7 @@ interface InputFieldBorderlessProps {
   setInputText: (text: string) => void;
   backgroundColor?: string;
   onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
+  customClass?: string;
 }
 
 const InputFieldBorderless = forwardRef<
@@ -29,6 +30,7 @@ const InputFieldBorderless = forwardRef<
       setInputText,
       backgroundColor,
       onClick,
+      customClass,
     },
     ref,
   ) => {
@@ -52,7 +54,7 @@ const InputFieldBorderless = forwardRef<
 
     return (
       <div
-        className={`input-wrapper-borderless ${inputTextDefault ? 'has-value' : ''}`}
+        className={`input-wrapper-borderless ${inputTextDefault ? 'has-value' : ''} ${customClass}`}
         style={{ '--label-bg': backgroundColorDefault } as React.CSSProperties}
         onClick={onClick}
       >

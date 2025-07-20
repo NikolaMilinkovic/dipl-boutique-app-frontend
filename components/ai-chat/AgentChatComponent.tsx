@@ -1,4 +1,10 @@
-import { MdClose, MdDeleteOutline, MdSupportAgent } from 'react-icons/md';
+import {
+  MdClose,
+  MdDeleteOutline,
+  MdMic,
+  MdMicOff,
+  MdSupportAgent,
+} from 'react-icons/md';
 import './agentChatComponent.scss';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useAgent } from '../../store/agent-context';
@@ -12,6 +18,7 @@ function AgentChatComponent() {
   const chatboxRef = useRef<HTMLDivElement | null>(null);
   const textAreaRef = useRef<{ focus: () => void }>(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [isTtsActive, setIsTtsActive] = useState(false);
   function handleClick() {
     if (isOpen === false) {
       textAreaRef.current?.focus();
@@ -24,6 +31,23 @@ function AgentChatComponent() {
       chatboxRef.current.scrollTop = chatboxRef.current.scrollHeight;
     }
   }, []);
+
+  // KEY LISTENER
+  useEffect(() => {
+    if (!isOpen) return;
+
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Escape') {
+        handleClick();
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen]);
 
   useEffect(() => {
     scrollToBottom();
@@ -55,6 +79,13 @@ function AgentChatComponent() {
         {/* CONSTROLS */}
         <div className="chat-controls">
           <button
+            onClick={() => setIsTtsActive((prev) => !prev)}
+            className="chat-controls-button"
+            title="Read messages"
+          >
+            {isTtsActive ? <MdMicOff /> : <MdMic />}
+          </button>
+          <button
             onClick={resetChat}
             className="chat-controls-button"
             title="Clear chat"
@@ -68,6 +99,7 @@ function AgentChatComponent() {
           {messages.map((message, index) =>
             message.author === 'AI' ? (
               <AiMessage
+                tts={isTtsActive}
                 key={`ai-message-${index}`}
                 data={message.content}
                 onComplete={scrollToBottom}

@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import './aiMessage.scss';
+import { TextToSpeech } from '../message-util-components/TextToSpeech';
 
-function AiMessage({ data, onComplete }) {
+function AiMessage({ data, onComplete, tts }) {
   const [text, setText] = useState('');
   const speed = 10;
 
@@ -83,13 +84,31 @@ function AiMessage({ data, onComplete }) {
   };
 
   // Split text into lines and render each line with bold formatting
-  const textWithLineBreaks = text.split('\n').map((line, index) => (
-    <p className="p-ai" key={index}>
-      {renderTextWithBoldAndLinks(line)}
-    </p>
-  ));
+  const textWithLineBreaks = text.split('\n').map((line, index) => {
+    if (line.trim() === '---') {
+      // Render horizontal rule instead of paragraph
+      return (
+        <hr
+          key={`hr-${index}`}
+          style={{ marginTop: '1rem', marginBottom: '1rem' }}
+        />
+      );
+    }
 
-  return <div className="message-bubble from-ai">{textWithLineBreaks}</div>;
+    return (
+      <p className="p-ai" key={index}>
+        {renderTextWithBoldAndLinks(line)}
+      </p>
+    );
+  });
+
+  return (
+    <div className="message-bubble from-ai fade">
+      <TextToSpeech autoplay={tts} rawText={text}>
+        {textWithLineBreaks}
+      </TextToSpeech>
+    </div>
+  );
 }
 
 export default AiMessage;

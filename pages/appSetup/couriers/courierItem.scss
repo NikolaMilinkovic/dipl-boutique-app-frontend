@@ -45,11 +45,17 @@
     display: flex;
     gap: 1rem;
     padding: 1rem 0rem;
+    justify-content: space-between;
+
+    .courier-item-input {
+      max-width: 140px;
+    }
 
     #color-input-field {
       display: flex;
       border-bottom: 1px solid var(--secondaryLight);
       font-size: 16px;
+      max-width: 100px;
     }
 
     .buttons {

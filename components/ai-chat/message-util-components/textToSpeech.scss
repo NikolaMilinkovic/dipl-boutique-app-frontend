@@ -1,0 +1,30 @@
+@use '../../../global/index.scss' as *;
+@use '../../../global/colors.scss' as *;
+
+.tts-wrapper {
+  position: relative;
+
+  .tts-controls-wrapper {
+    position: absolute;
+    right: -50px;
+    top: 50%;
+    transform: translate(0%, -50%);
+
+    .tts-btn {
+      border: none;
+      color: var(--secondaryLightHover);
+      cursor: pointer;
+      padding: 6px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &:hover {
+        background-color: var(--secondaryLight);
+        color: var(--primaryDark);
+        transform: scale(1.1);
+      }
+    }
+  }
+}
