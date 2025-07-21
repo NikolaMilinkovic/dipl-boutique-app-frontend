@@ -1,6 +1,6 @@
 .batch-controls-wrapper {
   padding: 8px;
-  background-color: var(--text-w);
+  background-color: var(--white);
   display: flex;
   flex-direction: row-reverse;
   gap: 10px;
@@ -29,10 +29,11 @@
   height: 40px;
   font-size: 14px;
   border: none;
-  background-color: var(--primaryLight);
+  background-color: var(--secondaryLight);
 
   &:hover {
     opacity: 0.8;
+    background-color: var(--secondaryLightHover);
   }
 
   &.danger {

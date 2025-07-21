@@ -7,6 +7,7 @@ import React, {
 } from 'react';
 import './edit-order-modal-context-styles.scss';
 import { OrderTypes } from '../../global/types';
+import EditOrder from '../../pages/orders/edit-order/EditOrder';
 
 type DrawerContent = ReactNode;
 
@@ -79,13 +80,7 @@ export const EditOrderDrawerModalProvider: React.FC<{
             className={`edit-order-drawer ${isVisible ? 'show-drawer' : 'hide-drawer'}`}
             onClick={(e) => e.stopPropagation()}
           >
-            {editedOrder && (
-              <p>
-                {editedOrder._id} {editedOrder.buyer.name}
-              </p>
-            )}
-            <p>This is the edit order component</p>
-            {/* <EditOrder/> */}
+            {editedOrder && <EditOrder order={editedOrder} />}
           </div>
         </div>
       )}

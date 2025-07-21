@@ -1,0 +1,43 @@
+@use '../../../global/index.scss' as *;
+@use '../../../global/colors.scss' as *;
+
+.edit-order-section {
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  overflow: scroll;
+  overflow-x: hidden;
+  height: 100vh;
+  overscroll-behavior: contain;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--primaryDark);
+    border-radius: 4px;
+    transition: background 0.3s ease;
+
+    &:hover {
+      background: color-mix(in srgb, var(--primaryDark) 80%, black 20%);
+    }
+  }
+
+  .edit-order-buyer-information-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+    border-radius: 6px;
+
+    .edit-order-delivery-note-input {
+      // grid-column: span 2;
+    }
+  }
+}

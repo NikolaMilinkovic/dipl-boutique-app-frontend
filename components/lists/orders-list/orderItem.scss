@@ -110,7 +110,10 @@
   }
 
   &:hover {
-    background-color: var(--alternatingBackgroundColor);
+    background-color: var(--primaryDark);
+    > * {
+      color: var(--white) !important;
+    }
   }
 }
 .order-item-control-highlighted-btn {
