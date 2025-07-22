@@ -6,7 +6,7 @@ import React, {
   useState,
 } from 'react';
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
-import './new-order-step-accordion.scss';
+import './step-accordion.scss';
 
 export interface AccordionRef {
   open: () => void;
@@ -19,7 +19,7 @@ interface AccordionProps {
   id?: string;
 }
 
-const NewOrderStepAccordion = forwardRef<AccordionRef, AccordionProps>(
+const StepAccordion = forwardRef<AccordionRef, AccordionProps>(
   ({ title, children, initialOpen, id }, ref) => {
     const [isOpen, setIsOpen] = useState(initialOpen ?? false);
     const contentRef = useRef<HTMLDivElement>(null);
@@ -59,4 +59,4 @@ const NewOrderStepAccordion = forwardRef<AccordionRef, AccordionProps>(
   },
 );
 
-export default NewOrderStepAccordion;
+export default StepAccordion;

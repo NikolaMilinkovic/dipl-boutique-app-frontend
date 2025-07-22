@@ -2,7 +2,7 @@ import { Tab, Tabs } from '../../components/tabs/Tabs';
 import ProductsList from '../../components/lists/products-list/ProductsList';
 import './ordersManager.scss';
 import { useEffect, useRef, useState } from 'react';
-import NewOrderStepAccordion from '../../components/accordion/new-order-step-accordion';
+import StepAccordion from '../../components/accordion/step-accordion';
 import SelectedItemsList from './new-order-components/step-1/SelectedItemsList';
 import ColorSizeSelectorsList from './new-order-components/step-2/ColorSizeSelectorList';
 import BuyerInformationInputs from './new-order-components/step-3/BuyerInformationInputs';
@@ -11,6 +11,7 @@ import NewOrderOverview from './new-order-components/step-5/NewOrderOverview';
 import OrdersList from '../../components/lists/orders-list/OrdersList';
 import { OrderTypes } from '../../global/types';
 import { useOrders } from '../../store/orders-context';
+import { useNewOrder } from '../../store/new-order-context';
 
 export interface AccordionRef {
   open: () => void;
@@ -24,6 +25,11 @@ function OrdersManager() {
   const step4Ref = useRef<AccordionRef>(null);
   const step5Ref = useRef<AccordionRef>(null);
   const buyerProfileImageRef = useRef<{ resetImage: () => void }>(null);
+  const {
+    newOrderData,
+    updateProductColorByIndexHandler,
+    updateProductSizeByIndexHandler,
+  } = useNewOrder();
 
   function onNextStep(
     closeRef: { current: { close?: () => void } | null },
@@ -72,7 +78,7 @@ function OrdersManager() {
             }}
           >
             {/* STEP 1 - ITEMS LIST */}
-            <NewOrderStepAccordion
+            <StepAccordion
               title="Selected products"
               ref={step1Ref}
               initialOpen={true}
@@ -81,46 +87,45 @@ function OrdersManager() {
               <SelectedItemsList
                 onNext={() => onNextStep(step1Ref, step2Ref, 'step-1')}
               />
-            </NewOrderStepAccordion>
+            </StepAccordion>
 
             {/* STEP 2 - COLOR SIZE SELECTORS */}
-            <NewOrderStepAccordion
-              title="Colors and sizes"
-              ref={step2Ref}
-              id="step-2"
-            >
+            <StepAccordion title="Colors and sizes" ref={step2Ref} id="step-2">
               <ColorSizeSelectorsList
+                orderData={newOrderData}
+                updateProductColorByIndexHandler={
+                  updateProductColorByIndexHandler
+                }
+                updateProductSizeByIndexHandler={
+                  updateProductSizeByIndexHandler
+                }
                 onNext={() => onNextStep(step2Ref, step3Ref, 'step-2')}
               />
-            </NewOrderStepAccordion>
+            </StepAccordion>
 
             {/* STEP 3 - BUYER INFORMATION INPUTS */}
-            <NewOrderStepAccordion
-              title="Buyer information"
-              ref={step3Ref}
-              id="step-3"
-            >
+            <StepAccordion title="Buyer information" ref={step3Ref} id="step-3">
               <BuyerInformationInputs
                 onNext={() => onNextStep(step3Ref, step4Ref, 'step-3')}
                 ref={buyerProfileImageRef}
               />
-            </NewOrderStepAccordion>
+            </StepAccordion>
 
             {/* STEP 4 - COURIER SELECTOR */}
-            <NewOrderStepAccordion title="Courier" ref={step4Ref} id="step-4">
+            <StepAccordion title="Courier" ref={step4Ref} id="step-4">
               <CourierSelection
                 onNext={() => onNextStep(step4Ref, step5Ref, 'step-4')}
               />
-            </NewOrderStepAccordion>
+            </StepAccordion>
 
             {/* STEP 5 - ORDER OVERVIEW */}
-            <NewOrderStepAccordion
+            <StepAccordion
               title="New order overview"
               ref={step5Ref}
               id="step-5"
             >
               <NewOrderOverview onReset={onReset} />
-            </NewOrderStepAccordion>
+            </StepAccordion>
           </div>
         </section>
       </Tab>

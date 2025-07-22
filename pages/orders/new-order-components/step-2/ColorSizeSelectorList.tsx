@@ -1,26 +1,32 @@
 import './colorSizeSelectorList.scss';
 import { notifyError } from '../../../../components/util-components/Notify';
-import { useNewOrder } from '../../../../store/new-order-context';
 import Button from '../../../../components/util-components/Button';
 import ColorSizeSelectorItem from './ColorSizeSelectorItem';
+import { OrderTypes } from '../../../../global/types';
 
 interface PropTypes {
   onNext: () => void;
+  orderData: any;
+  updateProductColorByIndexHandler: any;
+  updateProductSizeByIndexHandler: any;
 }
 
-function ColorSizeSelectorsList({ onNext }: PropTypes) {
-  const { newOrderData } = useNewOrder();
-
+function ColorSizeSelectorsList({
+  onNext,
+  orderData,
+  updateProductColorByIndexHandler,
+  updateProductSizeByIndexHandler,
+}: PropTypes) {
   function handleOnNext() {
-    if (newOrderData.products.length === 0)
+    if (orderData.products.length === 0)
       return notifyError('At least one product is required per order');
 
-    const missingColor = newOrderData.products.some(
+    const missingColor = orderData.products.some(
       (order) => order.selectedColor === '',
     );
     if (missingColor) return notifyError('Color is required for every product');
 
-    const productsWithSizes = newOrderData.products.filter(
+    const productsWithSizes = orderData.products.filter(
       (p) => 'selectedSize' in p,
     );
     const missingSize = productsWithSizes.some(
@@ -36,12 +42,19 @@ function ColorSizeSelectorsList({ onNext }: PropTypes) {
   return (
     <div className="color-size-selector-container">
       <div className="color-size-selector-list">
-        {newOrderData.products.map((product, index) => (
+        {orderData.products.map((product, index) => (
           <div
             key={`${index}-${product.itemReference}`}
             className="color-size-selector-buttons-wrapper"
           >
-            <ColorSizeSelectorItem index={index} product={product} />
+            <ColorSizeSelectorItem
+              index={index}
+              product={product}
+              updateProductColorByIndexHandler={
+                updateProductColorByIndexHandler
+              }
+              updateProductSizeByIndexHandler={updateProductSizeByIndexHandler}
+            />
           </div>
         ))}
       </div>

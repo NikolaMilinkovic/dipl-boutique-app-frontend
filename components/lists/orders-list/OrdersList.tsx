@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react';
 import './ordersList.scss';
 import { OrderTypes } from '../../../global/types';
 import { useFetchData } from '../../../hooks/useFetchData';
-import { notifySuccess } from '../../util-components/Notify';
+import { notifyError, notifySuccess } from '../../util-components/Notify';
 import BatchModeOrderControlls from './BatchModeOrderControls';
 import OrderItem from './OrderItem';
 import AnimatedList from '../AnimatedList';
+import { useConfirmationModal } from '../../../store/modals/confirmation-modal-context';
 // setEditedOrder
 const OrdersList = ({ data }) => {
   const [editedOrder, setEditedOrder] = useState<OrderTypes | null>(null);
@@ -14,6 +15,7 @@ const OrdersList = ({ data }) => {
   const [selectedOrders, setSelectedOrders] = useState<OrderTypes[]>([]);
   const [isAllSelected, setIsAllSelected] = useState(false);
   const [longPressActivated, setLongPressActivated] = useState(false);
+  const { showConfirmation } = useConfirmationModal();
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -57,26 +59,25 @@ const OrdersList = ({ data }) => {
   }
 
   async function removeBatchOrdersHandler() {
-    notifySuccess('> Deleting orders');
-    // showModal(async () => {
-    //   if (!token) return;
+    showConfirmation(async () => {
+      notifySuccess('> Deleting orders');
+      // showModal(async () => {
+      const ids = selectedOrders.map((order) => order._id);
+      const response = await fetchWithBodyData(
+        'orders/remove-orders-batch',
+        ids,
+        'DELETE',
+      );
 
-    //   const ids = selectedOrders.map((order) => order._id);
-    //   const response = await fetchWithBodyData(
-    //     'orders/remove-orders-batch',
-    //     ids,
-    //     'DELETE',
-    //   );
+      if (!response) {
+        notifyError('There was an error while deleting orders');
+        return;
+      }
 
-    //   if (!response) {
-    //     notifyError('There was an error while deleting orders');
-    //     return;
-    //   }
-
-    //   const result = await response.json();
-    //   notifySuccess(result.message);
-    //   if (response.ok) resetBatch();
-    // });
+      const result = await response.json();
+      notifySuccess(result.message);
+      if (response.ok) resetBatch();
+    }, 'Are you sure you want to delete these orders?');
   }
 
   function selectAllOrdarsHandler() {
@@ -95,13 +96,6 @@ const OrdersList = ({ data }) => {
 
   return (
     <div className="order-items-wrapper">
-      {/* <ConfirmationModal
-        isVisible={isModalVisible}
-        onConfirm={confirmAction}
-        onCancel={hideModal}
-        message="Da li sigurno želiš da obrišeš selektovane porudžbine?"
-      /> */}
-
       <p className="order-items-header">{getTotalOrdersCount()}</p>
       {batchMode && (
         <BatchModeOrderControlls

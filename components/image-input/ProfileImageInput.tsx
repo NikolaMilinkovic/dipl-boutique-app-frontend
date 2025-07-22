@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import './profileImageInput.scss';
 
-function ProfileImageInput({ reference, rerenderkey, onImageUpload }) {
-  const [imageDisplay, setImageDisplay] = useState('');
+function ProfileImageInput({
+  reference,
+  rerenderkey,
+  onImageUpload,
+  customClass = '',
+  defaultDisplayImageUri = '',
+}) {
+  const [imageDisplay, setImageDisplay] = useState(defaultDisplayImageUri);
   const [dragActive, setDragActive] = useState(false);
 
   useEffect(() => {
@@ -23,7 +29,7 @@ function ProfileImageInput({ reference, rerenderkey, onImageUpload }) {
   }, []);
 
   useEffect(() => {
-    setImageDisplay('');
+    setImageDisplay(defaultDisplayImageUri);
     if (reference.current) reference.current.value = '';
   }, [rerenderkey]);
 
@@ -66,7 +72,7 @@ function ProfileImageInput({ reference, rerenderkey, onImageUpload }) {
       <div className="profile-image-input-container">
         <button
           type="button"
-          className="profile-image-input-button"
+          className={`profile-image-input-button ${customClass}`}
           onClick={() => reference.current?.click()}
           onDrop={handleDrop}
           onDragOver={handleDragOver}

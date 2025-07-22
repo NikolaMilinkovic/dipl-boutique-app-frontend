@@ -18,18 +18,11 @@ interface CourierSelectionPropTypes {
 }
 
 function CourierSelection({ onNext }: CourierSelectionPropTypes) {
-  const { couriers } = useCouriers();
+  const { getCouriersDropdownItems } = useCouriers();
   const { newOrderData, setNewOrderData } = useNewOrder();
   const [dropdownData, setDropdownData] = useState<DropdownOptionType[] | []>(
-    [],
+    getCouriersDropdownItems(),
   );
-  useEffect(() => {
-    const dropdownData = couriers.map((courier) => ({
-      label: courier.name,
-      value: courier.deliveryPrice as string,
-    }));
-    setDropdownData(dropdownData);
-  }, [couriers]);
   function handleOnNext() {
     if (
       newOrderData.courier.deliveryPrice == 0 ||

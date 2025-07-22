@@ -1,26 +1,22 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { useProducts } from '../../../store/products-context';
-import AnimatedList from '../AnimatedList';
-import ProductDisplayItem from '../../../pages/products/ProductDisplayItem';
-import InputField from '../../util-components/InputField';
-import Button from '../../util-components/Button';
-import './productsList.scss';
-import { useDrawerModal } from '../../../store/modals/drawer-modal-contex';
-import ProductFilters from '../../filters/ProductFilters';
-import { searchProducts } from '../../../util-methods/productFilterMethods';
-import { SearchParamsTypes } from '../../../global/types';
-import { useNewOrder } from '../../../store/new-order-context';
+import { useProducts } from '../../../../store/products-context';
+import { useDrawerModal } from '../../../../store/modals/drawer-modal-contex';
+import { SearchParamsTypes } from '../../../../global/types';
+import ProductFilters from '../../../../components/filters/ProductFilters';
+import { searchProducts } from '../../../../util-methods/productFilterMethods';
+import InputField from '../../../../components/util-components/InputField';
+import Button from '../../../../components/util-components/Button';
+import AnimatedList from '../../../../components/lists/AnimatedList';
+import ProductDisplayItem from '../../../products/ProductDisplayItem';
+import './addProductList.scss';
+import { useAddProductModal } from './AddProductModal';
+import { useEditOrder } from '../../../../store/modals/edit-order-modal-context';
 
-function ProductsList({
-  showAddBtn = true,
-  showEditBtn = true,
-  showDeleteBtn = true,
-  styles = {},
-}) {
+function AddProductsList({ showAddBtn = true, styles = {}, onNext }) {
   const { products } = useProducts();
+  const { addProductHandler } = useEditOrder();
   const [searchTerm, setSearchTerm] = useState<string | number>('');
   const { openDrawer, updateDrawerContent, isDrawerOpen } = useDrawerModal();
-  const { addProductHandler } = useNewOrder();
   const [searchParams, setSearchParams] = useState<SearchParamsTypes>({
     available: true,
     soldOut: false,
@@ -80,9 +76,9 @@ function ProductsList({
         ...styles,
       }}
     >
-      <div className="product-list-filters-container">
+      <div className="add-product-list-filters-container">
         <InputField
-          backgroundColor="var(--primaryLight)"
+          backgroundColor="var(--white)"
           label="Search product"
           inputText={searchTerm}
           setInputText={setSearchTerm}
@@ -99,7 +95,7 @@ function ProductsList({
               JSON.stringify(searchParams),
             );
           }}
-          className="product-list-filter-btn"
+          className="add-product-list-filter-btn"
         />
       </div>
       {products.allProducts.length > 0 && (
@@ -109,8 +105,8 @@ function ProductsList({
             <ProductDisplayItem
               data={item}
               showAddBtn={showAddBtn}
-              showEditBtn={showEditBtn}
-              showDeleteBtn={showDeleteBtn}
+              showEditBtn={false}
+              showDeleteBtn={false}
               addProductHandler={addProductHandler}
             />
           )}
@@ -118,12 +114,20 @@ function ProductsList({
           noDataAlt="Infinity Boutique Logo"
           className="color-list-section"
           maxWidth="100%"
-          height="100%"
-          containerStyles={{ paddingBottom: '3rem' }}
+          height="60vh"
+          containerStyles={{
+            height: '60vh',
+            backgroundColor: 'var(--primaryLight)',
+          }}
         />
       )}
+      <Button
+        label="Pick colors and sizes"
+        onClick={onNext}
+        className="add-product-next-button"
+      />
     </div>
   );
 }
 
-export default React.memo(ProductsList);
+export default React.memo(AddProductsList);

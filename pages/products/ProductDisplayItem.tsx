@@ -21,13 +21,13 @@ import { useConfirmationModal } from '../../store/modals/confirmation-modal-cont
 import { useFetchData } from '../../hooks/useFetchData';
 import { useEditProductModal } from '../../store/modals/edit-product-modal-context';
 import { useImagePreviewModal } from '../../store/modals/image-preview-modal-context';
-import { useNewOrder } from '../../store/new-order-context';
 
 interface ProductDisplayItemTypes {
   data: PurseTypes | DressTypes;
   showAddBtn: boolean;
   showEditBtn: boolean;
   showDeleteBtn: boolean;
+  addProductHandler: (product: ProductTypes) => void;
 }
 
 function ProductDisplayItem({
@@ -35,6 +35,7 @@ function ProductDisplayItem({
   showAddBtn = true,
   showEditBtn = true,
   showDeleteBtn = true,
+  addProductHandler,
 }: ProductDisplayItemTypes) {
   const [onStock, setOnStock] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -42,7 +43,7 @@ function ProductDisplayItem({
   const { fetchWithBodyData, handleFetchingWithFormData } = useFetchData();
   const { showEditModal } = useEditProductModal();
   const { showImagePreview } = useImagePreviewModal();
-  const { addProductHandler } = useNewOrder();
+  // const { addProductHandler } = useNewOrder();
 
   function validateInput(updatedProduct): boolean {
     if (!updatedProduct.name) {

@@ -8,11 +8,15 @@ import React, {
 import { useFetchData } from '../hooks/useFetchData';
 import { useSocket } from './socket-context';
 import { notifyError } from '../components/util-components/Notify';
-import { betterErrorLog } from '../util-methods/log-methods';
+import { betterConsoleLog, betterErrorLog } from '../util-methods/log-methods';
 import { DressTypes, ProductTypes, PurseTypes } from '../global/types';
 import {
   DressStockDataDecrease,
+  DressStockDataIncrease,
+  increaseDressStock,
+  increasePurseStock,
   PurseStockDataDecrease,
+  PurseStockDataIncrease,
 } from '../util-methods/stockMethods';
 
 interface ProductsContextTypes {
@@ -56,7 +60,7 @@ export function ProductsContextProvider({ children }: ProductsProviderProps) {
   useEffect(() => {
     setProducts((prev) => ({
       ...prev,
-      allProducts: [...products.activeProducts, ...products.inactiveProducts],
+      allProducts: [...prev.activeProducts, ...prev.inactiveProducts],
     }));
   }, [products.activeProducts, products.inactiveProducts]);
 
@@ -219,6 +223,154 @@ export function ProductsContextProvider({ children }: ProductsProviderProps) {
     });
   }
 
+  function handleBatchStockDecrease(
+    data: DressStockDataDecrease | PurseStockDataDecrease,
+    setProducts: React.Dispatch<React.SetStateAction<ProductContextDataTypes>>,
+  ) {
+    const decrement = data.decrement || 1;
+
+    setProducts((prev) => {
+      const updateProductsArray = (products: ProductTypes[]) => {
+        return products.map((product) => {
+          const isDressUpdate =
+            'dressId' in data && data.dressId === product._id;
+          const isPurseUpdate =
+            'purseId' in data && data.purseId === product._id;
+
+          if (!isDressUpdate && !isPurseUpdate) return product;
+
+          const newProduct = {
+            ...product,
+            totalStock: Math.max(0, product.totalStock - decrement),
+          };
+
+          if ('sizeId' in data) {
+            // Dress update
+            newProduct.colors = newProduct.colors.map((color) =>
+              color._id === data.colorId
+                ? {
+                    ...color,
+                    sizes: color.sizes.map((size) =>
+                      size._id === data.sizeId
+                        ? {
+                            ...size,
+                            stock: Math.max(0, size.stock - decrement),
+                          }
+                        : size,
+                    ),
+                  }
+                : color,
+            );
+          } else {
+            // Purse update
+            newProduct.colors = newProduct.colors.map((color) =>
+              color._id === data.colorId
+                ? {
+                    ...color,
+                    stock: Math.max(0, color.stock - decrement),
+                  }
+                : color,
+            );
+          }
+
+          return newProduct;
+        });
+      };
+
+      return {
+        activeProducts: updateProductsArray(prev.activeProducts),
+        inactiveProducts: updateProductsArray(prev.inactiveProducts),
+        allProducts: prev.allProducts,
+      };
+    });
+  }
+
+  function handleStockIncrease(
+    data: DressStockDataIncrease | PurseStockDataIncrease,
+    setProducts: React.Dispatch<React.SetStateAction<ProductContextDataTypes>>,
+  ) {
+    console.log('> handleStockIncrease called');
+    betterConsoleLog('> data is', data);
+    setProducts((prev) => {
+      // Helper function to update products in an array
+      const updateProductsArray = (products: ProductTypes[]) => {
+        return products.map((product) => {
+          const isDressUpdate =
+            'dressId' in data && data.dressId === product._id;
+          const isPurseUpdate =
+            'purseId' in data && data.purseId === product._id;
+
+          if (!isDressUpdate && !isPurseUpdate) return product;
+
+          const increment = data.increment || 1;
+          const newProduct = {
+            ...product,
+            totalStock: product.totalStock + increment,
+          };
+
+          if ('sizeId' in data) {
+            // Dress update
+            newProduct.colors = newProduct.colors.map((color) =>
+              color._id === data.colorId
+                ? {
+                    ...color,
+                    sizes: color.sizes.map((size) =>
+                      size._id === data.sizeId
+                        ? { ...size, stock: size.stock + increment }
+                        : size,
+                    ),
+                  }
+                : color,
+            );
+          } else {
+            // Purse update
+            newProduct.colors = newProduct.colors.map((color) =>
+              color._id === data.colorId
+                ? {
+                    ...color,
+                    stock: color.stock + increment,
+                  }
+                : color,
+            );
+          }
+
+          return newProduct;
+        });
+      };
+
+      return {
+        activeProducts: updateProductsArray(prev.activeProducts),
+        inactiveProducts: updateProductsArray(prev.inactiveProducts),
+        allProducts: prev.allProducts,
+      };
+    });
+  }
+
+  const stockIncreaseHandler = (
+    data: DressStockDataIncrease | PurseStockDataIncrease,
+  ) => {
+    handleStockIncrease(data, setProducts);
+  };
+
+  interface BatchStockIncreaseData {
+    dresses: DressStockDataIncrease[];
+    purses: PurseStockDataIncrease[];
+  }
+  const batchStockIncreaseHandler = (data: BatchStockIncreaseData) => {
+    const { dresses = [], purses = [] } = data;
+    dresses.forEach((item) => handleStockIncrease(item, setProducts));
+    purses.forEach((item) => handleStockIncrease(item, setProducts));
+  };
+  interface BatchStockDecreaseData {
+    dresses: DressStockDataDecrease[];
+    purses: PurseStockDataDecrease[];
+  }
+  const batchStockDecreaseHandler = (data: BatchStockDecreaseData) => {
+    const { dresses = [], purses = [] } = data;
+    dresses.forEach((item) => handleBatchStockDecrease(item, setProducts));
+    purses.forEach((item) => handleBatchStockDecrease(item, setProducts));
+  };
+
   useEffect(() => {
     if (!socket) return;
     if (socket) {
@@ -227,6 +379,9 @@ export function ProductsContextProvider({ children }: ProductsProviderProps) {
       socket.on('productRemoved', handleRemoveProduct);
       socket.on('productUpdated', handleUpdateProduct);
       socket.on('handleProductStockDecrease', handleStockDecrease);
+      socket.on('handleProductStockIncrease', stockIncreaseHandler);
+      socket.on('batchStockIncrease', batchStockIncreaseHandler);
+      socket.on('batchStockDecrease', batchStockDecreaseHandler);
 
       return () => {
         socket.off('connect', handleConnect);
@@ -234,6 +389,9 @@ export function ProductsContextProvider({ children }: ProductsProviderProps) {
         socket.off('productRemoved', handleRemoveProduct);
         socket.off('productUpdated', handleUpdateProduct);
         socket.off('handleProductStockDecrease', handleStockDecrease);
+        socket.off('handleProductStockIncrease', stockIncreaseHandler);
+        socket.off('batchStockIncrease', batchStockIncreaseHandler);
+        socket.off('batchStockDecrease', batchStockDecreaseHandler);
       };
     }
   }, [socket]);

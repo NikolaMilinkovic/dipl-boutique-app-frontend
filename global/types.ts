@@ -182,7 +182,7 @@ export interface RadioButtonOption {
 export interface OrderTypes {
   _id: string;
   buyer: Buyer;
-  courier?: CourierTypes;
+  courier: CourierTypes;
   products: ProductTypes[];
   productsPrice: number;
   totalPrice: number;

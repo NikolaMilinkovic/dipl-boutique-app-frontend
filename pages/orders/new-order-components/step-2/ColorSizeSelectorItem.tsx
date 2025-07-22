@@ -1,12 +1,9 @@
 import './colorSizeSelectorItem.scss';
 import { useEffect, useState } from 'react';
-import { useNewOrder } from '../../../../store/new-order-context';
 import { MdExpandLess, MdExpandMore } from 'react-icons/md';
 import {
   DressColorTypes,
-  NewOrderData,
   Product,
-  ProductTypes,
   PurseColorTypes,
   RadioButtonOption,
 } from '../../../../global/types';
@@ -16,15 +13,17 @@ import RadioButtonsGroup from '../../../../components/radio-buttons/RadioButtons
 interface PropTypes {
   product: Product;
   index: number;
+  updateProductColorByIndexHandler: any;
+  updateProductSizeByIndexHandler: any;
 }
 
-function ColorSizeSelectorItem({ product, index }: PropTypes) {
+function ColorSizeSelectorItem({
+  product,
+  index,
+  updateProductColorByIndexHandler,
+  updateProductSizeByIndexHandler,
+}: PropTypes) {
   const [isExpanded, setIsExpanded] = useState(true);
-  const {
-    newOrderData,
-    updateProductColorByIndexHandler,
-    updateProductSizeByIndexHandler,
-  } = useNewOrder();
   const [productColors, setProductColors] = useState<
     (DressColorTypes | PurseColorTypes)[]
   >([]);

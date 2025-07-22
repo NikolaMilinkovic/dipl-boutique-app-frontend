@@ -76,45 +76,45 @@ export const decreaseDressStock = (
 // });
 // }
 
-interface DressStockDataIncrease {
-  dressId: string;
-  colorId: string;
-  sizeId: string;
-  increment: number;
-}
+// interface DressStockDataIncrease {
+//   dressId: string;
+//   colorId: string;
+//   sizeId: string;
+//   increment: number;
+// }
 
 // Increase stock for a specific dress, color, and size
-export const increaseDressStock = (
-  data: DressStockDataIncrease,
-  setActiveDresses: React.Dispatch<React.SetStateAction<DressTypes[]>>,
-) => {
-  setActiveDresses((prevDresses) => {
-    const updatedDresses = prevDresses.map((dress) => {
-      if (dress._id.toString() === data.dressId.toString()) {
-        return {
-          ...dress,
-          totalStock: dress.totalStock + 1,
-          colors: dress.colors.map((color) => {
-            if (color._id.toString() === data.colorId.toString()) {
-              return {
-                ...color,
-                sizes: color.sizes.map((size) => {
-                  if (size._id.toString() === data.sizeId.toString()) {
-                    return { ...size, stock: size.stock + 1 };
-                  }
-                  return size;
-                }),
-              };
-            }
-            return color;
-          }),
-        };
-      }
-      return dress;
-    });
-    return updatedDresses;
-  });
-};
+// export const increaseDressStock = (
+//   data: DressStockDataIncrease,
+//   setActiveDresses: React.Dispatch<React.SetStateAction<DressTypes[]>>,
+// ) => {
+//   setActiveDresses((prevDresses) => {
+//     const updatedDresses = prevDresses.map((dress) => {
+//       if (dress._id.toString() === data.dressId.toString()) {
+//         return {
+//           ...dress,
+//           totalStock: dress.totalStock + 1,
+//           colors: dress.colors.map((color) => {
+//             if (color._id.toString() === data.colorId.toString()) {
+//               return {
+//                 ...color,
+//                 sizes: color.sizes.map((size) => {
+//                   if (size._id.toString() === data.sizeId.toString()) {
+//                     return { ...size, stock: size.stock + 1 };
+//                   }
+//                   return size;
+//                 }),
+//               };
+//             }
+//             return color;
+//           }),
+//         };
+//       }
+//       return dress;
+//     });
+//     return updatedDresses;
+//   });
+// };
 
 export interface PurseStockDataDecrease {
   purseId: string;
@@ -151,11 +151,11 @@ export const decreasePurseStock = (
   );
 };
 
-interface PurseStockDataIncrease {
-  purseId: string;
-  colorId: string;
-  increment: number;
-}
+// interface PurseStockDataIncrease {
+//   purseId: string;
+//   colorId: string;
+//   increment: number;
+// }
 
 // Function to increase stock for a specific purse, color
 export const increasePurseStock = (
@@ -276,11 +276,11 @@ export const decreaseDressBatchStock = (
   });
 };
 
-interface PurseStockDataIncrease {
-  purseId: string;
-  colorId: string;
-  increment: number;
-}
+// interface PurseStockDataIncrease {
+//   purseId: string;
+//   colorId: string;
+//   increment: number;
+// }
 
 // Function to increase stock for multiple purses
 export const increasePurseBatchStock = (
@@ -359,18 +359,18 @@ export const decreasePurseBatchStock = (
   });
 };
 
-interface PurseStockDataIncrease {
+export interface PurseStockDataIncrease {
   purseId: string;
   colorId: string;
   increment: number;
 }
-interface DressStockDataIncrease {
+export interface DressStockDataIncrease {
   dressId: string;
   colorId: string;
   sizeId: string;
   increment: number;
 }
-interface DataArrPropTypes {
+export interface DataArrPropTypes {
   dresses: DressStockDataIncrease[];
   purses: PurseStockDataIncrease[];
 }

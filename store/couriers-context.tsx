@@ -12,9 +12,15 @@ import { betterErrorLog } from '../util-methods/log-methods';
 import { CourierTypes } from '../global/types';
 import { useAuth } from './auth-context';
 
+interface CourierDropdownItem {
+  label: string;
+  value: string;
+}
+
 interface CouriersContextTypes {
   couriers: CourierTypes[];
   setCouriers: React.Dispatch<React.SetStateAction<CourierTypes[]>>;
+  getCouriersDropdownItems: () => CourierDropdownItem[];
 }
 
 interface CouriersProviderProps {
@@ -24,6 +30,7 @@ interface CouriersProviderProps {
 export const CouriersContext = createContext<CouriersContextTypes>({
   couriers: [],
   setCouriers: () => {},
+  getCouriersDropdownItems: () => [],
 });
 
 export function CouriersContextProvider({ children }: CouriersProviderProps) {
@@ -50,6 +57,14 @@ export function CouriersContextProvider({ children }: CouriersProviderProps) {
   async function handleConnect() {
     if (!token) return logout();
     getCouriers();
+  }
+
+  function getCouriersDropdownItems() {
+    const dropdownData = couriers.map((courier) => ({
+      label: courier.name,
+      value: courier.deliveryPrice as string,
+    }));
+    return dropdownData;
   }
 
   useEffect(() => {
@@ -84,6 +99,7 @@ export function CouriersContextProvider({ children }: CouriersProviderProps) {
   const value: CouriersContextTypes = {
     couriers,
     setCouriers,
+    getCouriersDropdownItems,
   };
 
   return (

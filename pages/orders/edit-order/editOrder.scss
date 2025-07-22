@@ -30,14 +30,69 @@
     }
   }
 
+  // BUYER
   .edit-order-buyer-information-section {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1.2rem;
     border-radius: 6px;
-
-    .edit-order-delivery-note-input {
-      // grid-column: span 2;
+    .edit-order-profile-image-input {
+      height: 220px !important;
     }
+    .edit-order-buyer-information-right {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .edit-order-delivery-note-input {
+      grid-column: span 2;
+    }
+  }
+
+  // COURIER
+  .edit-order-courier-information-section,
+  .edit-order-products-information-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  // PRODUCTS
+  .edit-order-products-information-section {
+    .edit-order-products-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      padding: 1rem;
+      border: 1px solid var(--primaryDark);
+      max-height: 380px;
+      overflow: scroll;
+      overflow-x: hidden;
+      overscroll-behavior: contain;
+
+      &::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 4px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: var(--primaryDark);
+        border-radius: 4px;
+        transition: background 0.3s ease;
+
+        &:hover {
+          background: color-mix(in srgb, var(--primaryDark) 80%, black 20%);
+        }
+      }
+    }
+  }
+
+  .edit-order-controls-section {
+    display: flex;
+    gap: 0.5rem;
   }
 }

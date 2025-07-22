@@ -1,0 +1,21 @@
+.add-product-list-filters-container {
+  display: flex;
+  gap: 8px;
+
+  .add-product-list-filter-btn {
+    max-width: 220px;
+    height: 41px;
+  }
+}
+.add-product-animated-list-styles {
+  height: 60vh !important;
+}
+.add-product-next-button {
+  background-color: var(--secondaryLight);
+  color: var(--secondaryDark);
+  border: none;
+
+  &:hover {
+    background-color: var(--secondaryLightHover);
+  }
+}

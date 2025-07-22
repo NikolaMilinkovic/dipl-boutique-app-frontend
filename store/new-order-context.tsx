@@ -363,20 +363,3 @@ export function useNewOrder() {
     throw new Error('useNewOrder must be used within NewOrderContextProvider');
   return context;
 }
-
-//  {
-//           category: '',
-//           image: {
-//             imageName: '',
-//             uri: '',
-//           },
-//           itemReference: null,
-//           mongoDB_type: 'Dress',
-//           name: '',
-//           price: 0,
-//           selectedColor: '',
-//           selectedColorId: '',
-//           selectedSize: '',
-//           selectedSizeId: '',
-//           stockType: '',
-//         },
