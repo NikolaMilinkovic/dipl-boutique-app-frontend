@@ -4,6 +4,7 @@ import React, {
   useState,
   ReactNode,
   useEffect,
+  SetStateAction,
 } from 'react';
 import './edit-order-modal-context-styles.scss';
 import {
@@ -32,6 +33,10 @@ interface EditOrderDrawerModalContextType {
     index: number,
     selectedSizeObj: { _id: string; size: string },
   ) => void;
+  removedProducts: Product[];
+  setRemovedProducts: React.Dispatch<React.SetStateAction<Product[]>>;
+  newProducts: Product[];
+  setNewProducts: React.Dispatch<React.SetStateAction<Product[]>>;
 }
 
 const EditOrderDrawerModalContext = createContext<
@@ -53,6 +58,8 @@ export const EditOrderDrawerModalProvider: React.FC<{
   const [isVisible, setIsVisible] = useState(false);
   const [isRendered, setIsRendered] = useState(false);
   const [editedOrder, setEditedOrder] = useState<OrderTypes>(null);
+  const [removedProducts, setRemovedProducts] = useState<Product[]>([]);
+  const [newProducts, setNewProducts] = useState<Product[]>([]);
 
   const openDrawer = (order: OrderTypes) => {
     setEditedOrder(order);
@@ -102,12 +109,13 @@ export const EditOrderDrawerModalProvider: React.FC<{
 
     setEditedOrder((prev: any) => {
       if (!prev) return prev;
-
       return {
         ...prev,
         products: [...prev.products, fullProduct],
       };
     });
+
+    setNewProducts((prev) => [...prev, fullProduct]);
   };
 
   const updateProductColorByIndexHandler = (
@@ -128,6 +136,20 @@ export const EditOrderDrawerModalProvider: React.FC<{
         products: updatedProducts,
       };
     });
+
+    if (newProducts.length > 0) {
+      setNewProducts((prev) => {
+        const updatedNewProducts = [...prev];
+        if (updatedNewProducts[index]) {
+          updatedNewProducts[index] = {
+            ...updatedNewProducts[index],
+            selectedColor: selectedColorObj.color as string,
+            selectedColorId: selectedColorObj._id as string,
+          };
+        }
+        return updatedNewProducts;
+      });
+    }
   };
 
   const updateProductSizeByIndexHandler = (
@@ -148,9 +170,29 @@ export const EditOrderDrawerModalProvider: React.FC<{
         products: updatedProducts,
       };
     });
+
+    if (newProducts.length > 0) {
+      setNewProducts((prev) => {
+        const updatedNewProducts = [...prev];
+        if (updatedNewProducts[index]) {
+          updatedNewProducts[index] = {
+            ...updatedNewProducts[index],
+            selectedSize: selectedSizeObj.size,
+            selectedSizeId: selectedSizeObj._id,
+          };
+        }
+        return updatedNewProducts;
+      });
+    }
   };
 
   const removeProductHandler = (index: number) => {
+    // Add product to removed products
+    const productToRemove = editedOrder.products[index];
+    if (!productToRemove) return;
+    setRemovedProducts((prev) => [...prev, productToRemove as any]);
+
+    // Handle display
     setEditedOrder((prev) => {
       if (!prev) return prev;
       const updatedProducts = [...prev.products];
@@ -172,6 +214,10 @@ export const EditOrderDrawerModalProvider: React.FC<{
         removeProductHandler,
         updateProductColorByIndexHandler,
         updateProductSizeByIndexHandler,
+        removedProducts,
+        setRemovedProducts,
+        newProducts,
+        setNewProducts,
       }}
     >
       {children}

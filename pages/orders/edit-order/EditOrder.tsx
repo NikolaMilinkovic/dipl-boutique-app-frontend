@@ -17,6 +17,8 @@ import EditOrderProductDisplay from './components/EditOrderProductDisplay';
 import Button from '../../../components/util-components/Button';
 import { useAddProductModal } from './components/AddProductModal';
 import { useEditOrder } from '../../../store/modals/edit-order-modal-context';
+import Checkbox from '../../../components/checkbox/Checkbox';
+import { useAlertModal } from '../../../store/modals/alert-modal-context';
 
 interface EditOrderPropTypes {
   editedOrder: OrderTypes;
@@ -37,11 +39,16 @@ function EditOrder({
   );
   const imageInputRef = useRef(null);
   const [rerenderKey, setRerenderKey] = useState(0);
+  const { showAlert } = useAlertModal();
 
   const { openModal, closeModal } = useAddProductModal();
   function handleOnAddProduct() {
     openModal();
   }
+
+  useEffect(() => {
+    console.log(editedOrder.packed);
+  }, [editedOrder]);
 
   return (
     <>
@@ -191,9 +198,103 @@ function EditOrder({
 
           {/* OTHER */}
           <div className="edit-order-other-information-section">
-            {/* RESERVATION | PACKED */}
+            <h3>Other information</h3>
+            <br />
+
+            <div className="grid-1-1 gap-1">
+              {/* RESERVATION */}
+              <div>
+                <p>Reservation</p>
+                <hr />
+                <div className="edit-order-checkbox-section">
+                  <Checkbox
+                    label="Yes"
+                    checked={editedOrder.reservation}
+                    onCheckedChange={() =>
+                      setEditedOrder((prev) => ({ ...prev, reservation: true }))
+                    }
+                  />
+                  <Checkbox
+                    label="No"
+                    checked={!editedOrder.reservation}
+                    onCheckedChange={() =>
+                      setEditedOrder((prev) => ({
+                        ...prev,
+                        reservation: false,
+                      }))
+                    }
+                  />
+                </div>
+              </div>
+
+              {/* PACKED */}
+              <div>
+                <p>Packed</p>
+                <hr />
+                <div className="edit-order-checkbox-section">
+                  <Checkbox
+                    label="Yes"
+                    checked={editedOrder.packed}
+                    onCheckedChange={() =>
+                      setEditedOrder((prev) => ({ ...prev, packed: true }))
+                    }
+                  />
+                  <Checkbox
+                    label="No"
+                    checked={!editedOrder.packed}
+                    onCheckedChange={() =>
+                      setEditedOrder((prev) => ({ ...prev, packed: false }))
+                    }
+                  />
+                </div>
+              </div>
+            </div>
 
             {/* CENE */}
+            <p>Prices</p>
+            <hr style={{ marginBottom: '1rem' }} />
+            <div
+              className="new-order-other-information"
+              style={{ marginLeft: '0.5rem' }}
+            >
+              <div className="grid-1-1">
+                <p>Courier:</p>
+                <p>{editedOrder.courier.name}</p>
+              </div>
+              <div className="grid-1-1">
+                <p>Courier price:</p>
+                <p>{editedOrder.courier.deliveryPrice} rsd.</p>
+              </div>
+              <div className="grid-1-1">
+                <p>Products price:</p>
+                <p>{editedOrder.productsPrice} rsd.</p>
+              </div>
+              <div className="grid-1-1">
+                <p>Total price:</p>
+                <p>{editedOrder.totalPrice} rsd.</p>
+              </div>
+            </div>
+            <br />
+            <hr />
+
+            <div className="new-order-total-price-input-container">
+              <InputField
+                label="Custom price"
+                backgroundColor="var(--white)"
+                inputText={editedOrder.totalPrice.toString()}
+                setInputText={(value) => {
+                  if (isNaN(Number(value))) {
+                    showAlert('Please enter a valid number!');
+                    return;
+                  }
+                  setEditedOrder((prev) => ({
+                    ...prev,
+                    totalPrice: Number(value),
+                  }));
+                }}
+                showClearBtn={true}
+              />
+            </div>
           </div>
 
           {/* SAVE | CANCEL BTN */}

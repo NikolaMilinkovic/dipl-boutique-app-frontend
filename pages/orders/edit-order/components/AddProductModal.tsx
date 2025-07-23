@@ -41,6 +41,7 @@ export const AddProductModalProvider: React.FC<
 > = ({ children }) => {
   const {
     editedOrder,
+    newProducts,
     updateProductSizeByIndexHandler,
     updateProductColorByIndexHandler,
   } = useEditOrder();
@@ -127,6 +128,7 @@ export const AddProductModalProvider: React.FC<
                   updateProductColorByIndexHandler
                 }
                 orderData={editedOrder}
+                useAsEdit={true}
                 onNext={() => {
                   closeModal();
                 }}
