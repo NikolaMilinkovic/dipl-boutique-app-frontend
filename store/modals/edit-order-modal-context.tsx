@@ -21,10 +21,7 @@ import {
   notifyError,
   notifySuccess,
 } from '../../components/util-components/Notify';
-import {
-  betterConsoleLog,
-  betterErrorLog,
-} from '../../util-methods/log-methods';
+import { betterErrorLog } from '../../util-methods/log-methods';
 
 type DrawerContent = ReactNode;
 
@@ -71,12 +68,6 @@ export const EditOrderDrawerModalProvider: React.FC<{
   const [removedProducts, setRemovedProducts] = useState<Product[]>([]);
   const [newProducts, setNewProducts] = useState<Product[]>([]);
   const { handleFetchingWithFormData } = useFetchData();
-
-  useEffect(() => {
-    if (editedOrder && editedOrder.products) {
-      betterConsoleLog('> Products', editedOrder.products);
-    }
-  }, [editedOrder]);
 
   async function handleUpdateOrderWithFormData() {
     try {

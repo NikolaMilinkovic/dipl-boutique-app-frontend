@@ -2,7 +2,6 @@ import {
   notifyError,
   notifyWarrning,
 } from '../components/util-components/Notify';
-import { betterConsoleLog } from './log-methods';
 
 interface BuyerDataObjectTypes {
   name: string;
@@ -41,7 +40,6 @@ export const handleBuyerDataInputSort = async (
       return false;
     }
     const parsedResponse = await response.json();
-    betterConsoleLog('> parsed Response', parsedResponse);
     setNewOrderData((prev) => {
       const updated = {
         ...prev,

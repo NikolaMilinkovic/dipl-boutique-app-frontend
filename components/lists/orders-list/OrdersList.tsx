@@ -60,8 +60,6 @@ const OrdersList = ({ data }) => {
 
   async function removeBatchOrdersHandler() {
     showConfirmation(async () => {
-      notifySuccess('> Deleting orders');
-      // showModal(async () => {
       const ids = selectedOrders.map((order) => order._id);
       const response = await fetchWithBodyData(
         'orders/remove-orders-batch',

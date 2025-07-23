@@ -12,7 +12,6 @@ import ProfileImageInput from '../../../components/image-input/ProfileImageInput
 import TextArea from '../../../components/util-components/TextArea';
 import Dropdown from '../../../components/dropdowns/Dropdown';
 import { useCouriers } from '../../../store/couriers-context';
-import { betterConsoleLog } from '../../../util-methods/log-methods';
 import EditOrderProductDisplay from './components/EditOrderProductDisplay';
 import Button from '../../../components/util-components/Button';
 import { useAddProductModal } from './components/AddProductModal';
@@ -47,7 +46,6 @@ function EditOrder({
   }
 
   const handleImageUpload = (file: File) => {
-    console.log('Uploaded file:', file);
     setEditedOrder((prev) => ({
       ...prev,
       buyer: {

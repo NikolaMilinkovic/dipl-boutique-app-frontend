@@ -64,7 +64,7 @@ function ColorSizeSelectorsList({
   return (
     <div className="color-size-selector-container">
       <div className="color-size-selector-list">
-        {useAsEdit &&
+        {/* {useAsEdit &&
           newProducts.map((product, index) => (
             <div
               key={`${index}-${product.itemReference}`}
@@ -81,11 +81,13 @@ function ColorSizeSelectorsList({
                 }
               />
             </div>
-          ))}
+          ))} */}
         {!useAsEdit &&
+          orderData &&
+          orderData.products.length > 0 &&
           orderData.products.map((product, index) => (
             <div
-              key={`${index}-${product.itemReference}`}
+              key={`${index}-product-color-size-selector`}
               className="color-size-selector-buttons-wrapper"
             >
               <ColorSizeSelectorItem

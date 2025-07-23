@@ -188,7 +188,7 @@ export const increaseDressBatchStock = (
   data: DressStockDataIncrease[],
   setActiveDresses: React.Dispatch<React.SetStateAction<DressTypes[]>>,
 ) => {
-  console.log('> Increasing active dresses by 1 for multiple items');
+  // console.log('> Increasing active dresses by 1 for multiple items');
 
   setActiveDresses((prevDresses) => {
     // Loop over each dress ID in data array until no more IDs are left
@@ -234,7 +234,7 @@ export const decreaseDressBatchStock = (
   data: DressStockDataIncrease[],
   setActiveDresses: React.Dispatch<React.SetStateAction<DressTypes[]>>,
 ) => {
-  console.log('> Increasing active dresses by 1 for multiple items');
+  // console.log('> Increasing active dresses by 1 for multiple items');
 
   setActiveDresses((prevDresses) => {
     // Loop over each dress ID in data array until no more IDs are left
@@ -287,7 +287,7 @@ export const increasePurseBatchStock = (
   data: PurseStockDataIncrease[],
   setActivePurses: React.Dispatch<React.SetStateAction<PurseTypes[]>>,
 ) => {
-  console.log('> Increasing active purses by increments for multiple items');
+  // console.log('> Increasing active purses by increments for multiple items');
 
   setActivePurses((prevPurses) => {
     let remainingData = [...data]; // Create a copy to keep track of unprocessed IDs
@@ -325,7 +325,7 @@ export const decreasePurseBatchStock = (
   data: PurseStockDataIncrease[],
   setActivePurses: React.Dispatch<React.SetStateAction<PurseTypes[]>>,
 ) => {
-  console.log('> Increasing active purses by increments for multiple items');
+  // console.log('> Increasing active purses by increments for multiple items');
 
   setActivePurses((prevPurses) => {
     let remainingData = [...data]; // Create a copy to keep track of unprocessed IDs

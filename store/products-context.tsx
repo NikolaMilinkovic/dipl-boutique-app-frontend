@@ -8,13 +8,11 @@ import React, {
 import { useFetchData } from '../hooks/useFetchData';
 import { useSocket } from './socket-context';
 import { notifyError } from '../components/util-components/Notify';
-import { betterConsoleLog, betterErrorLog } from '../util-methods/log-methods';
+import { betterErrorLog } from '../util-methods/log-methods';
 import { DressTypes, ProductTypes, PurseTypes } from '../global/types';
 import {
   DressStockDataDecrease,
   DressStockDataIncrease,
-  increaseDressStock,
-  increasePurseStock,
   PurseStockDataDecrease,
   PurseStockDataIncrease,
 } from '../util-methods/stockMethods';
@@ -289,8 +287,6 @@ export function ProductsContextProvider({ children }: ProductsProviderProps) {
     data: DressStockDataIncrease | PurseStockDataIncrease,
     setProducts: React.Dispatch<React.SetStateAction<ProductContextDataTypes>>,
   ) {
-    console.log('> handleStockIncrease called');
-    betterConsoleLog('> data is', data);
     setProducts((prev) => {
       // Helper function to update products in an array
       const updateProductsArray = (products: ProductTypes[]) => {
@@ -357,7 +353,6 @@ export function ProductsContextProvider({ children }: ProductsProviderProps) {
     purses: PurseStockDataIncrease[];
   }
   const batchStockIncreaseHandler = (data: BatchStockIncreaseData) => {
-    betterConsoleLog('> batchStockIncreaseHandler called', data);
     const { dresses = [], purses = [] } = data;
     dresses.forEach((item) => handleStockIncrease(item, setProducts));
     purses.forEach((item) => handleStockIncrease(item, setProducts));
@@ -367,7 +362,6 @@ export function ProductsContextProvider({ children }: ProductsProviderProps) {
     purses: PurseStockDataDecrease[];
   }
   const batchStockDecreaseHandler = (data: BatchStockDecreaseData) => {
-    betterConsoleLog('> batchStockDecreaseHandler called', data);
     const { dresses = [], purses = [] } = data;
     dresses.forEach((item) => handleBatchStockDecrease(item, setProducts));
     purses.forEach((item) => handleBatchStockDecrease(item, setProducts));
