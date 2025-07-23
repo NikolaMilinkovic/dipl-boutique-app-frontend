@@ -16,6 +16,15 @@ import {
 } from '../../global/types';
 import EditOrder from '../../pages/orders/edit-order/EditOrder';
 import { AddProductModalProvider } from '../../pages/orders/edit-order/components/AddProductModal';
+import { useFetchData } from '../../hooks/useFetchData';
+import {
+  notifyError,
+  notifySuccess,
+} from '../../components/util-components/Notify';
+import {
+  betterConsoleLog,
+  betterErrorLog,
+} from '../../util-methods/log-methods';
 
 type DrawerContent = ReactNode;
 
@@ -37,6 +46,7 @@ interface EditOrderDrawerModalContextType {
   setRemovedProducts: React.Dispatch<React.SetStateAction<Product[]>>;
   newProducts: Product[];
   setNewProducts: React.Dispatch<React.SetStateAction<Product[]>>;
+  onSubmitOrderUpdate: () => any;
 }
 
 const EditOrderDrawerModalContext = createContext<
@@ -60,6 +70,59 @@ export const EditOrderDrawerModalProvider: React.FC<{
   const [editedOrder, setEditedOrder] = useState<OrderTypes>(null);
   const [removedProducts, setRemovedProducts] = useState<Product[]>([]);
   const [newProducts, setNewProducts] = useState<Product[]>([]);
+  const { handleFetchingWithFormData } = useFetchData();
+
+  useEffect(() => {
+    if (editedOrder && editedOrder.products) {
+      betterConsoleLog('> Products', editedOrder.products);
+    }
+  }, [editedOrder]);
+
+  async function handleUpdateOrderWithFormData() {
+    try {
+      const data: any = new FormData();
+      if (editedOrder.buyer.profileImage instanceof File) {
+        data.append(
+          'profileImage',
+          editedOrder.buyer.profileImage,
+          editedOrder.buyer.profileImage.name,
+        );
+      }
+
+      data.append('name', editedOrder.buyer.name);
+      data.append('address', editedOrder.buyer.address);
+      data.append('place', editedOrder.buyer.place);
+      data.append('phone', editedOrder.buyer.phone);
+      data.append('phone2', editedOrder.buyer.phone2);
+      data.append('courier', JSON.stringify(editedOrder.courier) as string);
+      data.append('products', JSON.stringify(editedOrder.products) as string);
+      data.append('reservation', editedOrder.reservation ? 'true' : 'false');
+      data.append('packed', editedOrder.packed ? 'true' : 'false');
+      data.append('productsPrice', editedOrder.productsPrice);
+      data.append('totalPrice', editedOrder.totalPrice);
+
+      const response = await handleFetchingWithFormData(
+        data,
+        `orders/update/${editedOrder?._id}`,
+        'PATCH',
+      );
+
+      if (!response.ok) {
+        const parsedResponse = await response?.json();
+        return notifyError(parsedResponse.message);
+      } else {
+        const parsedResponse = await response?.json();
+        return notifySuccess(parsedResponse.message);
+      }
+    } catch (error) {
+      betterErrorLog('> Error while updating an order', error);
+      notifyError('There was an error while updating the order');
+    }
+  }
+
+  async function onSubmitOrderUpdate() {
+    await handleUpdateOrderWithFormData();
+  }
 
   const openDrawer = (order: OrderTypes) => {
     setEditedOrder(order);
@@ -218,6 +281,7 @@ export const EditOrderDrawerModalProvider: React.FC<{
         setRemovedProducts,
         newProducts,
         setNewProducts,
+        onSubmitOrderUpdate,
       }}
     >
       {children}

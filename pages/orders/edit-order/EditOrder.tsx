@@ -31,9 +31,9 @@ function EditOrder({
   setEditedOrder,
   closeDrawer,
 }: EditOrderPropTypes) {
+  const { onSubmitOrderUpdate } = useEditOrder();
   const { getCouriersDropdownItems } = useCouriers();
   const [dropdownItems] = useState(getCouriersDropdownItems());
-  betterConsoleLog('> Edited order is', editedOrder);
   const [newProfileImage, setNewProfileImage] = useState<File | ImageTypes>(
     editedOrder.buyer.profileImage,
   );
@@ -46,9 +46,16 @@ function EditOrder({
     openModal();
   }
 
-  useEffect(() => {
-    console.log(editedOrder.packed);
-  }, [editedOrder]);
+  const handleImageUpload = (file: File) => {
+    console.log('Uploaded file:', file);
+    setEditedOrder((prev) => ({
+      ...prev,
+      buyer: {
+        ...prev.buyer,
+        profileImage: file,
+      },
+    }));
+  };
 
   return (
     <>
@@ -62,7 +69,7 @@ function EditOrder({
             <ProfileImageInput
               reference={imageInputRef}
               rerenderkey={rerenderKey}
-              onImageUpload={(image: any) => setNewProfileImage(image)}
+              onImageUpload={handleImageUpload}
               customClass="edit-order-profile-image-input"
               defaultDisplayImageUri={editedOrder.buyer.profileImage.uri}
             />
@@ -300,7 +307,7 @@ function EditOrder({
           {/* SAVE | CANCEL BTN */}
           <div className="edit-order-controls-section">
             <Button label="Cancel" onClick={closeDrawer} />
-            <Button label="Save changes" />
+            <Button label="Save changes" onClick={onSubmitOrderUpdate} />
           </div>
         </section>
       )}

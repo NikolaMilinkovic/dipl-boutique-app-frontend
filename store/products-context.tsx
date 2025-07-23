@@ -357,6 +357,7 @@ export function ProductsContextProvider({ children }: ProductsProviderProps) {
     purses: PurseStockDataIncrease[];
   }
   const batchStockIncreaseHandler = (data: BatchStockIncreaseData) => {
+    betterConsoleLog('> batchStockIncreaseHandler called', data);
     const { dresses = [], purses = [] } = data;
     dresses.forEach((item) => handleStockIncrease(item, setProducts));
     purses.forEach((item) => handleStockIncrease(item, setProducts));
@@ -366,6 +367,7 @@ export function ProductsContextProvider({ children }: ProductsProviderProps) {
     purses: PurseStockDataDecrease[];
   }
   const batchStockDecreaseHandler = (data: BatchStockDecreaseData) => {
+    betterConsoleLog('> batchStockDecreaseHandler called', data);
     const { dresses = [], purses = [] } = data;
     dresses.forEach((item) => handleBatchStockDecrease(item, setProducts));
     purses.forEach((item) => handleBatchStockDecrease(item, setProducts));

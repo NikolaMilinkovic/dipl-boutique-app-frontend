@@ -128,7 +128,7 @@ export const AddProductModalProvider: React.FC<
                   updateProductColorByIndexHandler
                 }
                 orderData={editedOrder}
-                useAsEdit={true}
+                useAsEdit={false}
                 onNext={() => {
                   closeModal();
                 }}
