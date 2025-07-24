@@ -124,40 +124,19 @@ function OrdersContextProvider({ children }: OrdersContextProviderTypes) {
     setOrders((prev) => ({
       ...prev,
       unprocessedOrders: prev.unprocessedOrders.map((order: OrderTypes) =>
-        orderIds.includes(order._id) ? { ...order, packed: true } : order,
+        orderIds.includes(order._id)
+          ? { ...order, packed: true, packedIndicator: true }
+          : order,
       ),
       processedOrders: prev.processedOrders.map((order: OrderTypes) =>
-        orderIds.includes(order._id) ? { ...order, packed: true } : order,
+        orderIds.includes(order._id)
+          ? { ...order, packed: true, packedIndicator: true }
+          : order,
       ),
     }));
   }
   interface ReservationType {
     _id: string;
-  }
-  interface ReservationsToOrdersDataTypes {
-    courier: CourierTypes;
-    reservations: ReservationType[];
-  }
-  function handleReservationsToOrders(data: ReservationsToOrdersDataTypes) {
-    const updatedIds = data.reservations.map((r) => String(r._id));
-    setOrders((prev) => ({
-      ...prev,
-      unprocessedOrders: prev.unprocessedOrders.map((item) => {
-        if (updatedIds.includes(item._id)) {
-          return {
-            ...item,
-            reservation: false,
-            courier: {
-              name: data.courier.name,
-              deliveryPrice: data.courier.deliveryPrice,
-            },
-            totalPrice:
-              Number(item.productsPrice) + Number(data.courier.deliveryPrice),
-          };
-        }
-        return item;
-      }),
-    }));
   }
 
   function handleProcessOrdersByIds(orderIds: string[]) {
