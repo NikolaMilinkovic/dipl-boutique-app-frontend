@@ -182,6 +182,30 @@ function OrdersContextProvider({ children }: OrdersContextProviderTypes) {
     });
   }
 
+  function handleStockIndicatorToTrue(id: string) {
+    setOrders((prev) => ({
+      ...prev,
+      unpackedOrders: prev.unpackedOrders.map((order) =>
+        order._id === id ? { ...order, packedIndicator: true } : order,
+      ),
+      unprocessedOrders: prev.unprocessedOrders.map((order) =>
+        order._id === id ? { ...order, packedIndicator: true } : order,
+      ),
+    }));
+  }
+
+  function handleStockIndicatorToFalse(id: string) {
+    setOrders((prev) => ({
+      ...prev,
+      unpackedOrders: prev.unpackedOrders.map((order) =>
+        order._id === id ? { ...order, packedIndicator: false } : order,
+      ),
+      unprocessedOrders: prev.unprocessedOrders.map((order) =>
+        order._id === id ? { ...order, packedIndicator: false } : order,
+      ),
+    }));
+  }
+
   useEffect(() => {
     if (!socket) return;
 
@@ -194,6 +218,8 @@ function OrdersContextProvider({ children }: OrdersContextProviderTypes) {
     socket.on('setPackedIndicatorToFalse', handlePackedIndicatorToFalse);
     socket.on('packOrdersByIds', handlePackOrders);
     socket.on('processOrdersByIds', handleProcessOrdersByIds);
+    socket.on('setStockIndicatorToTrue', handleStockIndicatorToTrue);
+    socket.on('setStockIndicatorToFalse', handleStockIndicatorToFalse);
 
     return () => {
       socket.off('connect', handleConnect);
@@ -205,6 +231,8 @@ function OrdersContextProvider({ children }: OrdersContextProviderTypes) {
       socket.off('setPackedIndicatorToFalse', handlePackedIndicatorToFalse);
       socket.off('packOrdersByIds', handlePackOrders);
       socket.off('processOrdersByIds', handleProcessOrdersByIds);
+      socket.off('setStockIndicatorToTrue', handleStockIndicatorToTrue);
+      socket.off('setStockIndicatorToFalse', handleStockIndicatorToFalse);
     };
   }, [socket]);
 

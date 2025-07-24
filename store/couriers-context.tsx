@@ -20,7 +20,7 @@ interface CourierDropdownItem {
 interface CouriersContextTypes {
   couriers: CourierTypes[];
   setCouriers: React.Dispatch<React.SetStateAction<CourierTypes[]>>;
-  getCouriersDropdownItems: () => CourierDropdownItem[];
+  getCouriersDropdownItems: (resetOption: boolean) => CourierDropdownItem[];
 }
 
 interface CouriersProviderProps {
@@ -30,7 +30,7 @@ interface CouriersProviderProps {
 export const CouriersContext = createContext<CouriersContextTypes>({
   couriers: [],
   setCouriers: () => {},
-  getCouriersDropdownItems: () => [],
+  getCouriersDropdownItems: (resetOption: boolean) => [],
 });
 
 export function CouriersContextProvider({ children }: CouriersProviderProps) {
@@ -59,11 +59,17 @@ export function CouriersContextProvider({ children }: CouriersProviderProps) {
     getCouriers();
   }
 
-  function getCouriersDropdownItems() {
+  function getCouriersDropdownItems(resetOption = false) {
     const dropdownData = couriers.map((courier) => ({
       label: courier.name,
       value: courier.deliveryPrice as string,
     }));
+    if (resetOption) {
+      dropdownData.unshift({
+        value: '',
+        label: 'Select a courier',
+      });
+    }
     return dropdownData;
   }
 

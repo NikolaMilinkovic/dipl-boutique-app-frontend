@@ -11,7 +11,6 @@ interface AnimatedListProps<T> {
   noDataAlt?: string;
   className?: string;
   maxWidth?: string;
-  height?: string;
   containerStyles?: any;
 }
 

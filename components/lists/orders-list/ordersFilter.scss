@@ -1,0 +1,12 @@
+.orders-list-filters-container {
+  display: flex;
+  gap: 8px;
+  background-color: var(--white);
+  padding: 1rem;
+  padding-top: 1.5rem;
+
+  .orders-list-filter-btn {
+    max-width: 220px;
+    height: 41px;
+  }
+}

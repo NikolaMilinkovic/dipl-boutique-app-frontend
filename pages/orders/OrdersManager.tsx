@@ -12,6 +12,8 @@ import OrdersList from '../../components/lists/orders-list/OrdersList';
 import { OrderTypes } from '../../global/types';
 import { useOrders } from '../../store/orders-context';
 import { useNewOrder } from '../../store/new-order-context';
+import PackOrders from './pack-orders/PackOrders';
+import OrdersFilter from '../../components/lists/orders-list/OrdersFilter';
 
 export interface AccordionRef {
   open: () => void;
@@ -134,14 +136,17 @@ function OrdersManager() {
       <Tab label="Orders and Packaging">
         <section className="grid-1-1 orders-manager-section">
           <div>
+            <h2>Orders List</h2>
+            <OrdersFilter />
             <OrdersList
               data={orders.unprocessedOrders}
               setEditedOrder={setEditedOrder}
             />
           </div>
-          <p>
-            Desno Pakovanje sa indikatorima i dugmetom za zavrsavanje pakovanja
-          </p>
+          <div>
+            <h2>Pack Orders</h2>
+            <PackOrders />
+          </div>
         </section>
       </Tab>
     </Tabs>
