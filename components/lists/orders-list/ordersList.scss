@@ -1,5 +1,9 @@
 .order-items-wrapper {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  height: 100%;
 }
 
 .order-items-header {
@@ -16,7 +20,7 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
-  padding-bottom: 22px;
+  height: 100%;
 
   &.batch {
     padding-bottom: 82px;

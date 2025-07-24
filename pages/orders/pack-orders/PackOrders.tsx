@@ -18,7 +18,9 @@ function PackOrders() {
   const [filteredOrders, setFilteredOrders] = useState<OrderTypes[]>([]);
   useEffect(() => {
     if (selectedCourier === null) {
-      setFilteredOrders(() => orders.unprocessedOrders);
+      setFilteredOrders(() =>
+        orders.unprocessedOrders.filter((order) => order.packed === false),
+      );
     } else {
       const filteredUnpackedOrders = orders.unprocessedOrders.filter(
         (order) =>

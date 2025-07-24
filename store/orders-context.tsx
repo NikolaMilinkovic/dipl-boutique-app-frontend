@@ -12,7 +12,7 @@ import { betterErrorLog } from '../util-methods/log-methods';
 import { CourierTypes, OrderTypes } from '../global/types';
 import { useSocket } from './socket-context';
 
-interface OrdersDataTypes {
+export interface OrdersDataTypes {
   processedOrders: OrderTypes[];
   unprocessedOrders: OrderTypes[];
   unpackedOrders: OrderTypes[];
@@ -120,6 +120,7 @@ function OrdersContextProvider({ children }: OrdersContextProviderTypes) {
     }));
   }
   function handlePackOrders(orderIds: string[]) {
+    console.log('> handlePackOrders running');
     setOrders((prev) => ({
       ...prev,
       unprocessedOrders: prev.unprocessedOrders.map((order: OrderTypes) =>

@@ -5,7 +5,7 @@ import './packOrdersList.scss';
 // setEditedOrder
 const PackOrdersList = ({ selectedCourier, data }) => {
   return (
-    <div className="pack-order-items-wrapper">
+    <div>
       <AnimatedList
         items={data}
         renderItem={(item: OrderTypes) => <PackOrderItem order={item} />}

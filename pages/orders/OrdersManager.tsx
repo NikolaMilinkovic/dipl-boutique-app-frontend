@@ -1,7 +1,7 @@
 import { Tab, Tabs } from '../../components/tabs/Tabs';
 import ProductsList from '../../components/lists/products-list/ProductsList';
 import './ordersManager.scss';
-import { useEffect, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import StepAccordion from '../../components/accordion/step-accordion';
 import SelectedItemsList from './new-order-components/step-1/SelectedItemsList';
 import ColorSizeSelectorsList from './new-order-components/step-2/ColorSizeSelectorList';
@@ -9,11 +9,11 @@ import BuyerInformationInputs from './new-order-components/step-3/BuyerInformati
 import CourierSelection from './new-order-components/step-4/CourierSelection';
 import NewOrderOverview from './new-order-components/step-5/NewOrderOverview';
 import OrdersList from '../../components/lists/orders-list/OrdersList';
-import { OrderTypes } from '../../global/types';
 import { useOrders } from '../../store/orders-context';
 import { useNewOrder } from '../../store/new-order-context';
 import PackOrders from './pack-orders/PackOrders';
 import OrdersFilter from '../../components/lists/orders-list/OrdersFilter';
+import { searchOrders } from '../../util-methods/orderFilterMethods';
 
 export interface AccordionRef {
   open: () => void;
@@ -60,7 +60,31 @@ function OrdersManager() {
 
   // TEMPORARY FOR TESTING > PUT INTO A MODAL
   const { orders } = useOrders();
-  const [editedOrder, setEditedOrder] = useState<OrderTypes | null>(null);
+
+  const packedVal = ['packed', 'unpacked', 'all'] as const;
+  interface OrdersSearchParamTypes {
+    courier: string;
+    processed: boolean;
+    packed: (typeof packedVal)[number];
+  }
+
+  // ORDER FILTERING
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchParams, setSearchParams] = useState<OrdersSearchParamTypes>({
+    courier: '',
+    processed: false,
+    packed: 'all',
+  });
+
+  const filteredData = useMemo(() => {
+    return searchOrders(searchTerm as string, orders, searchParams);
+  }, [
+    orders,
+    searchParams.courier,
+    searchParams.packed,
+    searchParams.processed,
+    searchTerm,
+  ]);
 
   return (
     <Tabs>
@@ -135,15 +159,21 @@ function OrdersManager() {
       {/* ORDERS AND PACKAGING */}
       <Tab label="Orders and Packaging">
         <section className="grid-1-1 orders-manager-section">
-          <div>
+          <div
+            style={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+          >
             <h2>Orders List</h2>
-            <OrdersFilter />
-            <OrdersList
-              data={orders.unprocessedOrders}
-              setEditedOrder={setEditedOrder}
+            <OrdersFilter
+              searchTerm={searchTerm}
+              setSearchTerm={setSearchTerm}
+              searchParams={searchParams}
+              setSearchParams={setSearchParams}
             />
+            <OrdersList data={filteredData} />
           </div>
-          <div>
+          <div
+            style={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+          >
             <h2>Pack Orders</h2>
             <PackOrders />
           </div>

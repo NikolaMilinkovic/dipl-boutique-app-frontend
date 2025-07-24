@@ -149,6 +149,7 @@ function ProductFilters({
 
   return (
     <section className="product-filters-section">
+      <h2>Product Filters</h2>
       {/* Stanje na lageru */}
       <div>
         <h3>Stock availability</h3>
