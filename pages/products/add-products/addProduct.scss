@@ -14,6 +14,12 @@
     display: flex;
     flex-direction: column;
 
+    .add-product-image-and-inputs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
     .data-container {
       display: flex;
       flex-direction: column;
@@ -30,5 +36,11 @@
       margin-top: auto;
       display: flex;
     }
+  }
+}
+
+@media (max-width: 724px) {
+  .add-product-image-and-inputs {
+    grid-template-columns: 1fr !important;
   }
 }

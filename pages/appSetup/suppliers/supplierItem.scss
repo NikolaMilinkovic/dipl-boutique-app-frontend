@@ -75,3 +75,19 @@
     text-align: center;
   }
 }
+
+@media (max-width: 768px) {
+  .SupplierItem {
+    height: unset;
+
+    .mainInputsContainer {
+      display: grid;
+      grid-template-columns: 1fr;
+
+      .buttons {
+        margin-left: auto;
+        grid-column: span 2;
+      }
+    }
+  }
+}

@@ -113,7 +113,7 @@ function AddProduct() {
       {/* TITLE, IMAGE INPUT & RIGHT SIDE INPUTS */}
       <div className="add-product-image-and-inputs-container">
         <h2>Add, Browse, Update and Delete products</h2>
-        <div className="grid-1-1 gap-1">
+        <div className="add-product-image-and-inputs">
           {/* Slika */}
           <ImageInput
             reference={imageInputRef}

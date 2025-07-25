@@ -9,3 +9,11 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
 }
+
+@media (max-width: 1024px) {
+  .app-setup-page-wrapper {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}

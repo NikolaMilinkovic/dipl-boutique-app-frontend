@@ -46,7 +46,7 @@ function SuppliersManager() {
 
   return (
     <div className="app-setup-page-wrapper">
-      <div style={{ paddingRight: '3rem' }}>
+      <div className="suppliers-inputs-container">
         <SingleInputForm
           data={supplier}
           setData={setSupplier}

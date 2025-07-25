@@ -1,0 +1,12 @@
+@use '../../../global/index.scss' as *;
+@use '../../../global/colors.scss' as *;
+
+.courier-inputs-container {
+  padding-right: 3rem;
+}
+
+@media (max-width: 1024px) {
+  .courier-inputs-container {
+    padding-right: 0rem;
+  }
+}

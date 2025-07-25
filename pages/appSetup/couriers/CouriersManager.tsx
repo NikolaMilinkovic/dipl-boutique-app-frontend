@@ -70,7 +70,7 @@ function CouriersManager() {
 
   return (
     <div className="app-setup-page-wrapper">
-      <div style={{ paddingRight: '3rem' }}>
+      <div className="courier-inputs-container">
         <SingleInputForm
           data={courier}
           setData={setCourier}

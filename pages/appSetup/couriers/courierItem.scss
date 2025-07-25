@@ -85,3 +85,23 @@
     text-align: center;
   }
 }
+
+@media (max-width: 768px) {
+  .courrierItem {
+    height: unset;
+
+    .mainInputsContainer {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+
+      .courier-item-input {
+        max-width: unset;
+      }
+
+      .buttons {
+        margin-left: auto;
+        grid-column: span 2;
+      }
+    }
+  }
+}

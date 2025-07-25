@@ -67,7 +67,7 @@ function CategoriesManager() {
   ];
   return (
     <div className="app-setup-page-wrapper">
-      <div style={{ paddingRight: '3rem' }}>
+      <div className="categories-inputs-container">
         <SingleInputForm
           data={category.name}
           setData={(value) =>

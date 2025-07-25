@@ -10,3 +10,10 @@
   box-sizing: border-box;
   min-height: 90vh;
 }
+
+@media (max-width: 1024px) {
+  .add-edit-products-main {
+    grid-template-columns: 1fr;
+    gap: 0rem;
+  }
+}

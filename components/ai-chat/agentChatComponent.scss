@@ -195,3 +195,19 @@
     }
   }
 }
+
+@media (min-width: 1024px) and (max-width: 1324px) {
+  .agent-chat-open {
+    width: 50vw;
+  }
+}
+@media (max-width: 1024px) {
+  .agent-chat-open {
+    width: 60vw;
+  }
+}
+@media (max-width: 768px) {
+  .agent-chat-open {
+    width: 80vw;
+  }
+}

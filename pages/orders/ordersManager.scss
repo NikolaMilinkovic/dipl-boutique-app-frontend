@@ -2,6 +2,28 @@
 @use '../../global/colors.scss' as *;
 
 .orders-manager-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   padding-top: 0rem;
   gap: 4rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+
+  .packaging-orders-list-container,
+  .packaging-pack-orders-container {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 1024px) {
+  .orders-manager-section {
+    grid-template-columns: 1fr;
+    gap: 0rem;
+
+    .packaging-pack-orders-container {
+      margin-top: 2rem;
+    }
+  }
 }

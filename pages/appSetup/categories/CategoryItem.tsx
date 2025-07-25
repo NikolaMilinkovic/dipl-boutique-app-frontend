@@ -140,7 +140,10 @@ function CategoryItem({ data }: { data: CategoryTypes }) {
         </form>
       ) : (
         <div className="displayColor">
-          <div className="grid-1-1" style={{ width: '100%' }}>
+          <div
+            className="grid-1-1"
+            style={{ width: '100%', alignItems: 'center' }}
+          >
             <p className="colorText">{categoryData.name}</p>
             <p className="colorText">{categoryData.stockType}</p>
           </div>

@@ -1,2 +1,12 @@
 @use '../../../global/index.scss' as *;
 @use '../../../global/colors.scss' as *;
+
+.categories-inputs-container {
+  padding-right: 3rem;
+}
+
+@media (max-width: 1024px) {
+  .categories-inputs-container {
+    padding-right: 0rem;
+  }
+}

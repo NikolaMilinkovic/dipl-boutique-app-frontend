@@ -90,7 +90,7 @@ function OrdersManager() {
     <Tabs>
       {/* CREATE NEW ORDER */}
       <Tab label="Create new order">
-        <section className="grid-1-1 orders-manager-section">
+        <section className="orders-manager-section">
           {/* LEFT */}
           <ProductsList showDeleteBtn={false} styles={{ paddingTop: '1rem' }} />
 
@@ -158,10 +158,8 @@ function OrdersManager() {
 
       {/* ORDERS AND PACKAGING */}
       <Tab label="Orders and Packaging">
-        <section className="grid-1-1 orders-manager-section">
-          <div
-            style={{ height: '100%', display: 'flex', flexDirection: 'column' }}
-          >
+        <section className="orders-manager-section">
+          <div className="packaging-orders-list-container">
             <h2>Orders List</h2>
             <OrdersFilter
               searchTerm={searchTerm}
@@ -171,9 +169,7 @@ function OrdersManager() {
             />
             <OrdersList data={filteredData} />
           </div>
-          <div
-            style={{ height: '100%', display: 'flex', flexDirection: 'column' }}
-          >
+          <div className="packaging-pack-orders-container">
             <h2>Pack Orders</h2>
             <PackOrders />
           </div>

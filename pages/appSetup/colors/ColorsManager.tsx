@@ -46,7 +46,7 @@ function ColorsManager() {
 
   return (
     <div className="app-setup-page-wrapper">
-      <div style={{ paddingRight: '3rem' }}>
+      <div className="colors-inputs-container">
         <SingleInputForm
           data={color}
           setData={setColor}
