@@ -199,3 +199,23 @@ export interface OrderTypes {
   orderNotes: string;
   reservationDate: Date;
 }
+
+export interface Permission {
+  add: boolean;
+  edit: boolean;
+  remove: boolean;
+}
+
+export interface NewUserTypes {
+  username: string;
+  password: string;
+  role: string;
+  permissions: {
+    category: Permission;
+    color: Permission;
+    courier: Permission;
+    supplier: Permission;
+    order: Permission;
+    product: Permission;
+  };
+}

@@ -19,6 +19,7 @@ export interface OrdersDataTypes {
 }
 interface OrdersContextTypes {
   orders: OrdersDataTypes;
+  combinedOrders: OrderTypes[];
 }
 
 export const OrdersContext = createContext<OrdersContextTypes>({
@@ -27,6 +28,7 @@ export const OrdersContext = createContext<OrdersContextTypes>({
     unprocessedOrders: [],
     unpackedOrders: [],
   },
+  combinedOrders: [],
 });
 
 interface OrdersContextProviderTypes {
@@ -41,6 +43,13 @@ function OrdersContextProvider({ children }: OrdersContextProviderTypes) {
     unprocessedOrders: [],
     unpackedOrders: [],
   });
+  const [combinedOrders, setCombinedOrders] = useState([
+    ...orders.processedOrders,
+    ...orders.unprocessedOrders,
+  ]);
+  useEffect(() => {
+    setCombinedOrders([...orders.processedOrders, ...orders.unprocessedOrders]);
+  }, [orders.processedOrders, orders.unprocessedOrders]);
 
   async function handleConnect() {
     try {
@@ -220,9 +229,9 @@ function OrdersContextProvider({ children }: OrdersContextProviderTypes) {
   const value = useMemo(
     () => ({
       orders,
-      setOrders,
+      combinedOrders,
     }),
-    [orders],
+    [orders, combinedOrders],
   );
 
   return (

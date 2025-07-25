@@ -1,0 +1,26 @@
+@use '../../../global/index.scss' as *;
+@use '../../../global/colors.scss' as *;
+
+.custom-tooltip {
+  background: white;
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 13px;
+  color: #333;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+
+  .label {
+    font-weight: bold;
+    margin-bottom: 4px;
+  }
+
+  .value,
+  .total {
+    padding-left: 2px;
+    font-size: 16px;
+    color: #2b8a3e;
+  }
+}

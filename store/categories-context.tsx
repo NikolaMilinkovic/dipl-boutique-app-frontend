@@ -11,6 +11,7 @@ import { notifyError } from '../components/util-components/Notify';
 import { useAuth } from './auth-context';
 import { useFetchData } from '../hooks/useFetchData';
 import { DropdownOptionType } from '../components/dropdowns/Dropdown';
+import { OrderTypes } from '../global/types';
 
 export interface CategoryTypes {
   _id: string;
