@@ -20,7 +20,6 @@ function AnimatedList<T>({
   noDataImage = '/img/no_data_found.png',
   noDataAlt = 'No data found',
   className = '',
-  maxWidth = '800px',
   containerStyles,
 }: AnimatedListProps<T>) {
   // Using the custom hook for scroll animations
@@ -58,11 +57,7 @@ function AnimatedList<T>({
     >
       {items && items.length > 0 ? (
         <>
-          <div
-            className="animated-list"
-            ref={containerRef}
-            style={{ maxWidth }}
-          >
+          <div className="animated-list" ref={containerRef}>
             {items.map((item, index) => (
               <div
                 key={(item as any)._id || `item_${index}`}
@@ -74,14 +69,8 @@ function AnimatedList<T>({
             ))}
           </div>
 
-          <div
-            className="scroll-fade scroll-fade-top"
-            style={{ maxWidth }}
-          ></div>
-          <div
-            className="scroll-fade scroll-fade-bottom"
-            style={{ maxWidth }}
-          ></div>
+          <div className="scroll-fade scroll-fade-top"></div>
+          <div className="scroll-fade scroll-fade-bottom"></div>
         </>
       ) : (
         <img src={noDataImage} alt={noDataAlt} className="no-data-found-icon" />

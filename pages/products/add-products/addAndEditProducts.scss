@@ -2,5 +2,11 @@
 @use '../../../global/colors.scss' as *;
 
 .add-edit-products-main {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  padding-left: 3rem;
+  padding-right: 3rem;
+  box-sizing: border-box;
+  min-height: 90vh;
 }
