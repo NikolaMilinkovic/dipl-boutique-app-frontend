@@ -3,7 +3,9 @@
 
 .animated-list-section {
   position: relative;
+  display: flex;
   height: 100%;
+  // flex: 1;
 
   .no-data-found-icon {
     position: absolute;
@@ -15,6 +17,8 @@
   }
 
   .animated-list {
+    display: flex;
+    flex-direction: column;
     height: 100%;
     overflow-x: hidden;
     overflow-y: auto;
