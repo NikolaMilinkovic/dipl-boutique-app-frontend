@@ -120,7 +120,6 @@ function ProductsList({
           noDataAlt="Infinity Boutique Logo"
           className="color-list-section"
           maxWidth="100%"
-          containerStyles={{ paddingBottom: '3rem' }}
         />
       )}
     </div>

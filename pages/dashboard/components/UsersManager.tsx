@@ -2,7 +2,7 @@ import InputFieldBorderless from '../../../components/util-components/InputField
 import Dropdown from '../../../components/dropdowns/Dropdown';
 import { useUser } from '../../../store/user-context';
 import './usersManager.scss';
-import { NewUserTypes } from '../../../global/types';
+import { NewUserTypes, User, UserType } from '../../../global/types';
 import Checkbox from '../../../components/checkbox/Checkbox';
 import Button from '../../../components/util-components/Button';
 import {
@@ -12,6 +12,11 @@ import {
 import { betterConsoleLog } from '../../../util-methods/log-methods';
 import { useFetchData } from '../../../hooks/useFetchData';
 import { useAdmin } from '../../../store/admin-context';
+import AnimatedList from '../../../components/lists/AnimatedList';
+import { MdDelete, MdEdit } from 'react-icons/md';
+import { useDrawerModal } from '../../../store/modals/drawer-modal-contex';
+import { useEffect } from 'react';
+import { useConfirmationModal } from '../../../store/modals/confirmation-modal-context';
 
 interface UsersManagerProps {
   newUser: NewUserTypes;
@@ -20,7 +25,7 @@ interface UsersManagerProps {
 
 function UsersManager({ newUser, setNewUser }: UsersManagerProps) {
   const { getRoleDropdownOptions } = useUser();
-  const { getDefaultUserObject } = useAdmin();
+  const { getDefaultUserObject, usersData } = useAdmin();
   const { fetchWithBodyData } = useFetchData();
   const role_dropdown_options = getRoleDropdownOptions();
   const selectedRoleOption =
@@ -130,8 +135,16 @@ function UsersManager({ newUser, setNewUser }: UsersManagerProps) {
       </div>
       {/* USERS LIST */}
       <div className="dashboard-card">
-        <h2>All Users</h2>
-        <div></div>
+        <h2>All Users ({usersData.length})</h2>
+        <InputFieldBorderless label="Search users" />
+        <AnimatedList
+          items={usersData as UserType[]}
+          renderItem={(user: UserType) => <UserItem user={user as UserType} />}
+          noDataImage="/img/no_data_found.png"
+          noDataAlt="Infinity Boutique Logo"
+          className="user-list-section"
+          maxWidth="800px"
+        />
       </div>
     </section>
   );
@@ -210,6 +223,57 @@ function UserPermissionRow({
   );
 }
 
-function UsersList() {
-  return <div>UsersManager</div>;
+interface UserItemPropTypes {
+  user: UserType;
+}
+function UserItem({ user }: UserItemPropTypes) {
+  if (!user) return;
+  const { openDrawer, updateDrawerContent, isDrawerOpen } = useDrawerModal();
+  const { showConfirmation } = useConfirmationModal();
+  const { fetchWithBodyData } = useFetchData();
+  useEffect(() => {
+    // Update drawer content when searchParams change and drawer is open
+    if (isDrawerOpen) {
+      updateDrawerContent(<p>TEST</p>, JSON.stringify(user));
+    }
+  }, [user, isDrawerOpen]);
+
+  async function removeUserHandler() {
+    showConfirmation(async () => {
+      const response = await fetchWithBodyData(
+        'user/remove',
+        user._id,
+        'DELETE',
+      );
+
+      if (!response) {
+        notifyError('There was an error while deleting the user');
+        return;
+      }
+      const result = await response.json();
+      notifySuccess(result.message);
+    }, `Are you sure you want to delete user ${user.username}?`);
+  }
+
+  return (
+    <div className="grid-1-1 user-item">
+      <span>
+        Username: <b>{user.username}</b>
+      </span>
+      <span>
+        Role: <b>{user.role}</b>
+      </span>
+      <button
+        className={`user-edit-btn`}
+        onClick={() => {
+          openDrawer(<p>TEST</p>, JSON.stringify(user));
+        }}
+      >
+        <MdEdit style={{ color: 'var(--primaryDark)', fontSize: '26px' }} />
+      </button>
+      <button className={`user-delete-btn`} onClick={removeUserHandler}>
+        <MdDelete style={{ color: 'var(--primaryDark)', fontSize: '26px' }} />
+      </button>
+    </div>
+  );
 }

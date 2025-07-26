@@ -5,7 +5,7 @@ import {
   useContext,
   useEffect,
 } from 'react';
-import { NewUserTypes, User } from '../global/types';
+import { NewUserTypes, User, UserType } from '../global/types';
 import { useUser } from './user-context';
 import { useFetchData } from '../hooks/useFetchData';
 import {
@@ -61,7 +61,7 @@ export const AdminContext = createContext<AdminContextTypes>({
 export function AdminContextProvider({ children }: AdminContextProviderProps) {
   const { user } = useUser();
   const { fetchWithBodyData } = useFetchData();
-  const [usersData, setUsersData] = useState<User[]>([]);
+  const [usersData, setUsersData] = useState<UserType[]>([]);
   const [newUser, setNewUser] = useState<NewUserTypes>({
     username: '',
     password: '',

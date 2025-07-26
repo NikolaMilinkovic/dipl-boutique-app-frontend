@@ -219,3 +219,17 @@ export interface NewUserTypes {
     product: Permission;
   };
 }
+export interface UserType {
+  _id: string;
+  username: string;
+  password: string;
+  role: string;
+  permissions: {
+    category: Permission;
+    color: Permission;
+    courier: Permission;
+    supplier: Permission;
+    order: Permission;
+    product: Permission;
+  };
+}
