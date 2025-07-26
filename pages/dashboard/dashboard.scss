@@ -35,3 +35,18 @@
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
   }
 }
+
+@media (max-width: 760px) {
+  .dashboard-section {
+    .pie-charts-section {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+@media (min-width: 760px) and (max-width: 1460px) {
+  .dashboard-section {
+    .pie-charts-section {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+}

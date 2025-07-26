@@ -1,7 +1,6 @@
 import './apexDonutChart.scss';
 import ReactApexChart from 'react-apexcharts';
 import { ApexOptions } from 'apexcharts';
-import { useState } from 'react';
 
 interface ApexDonutChartDataTypes {
   name: string;

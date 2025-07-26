@@ -11,7 +11,7 @@ import {
 } from '../../../components/util-components/Notify';
 import { betterConsoleLog } from '../../../util-methods/log-methods';
 import { useFetchData } from '../../../hooks/useFetchData';
-import { getDefaultUserObject } from '../Dashboard';
+import { useAdmin } from '../../../store/admin-context';
 
 interface UsersManagerProps {
   newUser: NewUserTypes;
@@ -20,6 +20,7 @@ interface UsersManagerProps {
 
 function UsersManager({ newUser, setNewUser }: UsersManagerProps) {
   const { getRoleDropdownOptions } = useUser();
+  const { getDefaultUserObject } = useAdmin();
   const { fetchWithBodyData } = useFetchData();
   const role_dropdown_options = getRoleDropdownOptions();
   const selectedRoleOption =
@@ -209,27 +210,6 @@ function UserPermissionRow({
   );
 }
 
-// category: {
-//   add: true,
-//   edit: true,
-//   remove: true,
-//   update: true,
-// },
-// color: {
-//   add: true,
-//   edit: true,
-//   remove: true,
-//   update: true,
-// },
-// courier: {
-//   add: true,
-//   edit: true,
-//   remove: true,
-//   update: true,
-// },
-// supplier: {
-//   add: true,
-//   edit: true,
-//   remove: true,
-//   update: true,
-// },
+function UsersList() {
+  return <div>UsersManager</div>;
+}

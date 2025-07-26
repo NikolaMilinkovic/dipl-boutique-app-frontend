@@ -1,5 +1,4 @@
 import { useContext } from 'react';
-import { Bounce, ToastContainer } from 'react-toastify';
 import { AuthContext } from '../../store/auth-context';
 import Login from '../../pages/login/Login';
 import { Route, Routes } from 'react-router-dom';

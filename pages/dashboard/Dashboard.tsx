@@ -6,6 +6,7 @@ import { useOrders } from '../../store/orders-context';
 import ApexBarChart from '../../components/charts/bar/ApexBarChart';
 import UsersManager from './components/UsersManager';
 import { NewUserTypes } from '../../global/types';
+import { AdminContextProvider, useAdmin } from '../../store/admin-context';
 
 // category: {
 // add: true,
@@ -38,43 +39,7 @@ function Dashboard() {
   const chart_2 = OrderStatistics.getCategoryValueData(combinedOrders);
   const chart_3 = OrderStatistics.getOrderCountPerDay(combinedOrders);
   const chart_4 = OrderStatistics.getOrderValuePerDay(combinedOrders);
-  const [newUser, setNewUser] = useState<NewUserTypes>({
-    username: '',
-    password: '',
-    role: 'user',
-    permissions: {
-      category: {
-        add: false,
-        edit: false,
-        remove: false,
-      },
-      color: {
-        add: false,
-        edit: false,
-        remove: false,
-      },
-      courier: {
-        add: false,
-        edit: false,
-        remove: false,
-      },
-      supplier: {
-        add: false,
-        edit: false,
-        remove: false,
-      },
-      order: {
-        add: false,
-        edit: false,
-        remove: false,
-      },
-      product: {
-        add: false,
-        edit: false,
-        remove: false,
-      },
-    },
-  });
+  const { newUser, setNewUser } = useAdmin();
 
   return (
     <section className="fade dashboard-section">
@@ -82,25 +47,33 @@ function Dashboard() {
         {/* ITEMS PER CATEGORY */}
         <div className="pie-chart-card dashboard-card">
           <h3>Items sold per category:</h3>
-          <ApexDonutChart data={chart_1} displayCurrency="items" />
+          <div style={{ height: '250px' }}>
+            <ApexDonutChart data={chart_1} displayCurrency="items" />
+          </div>
         </div>
 
         {/* VALUE OF SOLD ITEMS PER CATEGORY */}
         <div className="pie-chart-card dashboard-card">
           <h3>Value of sold items per category:</h3>
-          <ApexDonutChart data={chart_2} displayCurrency="rsd" />
+          <div style={{ height: '250px' }}>
+            <ApexDonutChart data={chart_2} displayCurrency="rsd" />
+          </div>
         </div>
 
         {/* ORDERS PER DAY */}
         <div className="pie-chart-card dashboard-card">
           <h3>Orders per day:</h3>
-          <ApexBarChart data={chart_3} displayCurrency="orders" />
+          <div style={{ height: '230px' }}>
+            <ApexBarChart data={chart_3} displayCurrency="orders" />
+          </div>
         </div>
 
         {/* VALUE OF ORDERS PER DAY */}
         <div className="pie-chart-card dashboard-card">
           <h3>Order values per day:</h3>
-          <ApexBarChart data={chart_4} displayCurrency="rsd" />
+          <div style={{ height: '230px' }}>
+            <ApexBarChart data={chart_4} displayCurrency="rsd" />
+          </div>
         </div>
       </section>
       <UsersManager newUser={newUser} setNewUser={setNewUser} />
@@ -109,43 +82,3 @@ function Dashboard() {
 }
 
 export default Dashboard;
-
-export function getDefaultUserObject() {
-  return {
-    username: '',
-    password: '',
-    role: 'user',
-    permissions: {
-      category: {
-        add: false,
-        edit: false,
-        remove: false,
-      },
-      color: {
-        add: false,
-        edit: false,
-        remove: false,
-      },
-      courier: {
-        add: false,
-        edit: false,
-        remove: false,
-      },
-      supplier: {
-        add: false,
-        edit: false,
-        remove: false,
-      },
-      order: {
-        add: false,
-        edit: false,
-        remove: false,
-      },
-      product: {
-        add: false,
-        edit: false,
-        remove: false,
-      },
-    },
-  };
-}
