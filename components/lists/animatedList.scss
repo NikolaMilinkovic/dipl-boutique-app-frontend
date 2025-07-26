@@ -47,7 +47,7 @@
       margin-bottom: 4px;
 
       opacity: 0;
-      transform: translateY(20px);
+      // transform: translateY(20px);
       transition: all 0.25s ease-out;
 
       &.visible {
@@ -56,8 +56,8 @@
       }
 
       &:hover {
-        transform: scale(1.01);
-        transition: transform 0.2s ease-out;
+        // transform: scale(1.01);
+        // transition: transform 0.2s ease-out;
       }
     }
   }

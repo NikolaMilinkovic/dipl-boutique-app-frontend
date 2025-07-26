@@ -96,6 +96,7 @@ function OrdersManager() {
 
           {/* RIGHT */}
           <div
+            className="default-card"
             style={{
               paddingTop: '1rem',
               gap: '0.3rem',
@@ -103,6 +104,7 @@ function OrdersManager() {
               flexDirection: 'column',
             }}
           >
+            <h2>New Order</h2>
             {/* STEP 1 - ITEMS LIST */}
             <StepAccordion
               title="Selected products"
@@ -159,7 +161,7 @@ function OrdersManager() {
       {/* ORDERS AND PACKAGING */}
       <Tab label="Orders and Packaging">
         <section className="orders-manager-section">
-          <div className="packaging-orders-list-container">
+          <div className="packaging-orders-list-container default-card">
             <h2>Orders List</h2>
             <OrdersFilter
               searchTerm={searchTerm}
@@ -169,7 +171,7 @@ function OrdersManager() {
             />
             <OrdersList data={filteredData} />
           </div>
-          <div className="packaging-pack-orders-container">
+          <div className="packaging-pack-orders-container default-card">
             <h2>Pack Orders</h2>
             <PackOrders />
           </div>

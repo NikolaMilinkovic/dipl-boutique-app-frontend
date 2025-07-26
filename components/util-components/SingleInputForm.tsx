@@ -46,7 +46,7 @@ function SingleInputForm({
           setInputText={(text) => setData(text)}
           type="text"
           showClearBtn={true}
-          backgroundColor="var(--primaryLight)"
+          backgroundColor="var(--white)"
           tabIndex={tabIndex}
         />
         <Button

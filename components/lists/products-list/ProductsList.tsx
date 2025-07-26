@@ -68,21 +68,23 @@ function ProductsList({
 
   return (
     <div
+      className="default-card"
       style={{
         width: '100%',
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
-        gap: '0.5rem',
         boxSizing: 'border-box',
         borderRadius: '4px',
         overflow: 'hidden',
         ...styles,
       }}
     >
+      <h2>Select Products</h2>
+
       <div className="product-list-filters-container">
         <InputField
-          backgroundColor="var(--primaryLight)"
+          backgroundColor="var(--white)"
           label="Search product"
           inputText={searchTerm}
           setInputText={setSearchTerm}

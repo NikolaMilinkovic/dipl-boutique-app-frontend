@@ -9,6 +9,7 @@
     max-height 0.15s ease;
   max-height: 60px;
   opacity: 1;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 
   &.closed {
     max-height: 0;

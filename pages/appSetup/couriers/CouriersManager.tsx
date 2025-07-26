@@ -70,7 +70,7 @@ function CouriersManager() {
 
   return (
     <div className="app-setup-page-wrapper">
-      <div className="courier-inputs-container">
+      <div className="courier-inputs-container default-card">
         <SingleInputForm
           data={courier}
           setData={setCourier}
@@ -83,7 +83,7 @@ function CouriersManager() {
           btnTabIndex={3}
         />
         <InputField
-          backgroundColor="var(--primaryLight)"
+          backgroundColor="var(--white)"
           label="Delivery price per package"
           inputText={price}
           setInputText={(value) => setPrice(value as string)}
@@ -93,7 +93,7 @@ function CouriersManager() {
         <div style={{ marginTop: '1rem' }}>
           <h2>Search couriers</h2>
           <InputField
-            backgroundColor="var(--primaryLight)"
+            backgroundColor="var(--white)"
             label="Search couriers"
             inputText={searchTerm}
             setInputText={(value) => setSearchTerm(value as string)}

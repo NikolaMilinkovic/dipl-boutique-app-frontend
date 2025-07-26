@@ -46,7 +46,7 @@ function SuppliersManager() {
 
   return (
     <div className="app-setup-page-wrapper">
-      <div className="suppliers-inputs-container">
+      <div className="suppliers-inputs-container default-card">
         <SingleInputForm
           data={supplier}
           setData={setSupplier}
@@ -58,7 +58,7 @@ function SuppliersManager() {
         />
         <h2>Search suppliers</h2>
         <InputField
-          backgroundColor="var(--primaryLight)"
+          backgroundColor="var(--white)"
           label="Search suppliers"
           inputText={searchTerm}
           setInputText={setSearchTerm}

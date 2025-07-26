@@ -109,7 +109,7 @@ function AddProduct() {
   const supplierDropdownItems = getSupplierDropdownItems();
 
   return (
-    <section className="add-product-section">
+    <section className="add-product-section default-card">
       {/* TITLE, IMAGE INPUT & RIGHT SIDE INPUTS */}
       <div className="add-product-image-and-inputs-container">
         <h2>Add, Browse, Update and Delete products</h2>
@@ -136,7 +136,7 @@ function AddProduct() {
                 setProduct((prev) => ({ ...prev, name: value as string }))
               }
               showClearBtn={true}
-              backgroundColor="var(--primaryLight)"
+              backgroundColor="var(--white)"
             />
 
             {/* Cena */}
@@ -147,7 +147,7 @@ function AddProduct() {
                 setProduct((prev) => ({ ...prev, price: value as any }))
               }
               showClearBtn={true}
-              backgroundColor="var(--primaryLight)"
+              backgroundColor="var(--white)"
             />
 
             {/* Dobavljac */}
@@ -171,7 +171,7 @@ function AddProduct() {
                 }))
               }
               showClearBtn={true}
-              backgroundColor="var(--primaryLight)"
+              backgroundColor="var(--white)"
             />
 
             {/* Kategorija */}

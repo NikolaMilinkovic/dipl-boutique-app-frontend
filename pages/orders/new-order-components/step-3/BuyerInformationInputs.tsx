@@ -93,7 +93,7 @@ const BuyerInformationInputs = forwardRef(
           setInputText={setDataSortingInput}
           label="Insert buyer name, address and phone number"
           showClearBtn={true}
-          backgroundColor="var(--primaryLight)"
+          backgroundColor="var(--white)"
         />
         <Button
           label="Sort information"
@@ -105,7 +105,7 @@ const BuyerInformationInputs = forwardRef(
         <InputField
           showClearBtn={true}
           customClass="buyer-info-input-field"
-          backgroundColor="var(--primaryLight)"
+          backgroundColor="var(--white)"
           label="Full name"
           inputText={newOrderData.buyer.name}
           setInputText={(value: any) =>
@@ -123,7 +123,7 @@ const BuyerInformationInputs = forwardRef(
         <InputField
           showClearBtn={true}
           customClass="buyer-info-input-field"
-          backgroundColor="var(--primaryLight)"
+          backgroundColor="var(--white)"
           label="Address"
           inputText={newOrderData.buyer.address}
           setInputText={(value: any) =>
@@ -141,7 +141,7 @@ const BuyerInformationInputs = forwardRef(
         <InputField
           showClearBtn={true}
           customClass="buyer-info-input-field"
-          backgroundColor="var(--primaryLight)"
+          backgroundColor="var(--white)"
           label="Place"
           inputText={newOrderData.buyer.place}
           setInputText={(value: any) =>
@@ -159,7 +159,7 @@ const BuyerInformationInputs = forwardRef(
         <InputField
           showClearBtn={true}
           customClass="buyer-info-input-field"
-          backgroundColor="var(--primaryLight)"
+          backgroundColor="var(--white)"
           label="Phone number"
           inputText={newOrderData.buyer.phone}
           setInputText={(value: any) =>
@@ -177,7 +177,7 @@ const BuyerInformationInputs = forwardRef(
         <InputField
           showClearBtn={true}
           customClass="buyer-info-input-field"
-          backgroundColor="var(--primaryLight)"
+          backgroundColor="var(--white)"
           label="Additional phone number"
           inputText={newOrderData.buyer.phone2}
           setInputText={(value: any) =>
@@ -203,7 +203,7 @@ const BuyerInformationInputs = forwardRef(
           }
           label="Delivery note"
           showClearBtn={true}
-          backgroundColor="var(--primaryLight)"
+          backgroundColor="var(--white)"
         />
 
         {/* INTERNAL NOTE */}
@@ -218,7 +218,7 @@ const BuyerInformationInputs = forwardRef(
           }
           label="Internal note"
           showClearBtn={true}
-          backgroundColor="var(--primaryLight)"
+          backgroundColor="var(--white)"
         />
 
         {/* IMAGE INPUT */}

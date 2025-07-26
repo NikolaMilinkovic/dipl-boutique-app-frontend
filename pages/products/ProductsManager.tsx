@@ -4,7 +4,7 @@ import AddAndEditProducts from './add-products/AddAndEditProducts';
 
 function ProductsManager() {
   return (
-    <section className="products-manager-section">
+    <section className="products-manager-section" style={{ marginTop: '1rem' }}>
       <AddAndEditProducts />
     </section>
   );

@@ -130,7 +130,7 @@ function NewOrderOverview({ onReset }: NewOrderOverviewPropTypes) {
         <div className="new-order-total-price-input-container">
           <InputField
             label="Custom price"
-            backgroundColor="var(--primaryLight)"
+            backgroundColor="var(--white)"
             inputText={newOrderData.totalPrice.toString()}
             setInputText={(value) => {
               if (isNaN(Number(value))) {

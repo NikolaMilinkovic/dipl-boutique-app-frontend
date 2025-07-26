@@ -8,7 +8,7 @@ function AddAndEditProducts() {
     <>
       <section className="add-edit-products-main">
         <AddProduct />
-        <ProductsList showAddBtn={false} styles={{ paddingTop: '43.6px' }} />
+        <ProductsList showAddBtn={false} />
       </section>
     </>
   );

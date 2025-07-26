@@ -449,3 +449,17 @@ template {
 .bold {
   font-weight: bold;
 }
+
+.default-card {
+  color: var(--primaryDark);
+  background-color: var(--white);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-radius: 6px;
+  padding: 1rem;
+  border-left: 4px solid var(--primary-color);
+
+  transition: box-shadow 0.2s ease;
+  &:hover {
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+  }
+}

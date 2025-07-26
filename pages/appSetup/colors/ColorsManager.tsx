@@ -46,7 +46,7 @@ function ColorsManager() {
 
   return (
     <div className="app-setup-page-wrapper">
-      <div className="colors-inputs-container">
+      <div className="colors-inputs-container default-card">
         <SingleInputForm
           data={color}
           setData={setColor}
@@ -59,7 +59,7 @@ function ColorsManager() {
         <div>
           <h2>Search colors</h2>
           <InputField
-            backgroundColor="var(--primaryLight)"
+            backgroundColor="var(--white)"
             label="Search colors"
             inputText={searchTerm}
             setInputText={setSearchTerm}

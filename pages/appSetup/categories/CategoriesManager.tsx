@@ -67,7 +67,7 @@ function CategoriesManager() {
   ];
   return (
     <div className="app-setup-page-wrapper">
-      <div className="categories-inputs-container">
+      <div className="categories-inputs-container default-card">
         <SingleInputForm
           data={category.name}
           setData={(value) =>
@@ -97,7 +97,7 @@ function CategoriesManager() {
         >
           <h2>Search categories</h2>
           <InputField
-            backgroundColor="var(--primaryLight)"
+            backgroundColor="var(--white)"
             label="Search categories via name"
             inputText={searchTerm}
             setInputText={(text) => setSearchTerm(text as string)}
