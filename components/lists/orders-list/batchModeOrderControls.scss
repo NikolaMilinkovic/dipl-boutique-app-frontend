@@ -30,11 +30,11 @@
   height: 40px;
   font-size: 14px;
   border: none;
-  background-color: var(--secondaryLight);
+  background-color: var(--primaryLight);
 
   &:hover {
     opacity: 0.8;
-    background-color: var(--secondaryLightHover);
+    background-color: var(--primaryLightHover);
   }
 
   &.danger {

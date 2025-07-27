@@ -3,12 +3,14 @@ import { SupplierTypes } from '../../../global/types';
 import {
   notifyError,
   notifySuccess,
+  notifyWarrning,
 } from '../../../components/util-components/Notify';
 import { betterErrorLog } from '../../../util-methods/log-methods';
 import Button from '../../../components/util-components/Button';
 import './supplierItem.scss';
 import InputFieldBorderless from '../../../components/util-components/InputFieldBorderless';
 import { useAuth } from '../../../store/auth-context';
+import { useUser } from '../../../store/user-context';
 
 function SupplierItem({ data }: { data: SupplierTypes }) {
   const apiUrl = import.meta.env.VITE_BACKEND_URL;
@@ -18,10 +20,15 @@ function SupplierItem({ data }: { data: SupplierTypes }) {
   });
   const [newName, setNewName] = useState('');
   const [showEdit, setShowEdit] = useState<Boolean>(false);
+  const { user } = useUser();
   const { token } = useAuth();
 
   // Toggler
-  function showEditColorHandler() {
+  function showEditSupplierHandler() {
+    if (!user?.permissions.supplier.edit) {
+      notifyWarrning('You do not have permission to edit suppliers');
+      return;
+    }
     setNewName(data.name);
     setShowEdit(!showEdit);
   }
@@ -35,6 +42,10 @@ function SupplierItem({ data }: { data: SupplierTypes }) {
   // Updates the current color name in the database
   async function updateSupplierHandler() {
     try {
+      if (!user?.permissions.supplier.edit) {
+        notifyWarrning('You do not have permission to edit suppliers');
+        return;
+      }
       if (newName.trim() === data.name) {
         setShowEdit(false);
         return;
@@ -72,6 +83,10 @@ function SupplierItem({ data }: { data: SupplierTypes }) {
   // Deletes the color from the database
   async function removeSupplierHandler() {
     try {
+      if (!user?.permissions.supplier.remove) {
+        notifyWarrning('You do not have permission to remove suppliers');
+        return;
+      }
       const response = await fetch(`${apiUrl}/supplier/${supplierData._id}`, {
         method: 'DELETE',
         headers: {
@@ -104,7 +119,7 @@ function SupplierItem({ data }: { data: SupplierTypes }) {
   }, [showEdit]);
 
   return (
-    <div className="SupplierItem" onClick={showEditColorHandler}>
+    <div className="SupplierItem" onClick={showEditSupplierHandler}>
       {showEdit ? (
         <form className="mainInputsContainer" action={updateSupplierHandler}>
           <InputFieldBorderless
@@ -121,7 +136,7 @@ function SupplierItem({ data }: { data: SupplierTypes }) {
             <Button
               onClick={(e) => {
                 e.stopPropagation();
-                showEditColorHandler();
+                showEditSupplierHandler();
               }}
               label="Cancel"
               className="color-btn"

@@ -8,12 +8,14 @@ import { betterErrorLog } from '../../../util-methods/log-methods';
 import {
   notifyError,
   notifySuccess,
+  notifyWarrning,
 } from '../../../components/util-components/Notify';
 import { useAuth } from '../../../store/auth-context';
 import { useFetchData } from '../../../hooks/useFetchData';
 import { useFilterByName } from '../../../hooks/useFilterByName';
 import { useFilterByStockType } from '../../../hooks/useFilterByStockType';
 import { useCategories } from '../../../store/categories-context';
+import { useUser } from '../../../store/user-context';
 
 function CategoriesManager() {
   const [category, setCategory] = useState({
@@ -26,6 +28,7 @@ function CategoriesManager() {
   const { token } = useAuth();
   const { fetchWithBodyData } = useFetchData();
   const { categories } = useCategories();
+  const { user } = useUser();
 
   const filteredByName = useFilterByName(categories, searchTerm);
   const filteredByStockType = useFilterByStockType(
@@ -35,6 +38,10 @@ function CategoriesManager() {
 
   const addCategory = React.useCallback(async () => {
     try {
+      if (!user?.permissions.category.add) {
+        notifyWarrning('You do not have permission to add categories');
+        return;
+      }
       const response = await fetchWithBodyData(
         'category/add',
         category,

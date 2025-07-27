@@ -63,6 +63,8 @@ export function UserContextProvider({ children }: UserProviderProps) {
 
   async function getUser() {
     try {
+      if (!user) return;
+      if (!user.id) return;
       const response = await fetchData(`user/get/${user?.id}`, 'GET');
       if (response.status === 200) {
         setUserState(response);

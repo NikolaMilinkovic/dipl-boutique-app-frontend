@@ -3,12 +3,14 @@ import { CourierTypes } from '../../../global/types';
 import {
   notifyError,
   notifySuccess,
+  notifyWarrning,
 } from '../../../components/util-components/Notify';
 import { betterErrorLog } from '../../../util-methods/log-methods';
 import Button from '../../../components/util-components/Button';
 import './courierItem.scss';
 import InputFieldBorderless from '../../../components/util-components/InputFieldBorderless';
 import { useAuth } from '../../../store/auth-context';
+import { useUser } from '../../../store/user-context';
 
 function CourierItem({ data }: { data: CourierTypes }) {
   const apiUrl = import.meta.env.VITE_BACKEND_URL;
@@ -20,10 +22,15 @@ function CourierItem({ data }: { data: CourierTypes }) {
   const [newName, setNewName] = useState('');
   const [newPrice, setNewPrice] = useState<string | number>('');
   const [showEdit, setShowEdit] = useState<Boolean>(false);
+  const { user } = useUser();
   const { token } = useAuth();
 
   // Toggler
   function showEditCourierHandler() {
+    if (!user?.permissions.courier.edit) {
+      notifyWarrning('You do not have permission to edit couriers');
+      return;
+    }
     setNewName(data.name);
     setNewPrice(data.deliveryPrice);
     setShowEdit(!showEdit);
@@ -35,9 +42,13 @@ function CourierItem({ data }: { data: CourierTypes }) {
     setNewName(data.name);
   }, [data]);
 
-  // Updates the current color name in the database
-  async function updateSupplierHandler() {
+  // Updates the current courier in the database
+  async function updateCourierHandler() {
     try {
+      if (!user?.permissions.courier.edit) {
+        notifyWarrning('You do not have permission to edit couriers');
+        return;
+      }
       if (newName.trim() === data.name && newPrice === data.deliveryPrice) {
         setShowEdit(false);
         return;
@@ -77,9 +88,13 @@ function CourierItem({ data }: { data: CourierTypes }) {
     }
   }
 
-  // Deletes the color from the database
-  async function removeSupplierHandler() {
+  // Deletes the courier from the database
+  async function removeCourierHandler() {
     try {
+      if (!user?.permissions.courier.remove) {
+        notifyWarrning('You do not have permission to remove couriers');
+        return;
+      }
       const response = await fetch(`${apiUrl}/courier/${couriersData._id}`, {
         method: 'DELETE',
         headers: {
@@ -96,7 +111,7 @@ function CourierItem({ data }: { data: CourierTypes }) {
 
       notifySuccess(`Kurir je uspešno obrisan`);
     } catch (error) {
-      betterErrorLog('> Error deleting supplier:', error);
+      betterErrorLog('> Error deleting courier:', error);
     }
   }
 
@@ -114,7 +129,7 @@ function CourierItem({ data }: { data: CourierTypes }) {
   return (
     <div className="courrierItem" onClick={showEditCourierHandler}>
       {showEdit ? (
-        <form className="mainInputsContainer" action={updateSupplierHandler}>
+        <form className="mainInputsContainer" action={updateCourierHandler}>
           <InputFieldBorderless
             customClass="courier-item-input"
             label="Courier name"
@@ -166,7 +181,7 @@ function CourierItem({ data }: { data: CourierTypes }) {
             label="Delete"
             onClick={(e) => {
               e.stopPropagation();
-              removeSupplierHandler();
+              removeCourierHandler();
             }}
             className="deleteIcon"
           />

@@ -21,6 +21,7 @@ import { useConfirmationModal } from '../../store/modals/confirmation-modal-cont
 import { useFetchData } from '../../hooks/useFetchData';
 import { useEditProductModal } from '../../store/modals/edit-product-modal-context';
 import { useImagePreviewModal } from '../../store/modals/image-preview-modal-context';
+import { useUser } from '../../store/user-context';
 
 interface ProductDisplayItemTypes {
   data: PurseTypes | DressTypes;
@@ -43,6 +44,7 @@ function ProductDisplayItem({
   const { fetchWithBodyData, handleFetchingWithFormData } = useFetchData();
   const { showEditModal } = useEditProductModal();
   const { showImagePreview } = useImagePreviewModal();
+  const { user } = useUser();
   // const { addProductHandler } = useNewOrder();
 
   function validateInput(updatedProduct): boolean {
@@ -86,6 +88,10 @@ function ProductDisplayItem({
 
   // EDIT
   function handleOnEditPress(event) {
+    if (!user?.permissions.product.edit) {
+      notifyWarrning('You do not have permission to edit products');
+      return;
+    }
     event.stopPropagation();
     showEditModal(data, async (updatedProduct: any) => {
       const preparedProductData = {
@@ -118,6 +124,10 @@ function ProductDisplayItem({
 
   // DELETE
   function handleOnDeletePress(event) {
+    if (!user?.permissions.product.remove) {
+      notifyWarrning('You do not have permission to remove products');
+      return;
+    }
     event.stopPropagation();
     showConfirmation(async () => {
       let colorIdsArr = [];
@@ -193,7 +203,7 @@ function ProductDisplayItem({
         {/* Buttons */}
         <div className="product-controls">
           {/* ADD BTN */}
-          {onStock && showAddBtn && (
+          {onStock && showAddBtn && user?.permissions.order.add && (
             <button
               className="product-control-btn"
               style={{
@@ -208,7 +218,7 @@ function ProductDisplayItem({
           )}
 
           {/* EDIT BTN */}
-          {showEditBtn && (
+          {showEditBtn && user?.permissions.product.edit && (
             <button
               className="product-control-btn"
               style={{
@@ -224,7 +234,7 @@ function ProductDisplayItem({
           )}
 
           {/* DELETE BTN */}
-          {showDeleteBtn && (
+          {showDeleteBtn && user?.permissions.product.remove && (
             <button
               className="product-control-btn"
               style={{

@@ -3,6 +3,7 @@ import './suppliersManager.scss';
 import {
   notifyError,
   notifySuccess,
+  notifyWarrning,
 } from '../../../components/util-components/Notify';
 import { betterErrorLog } from '../../../util-methods/log-methods';
 import SingleInputForm from '../../../components/util-components/SingleInputForm';
@@ -12,6 +13,7 @@ import { useAuth } from '../../../store/auth-context';
 import { useFetchData } from '../../../hooks/useFetchData';
 import { useSuppliers } from '../../../store/suppliers-context';
 import { useFilterByName } from '../../../hooks/useFilterByName';
+import { useUser } from '../../../store/user-context';
 
 function SuppliersManager() {
   const [supplier, setSupplier] = useState('');
@@ -20,9 +22,14 @@ function SuppliersManager() {
   const { fetchWithBodyData } = useFetchData();
   const { suppliers } = useSuppliers();
   const filteredSuppliers = useFilterByName(suppliers, searchTerm);
+  const { user } = useUser();
 
   const addSupplier = React.useCallback(async () => {
     try {
+      if (!user?.permissions.supplier.add) {
+        notifyWarrning('You do not have permission to add suppliers');
+        return;
+      }
       const response = await fetchWithBodyData(
         'supplier/add',
         { name: supplier },

@@ -1,8 +1,10 @@
 import Checkbox from '../../../../components/checkbox/Checkbox';
 import Button from '../../../../components/util-components/Button';
 import InputField from '../../../../components/util-components/InputField';
+import { notifyWarrning } from '../../../../components/util-components/Notify';
 import { useAlertModal } from '../../../../store/modals/alert-modal-context';
 import { useNewOrder } from '../../../../store/new-order-context';
+import { useUser } from '../../../../store/user-context';
 import './newOrderOverview.scss';
 
 interface NewOrderOverviewPropTypes {
@@ -10,6 +12,7 @@ interface NewOrderOverviewPropTypes {
 }
 
 function NewOrderOverview({ onReset }: NewOrderOverviewPropTypes) {
+  const { user } = useUser();
   const { newOrderData, setNewOrderData, resetOrderDataHandler, addOrder } =
     useNewOrder();
   const { showAlert } = useAlertModal();
@@ -18,6 +21,10 @@ function NewOrderOverview({ onReset }: NewOrderOverviewPropTypes) {
     onReset();
   }
   async function handleOnAdd() {
+    if (!user?.permissions.order.add) {
+      notifyWarrning('You do not have permission to create orders');
+      return;
+    }
     const success = await addOrder();
     if (success) handleOnReset();
   }

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import './batchModeOrderControls.scss';
 import { MdDelete, MdDoneAll, MdClose } from 'react-icons/md';
+import { useUser } from '../../../store/user-context';
 
 const BatchModeOrderControlls = ({
   active,
@@ -9,6 +10,7 @@ const BatchModeOrderControlls = ({
   isAllSelected,
 }) => {
   const [visible, setVisible] = useState(active);
+  const { user } = useUser();
 
   useEffect(() => {
     if (active) setVisible(true);
@@ -24,9 +26,11 @@ const BatchModeOrderControlls = ({
       className={`batch-controls-wrapper ${active ? 'open' : 'closed'}`}
       style={{ display: visible ? 'flex' : 'none' }}
     >
-      <button className="batch-btn danger" onClick={onRemoveBatchPress}>
-        <MdDelete size={20} />
-      </button>
+      {user && user.permissions.order.remove && (
+        <button className="batch-btn danger" onClick={onRemoveBatchPress}>
+          <MdDelete size={20} />
+        </button>
+      )}
       <button className="batch-btn" onClick={onSelectAllOrders}>
         {isAllSelected ? (
           <>

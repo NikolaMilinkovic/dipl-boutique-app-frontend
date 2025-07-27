@@ -76,11 +76,11 @@ function PackOrdersControls({
         className="pack-orders-header"
         onClick={() => setIsExpanded(!isExpanded)}
       >
-        <span>Spakovano: {packedCounter}</span>
+        <span>Packed: {packedCounter}</span>
         <span className="icon">
           {isExpanded ? <MdExpandLess size={24} /> : <MdExpandMore size={24} />}
         </span>
-        <span>Za pakovanje: {toBePackedCounter}</span>
+        <span>Pending: {toBePackedCounter}</span>
       </div>
 
       {isExpanded && (

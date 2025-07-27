@@ -3,6 +3,7 @@ import './couriersManager.scss';
 import {
   notifyError,
   notifySuccess,
+  notifyWarrning,
 } from '../../../components/util-components/Notify';
 import { betterErrorLog } from '../../../util-methods/log-methods';
 import SingleInputForm from '../../../components/util-components/SingleInputForm';
@@ -13,6 +14,7 @@ import { useAuth } from '../../../store/auth-context';
 import { useFetchData } from '../../../hooks/useFetchData';
 import { useCouriers } from '../../../store/couriers-context';
 import { useFilterByName } from '../../../hooks/useFilterByName';
+import { useUser } from '../../../store/user-context';
 
 function CouriersManager() {
   const [courier, setCourier] = useState('');
@@ -22,9 +24,14 @@ function CouriersManager() {
   const { fetchWithBodyData } = useFetchData();
   const { couriers } = useCouriers();
   const filteredCouriers = useFilterByName(couriers, searchTerm);
+  const { user } = useUser();
 
   const addCourier = React.useCallback(async () => {
     try {
+      if (!user?.permissions.courier.add) {
+        notifyWarrning('You do not have permission to add couriers');
+        return;
+      }
       if (!courier.trim()) {
         notifyError('Ime kurira je obavezno.');
         return;

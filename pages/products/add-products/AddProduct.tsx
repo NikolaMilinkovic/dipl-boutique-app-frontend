@@ -12,6 +12,8 @@ import PurseColor from '../../../models/PurseColor';
 import ColorsSelect from '../../../components/colors-select/ColorsSelect';
 import Button from '../../../components/util-components/Button';
 import { useProduct } from '../../../store/new-product-context';
+import { useUser } from '../../../store/user-context';
+import { notifyWarrning } from '../../../components/util-components/Notify';
 
 function AddProduct() {
   const { getCategoryDropdownItems } = useCategories();
@@ -19,6 +21,7 @@ function AddProduct() {
   const imageInputRef = React.useRef<HTMLInputElement>(null);
   const [imageRerenderKey, setImageRerenderKey] = useState(0);
   const [selectedColors, setSelectedColors] = useState([]);
+  const { user } = useUser();
 
   const {
     newProduct: product,
@@ -27,6 +30,10 @@ function AddProduct() {
   } = useProduct();
 
   async function addProductHandler() {
+    if (!user?.permissions.product.add) {
+      notifyWarrning('You do not have permission to add products');
+      return;
+    }
     const isAdded = await addProduct();
 
     if (isAdded) {

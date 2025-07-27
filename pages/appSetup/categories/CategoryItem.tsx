@@ -3,12 +3,14 @@ import { CategoryTypes, ColorTypes } from '../../../global/types';
 import {
   notifyError,
   notifySuccess,
+  notifyWarrning,
 } from '../../../components/util-components/Notify';
 import { betterErrorLog } from '../../../util-methods/log-methods';
 import Button from '../../../components/util-components/Button';
 import InputFieldBorderless from '../../../components/util-components/InputFieldBorderless';
 import './categoryItem.scss';
 import { useAuth } from '../../../store/auth-context';
+import { useUser } from '../../../store/user-context';
 
 function CategoryItem({ data }: { data: CategoryTypes }) {
   const apiUrl = import.meta.env.VITE_BACKEND_URL;
@@ -19,10 +21,15 @@ function CategoryItem({ data }: { data: CategoryTypes }) {
   });
   const [newName, setNewName] = useState('');
   const [showEdit, setShowEdit] = useState<Boolean>(false);
+  const { user } = useUser();
   const { token } = useAuth();
 
   // Toggler
   function showEditColorHandler() {
+    if (!user?.permissions.category.edit) {
+      notifyWarrning('You do not have permission to edit categories');
+      return;
+    }
     setNewName(data.name);
     setShowEdit(!showEdit);
   }
@@ -36,6 +43,10 @@ function CategoryItem({ data }: { data: CategoryTypes }) {
   // Updates the current color name in the database
   async function updateCategoryHandler() {
     try {
+      if (!user?.permissions.category.edit) {
+        notifyWarrning('You do not have permission to edit categories');
+        return;
+      }
       if (newName.trim() === data.name) {
         setShowEdit(false);
         return;
@@ -74,6 +85,10 @@ function CategoryItem({ data }: { data: CategoryTypes }) {
   // Deletes the color from the database
   async function removeCategoryHandler() {
     try {
+      if (!user?.permissions.category.remove) {
+        notifyWarrning('You do not have permission to add categories');
+        return;
+      }
       const response = await fetch(`${apiUrl}/category/${categoryData._id}`, {
         method: 'DELETE',
         headers: {
