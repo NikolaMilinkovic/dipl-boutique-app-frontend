@@ -129,7 +129,6 @@ function OrdersContextProvider({ children }: OrdersContextProviderTypes) {
     }));
   }
   function handlePackOrders(orderIds: string[]) {
-    console.log('> handlePackOrders running');
     setOrders((prev) => ({
       ...prev,
       unprocessedOrders: prev.unprocessedOrders.map((order: OrderTypes) =>
@@ -143,9 +142,6 @@ function OrdersContextProvider({ children }: OrdersContextProviderTypes) {
           : order,
       ),
     }));
-  }
-  interface ReservationType {
-    _id: string;
   }
 
   function handleProcessOrdersByIds(orderIds: string[]) {

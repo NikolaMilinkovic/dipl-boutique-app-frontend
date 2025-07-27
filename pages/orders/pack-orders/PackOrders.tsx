@@ -1,10 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useOrders } from '../../../store/orders-context';
-import { CategoryTypes, CourierTypes, OrderTypes } from '../../../global/types';
+import { OrderTypes } from '../../../global/types';
 import PackOrdersControls from './components/PackOrdersControls';
 import { DropdownOptionType } from '../../../components/dropdowns/Dropdown';
 import PackOrdersList from './components/PackOrdersList';
-import { betterConsoleLog } from '../../../util-methods/log-methods';
 
 function PackOrders() {
   const [selectedCourier, setSelectedCourier] =

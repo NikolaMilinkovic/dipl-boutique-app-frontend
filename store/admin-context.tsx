@@ -9,7 +9,6 @@ import { NewUserTypes, User, UserType } from '../global/types';
 import { useUser } from './user-context';
 import { useFetchData } from '../hooks/useFetchData';
 import { notifyError } from '../components/util-components/Notify';
-import { betterConsoleLog } from '../util-methods/log-methods';
 import { useSocket } from './socket-context';
 
 interface AdminContextTypes {

@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import { UserType } from '../global/types';
 import { DropdownOptionType } from '../components/dropdowns/Dropdown';
-import { betterConsoleLog, betterErrorLog } from '../util-methods/log-methods';
+import { betterErrorLog } from '../util-methods/log-methods';
 import { useSocket } from './socket-context';
 import { useFetchData } from '../hooks/useFetchData';
 import { notifyError } from '../components/util-components/Notify';
@@ -35,10 +35,6 @@ export const UserContext = createContext<UserContextTypes>({
 export function UserContextProvider({ children }: UserProviderProps) {
   const [user, setUserState] = useState<UserType | null>(null);
   const { fetchData } = useFetchData();
-
-  useEffect(() => {
-    betterConsoleLog('> User permissions: ', user?.permissions);
-  }, [user]);
 
   function setUser(user: UserType | null) {
     setUserState(user);

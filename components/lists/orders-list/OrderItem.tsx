@@ -1,13 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './orderItem.scss';
-import { OrderTypes, ProductTypes } from '../../../global/types';
+import { OrderTypes } from '../../../global/types';
 import { getFormattedDate } from '../../../util-methods/dateFormatters';
 import { MdCheck, MdEdit } from 'react-icons/md';
 import DisplayOrderProduct from './DisplayOrderProduct';
 import { useImagePreviewModal } from '../../../store/modals/image-preview-modal-context';
 import { useEditOrder } from '../../../store/modals/edit-order-modal-context';
 import { useUser } from '../../../store/user-context';
-import { betterConsoleLog } from '../../../util-methods/log-methods';
 
 interface SelectedOrdersTypes {
   _id: string;

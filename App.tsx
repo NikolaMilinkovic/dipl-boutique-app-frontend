@@ -7,8 +7,6 @@ import Navigation from './components/navigation/Navigation';
 import { Bounce, ToastContainer } from 'react-toastify';
 import { useFetchData } from './hooks/useFetchData';
 import { useUser } from './store/user-context';
-import { betterConsoleLog, betterErrorLog } from './util-methods/log-methods';
-import { notifyError } from './components/util-components/Notify';
 
 function Root() {
   const [isAuthenticatingToken, setIsAuthenticatingToken] = useState(true);

@@ -9,7 +9,6 @@ import {
   notifyError,
   notifySuccess,
 } from '../../../components/util-components/Notify';
-import { betterConsoleLog } from '../../../util-methods/log-methods';
 import { useFetchData } from '../../../hooks/useFetchData';
 import { useAdmin } from '../../../store/admin-context';
 import AnimatedList from '../../../components/lists/AnimatedList';
@@ -58,7 +57,6 @@ function UsersManager({ newUser, setNewUser }: UsersManagerProps) {
         notifyError(parsed.message);
       }
     } catch (error) {
-      betterConsoleLog('Error while creating a new user', error);
       notifyError('Error while creating a new user');
     }
   }
@@ -187,22 +185,46 @@ function UserPermissionRow({
     permission: keyof NewUserTypes['permissions'],
     action: 'add' | 'edit' | 'remove',
     setNewUser: React.Dispatch<React.SetStateAction<NewUserTypes>>,
+    hardcode?: boolean,
   ) {
-    setNewUser((prev) => ({
-      ...prev,
-      permissions: {
-        ...prev.permissions,
-        [permission]: {
-          ...prev.permissions[permission],
-          [action]: !prev.permissions[permission][action],
+    setNewUser((prev) => {
+      const current = prev.permissions[permission];
+
+      // Will toggle all checked / unchecked if we provide it hardcode value
+      if (hardcode) {
+        const allChecked = current.add && current.edit && current.remove;
+        const newValue = allChecked ? false : true;
+
+        return {
+          ...prev,
+          permissions: {
+            ...prev.permissions,
+            [permission]: {
+              add: newValue,
+              edit: newValue,
+              remove: newValue,
+            },
+          },
+        };
+      }
+
+      // Will toggle !prev state if there is no hardcode provided
+      return {
+        ...prev,
+        permissions: {
+          ...prev.permissions,
+          [permission]: {
+            ...current,
+            [action]: !current[action],
+          },
         },
-      },
-    }));
+      };
+    });
   }
   function handleGiveAllPermissions() {
-    handlePermissionChange(permission as any, 'add', setNewUser);
-    handlePermissionChange(permission as any, 'edit', setNewUser);
-    handlePermissionChange(permission as any, 'remove', setNewUser);
+    handlePermissionChange(permission as any, 'add', setNewUser, true);
+    handlePermissionChange(permission as any, 'edit', setNewUser, true);
+    handlePermissionChange(permission as any, 'remove', setNewUser, true);
   }
 
   return (
@@ -294,9 +316,6 @@ function EditUserComponent({ user }: EditUserComponentTypes) {
   const submitRef = useRef<HTMLButtonElement>(null);
   const [updatedUser, setUpdatedUser] = useState(user);
   const { fetchWithBodyData } = useFetchData();
-  // useEffect(() => {
-  //   betterConsoleLog('>updatedUser', updatedUser);
-  // }, [updatedUser]);
   const { getRoleDropdownOptions } = useUser();
   const role_dropdown_options = getRoleDropdownOptions();
   if (!updatedUser) return;
@@ -324,7 +343,6 @@ function EditUserComponent({ user }: EditUserComponentTypes) {
         notifyError(parsed.message);
       }
     } catch (error) {
-      betterConsoleLog('Error while creating a new user', error);
       notifyError('Error while creating a new user');
     }
   }

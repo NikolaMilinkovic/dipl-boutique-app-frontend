@@ -49,7 +49,6 @@ const PackOrderItem: React.FC<PropTypes> = ({ order }) => {
       setIsExpanded(false);
       let response;
       if (order.packedIndicator) {
-        console.log('> Setting to false');
         response = await fetchData(
           `orders/packed/set-indicator-to-false/${order._id}`,
           'POST',
@@ -62,7 +61,6 @@ const PackOrderItem: React.FC<PropTypes> = ({ order }) => {
           notifySuccess(response.message);
         }
       } else {
-        console.log('> Setting to true');
         response = await fetchData(
           `orders/packed/set-indicator-to-true/${order._id}`,
           'POST',
