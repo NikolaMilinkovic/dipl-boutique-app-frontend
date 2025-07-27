@@ -436,13 +436,21 @@ function EditUserComponent({ user }: EditUserComponentTypes) {
         />
       </div>
 
-      <Button
-        label="Update user"
-        onClick={(e) => handleUpdateUser(e)}
-        className="update-user-button"
-        type="submit"
-        ref={submitRef}
-      />
+      <div className="grid-1-1 gap-1">
+        <Button
+          label="Cancel"
+          onClick={closeDrawer}
+          className="update-user-button"
+          type="button"
+        />
+        <Button
+          label="Update user"
+          onClick={(e) => handleUpdateUser(e)}
+          className="update-user-button"
+          type="submit"
+          ref={submitRef}
+        />
+      </div>
     </form>
   );
 }
