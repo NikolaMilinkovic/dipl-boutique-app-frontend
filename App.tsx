@@ -7,12 +7,15 @@ import Navigation from './components/navigation/Navigation';
 import { Bounce, ToastContainer } from 'react-toastify';
 import { useFetchData } from './hooks/useFetchData';
 import { useUser } from './store/user-context';
+import { betterConsoleLog, betterErrorLog } from './util-methods/log-methods';
+import { notifyError } from './components/util-components/Notify';
 
 function Root() {
   const [isAuthenticatingToken, setIsAuthenticatingToken] = useState(true);
   const [showSplash, setShowSplash] = useState(true);
   const authCtx = useContext(AuthContext);
-  const { setUser } = useUser();
+  const { setUser, fetchUserDataViaLocalStorage } = useUser();
+  const { fetchData } = useFetchData();
 
   /**
    * Checks the token in the localStorage upon app startup
@@ -26,8 +29,14 @@ function Root() {
 
       if (token && user) {
         try {
+          // Fetch user data or look at local storage if we cant fetch
+          const fetchedUserData = await fetchUserDataViaLocalStorage();
           const parsedUser = JSON.parse(user);
-          setUser(parsedUser);
+          if (fetchedUserData) {
+            setUser(fetchedUserData.user);
+          } else {
+            setUser(parsedUser);
+          }
           authCtx.authenticate(token);
         } catch {
           authCtx.logout();

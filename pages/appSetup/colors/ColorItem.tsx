@@ -3,14 +3,17 @@ import { ColorTypes } from '../../../global/types';
 import {
   notifyError,
   notifySuccess,
+  notifyWarrning,
 } from '../../../components/util-components/Notify';
 import { betterErrorLog } from '../../../util-methods/log-methods';
 import Button from '../../../components/util-components/Button';
 import './ColorItem.scss';
 import InputFieldBorderless from '../../../components/util-components/InputFieldBorderless';
 import { useAuth } from '../../../store/auth-context';
+import { useUser } from '../../../store/user-context';
 
 function ColorItem({ data }: { data: ColorTypes }) {
+  const { user } = useUser();
   const apiUrl = import.meta.env.VITE_BACKEND_URL;
   const [colorData, setColorData] = useState<ColorTypes>({
     _id: '',
@@ -23,6 +26,10 @@ function ColorItem({ data }: { data: ColorTypes }) {
 
   // Toggler
   function showEditColorHandler() {
+    if (!user?.permissions.color.edit) {
+      notifyWarrning('You do not have permission to edit colors');
+      return;
+    }
     setNewName(data.name);
     setShowEdit(!showEdit);
   }
@@ -36,6 +43,10 @@ function ColorItem({ data }: { data: ColorTypes }) {
   // Updates the current color name in the database
   async function updateColorHandler() {
     try {
+      if (!user?.permissions.color.edit) {
+        notifyWarrning('You do not have permission to edit colors');
+        return;
+      }
       if (newName.trim() === data.name) {
         setShowEdit(false);
         return;
@@ -74,6 +85,10 @@ function ColorItem({ data }: { data: ColorTypes }) {
   // Deletes the color from the database
   async function removeColorHandler() {
     try {
+      if (!user?.permissions.color.remove) {
+        notifyWarrning('You do not have permission to edit colors');
+        return;
+      }
       const response = await fetch(`${apiUrl}/colors/${colorData._id}`, {
         method: 'DELETE',
         headers: {

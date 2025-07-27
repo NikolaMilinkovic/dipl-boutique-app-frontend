@@ -3,6 +3,10 @@
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
 
+  .users-list-container {
+    overflow: hidden;
+  }
+
   .new-user-section {
     display: flex;
     flex-direction: column;
@@ -66,7 +70,6 @@
   border-radius: 6px;
   background-color: white;
   transition: background-color 0.2s ease;
-  cursor: pointer;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.08);
   padding: 2rem;
 
@@ -97,5 +100,47 @@
   }
   .user-delete-btn {
     right: 64px;
+  }
+}
+
+.edit-user-modal-container {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  overflow: scroll;
+  max-height: 100vh;
+  overflow-x: hidden;
+
+  .edit-user-info-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .edit-user-permissions-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    .user-permissions-row {
+      display: grid;
+      position: relative;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      padding: 1rem;
+      border: 1px solid var(--primaryDark);
+      border-radius: 4px;
+
+      .user-permissions-label {
+        position: absolute;
+        top: -10px;
+        left: 10px;
+        background-color: var(--white);
+        padding-left: 6px;
+        padding-right: 6px;
+      }
+    }
+  }
+
+  .update-user-button {
+    margin-top: 1rem;
   }
 }

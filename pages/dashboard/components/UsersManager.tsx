@@ -15,7 +15,7 @@ import { useAdmin } from '../../../store/admin-context';
 import AnimatedList from '../../../components/lists/AnimatedList';
 import { MdDelete, MdEdit } from 'react-icons/md';
 import { useDrawerModal } from '../../../store/modals/drawer-modal-contex';
-import { useEffect } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useConfirmationModal } from '../../../store/modals/confirmation-modal-context';
 
 interface UsersManagerProps {
@@ -31,9 +31,20 @@ function UsersManager({ newUser, setNewUser }: UsersManagerProps) {
   const selectedRoleOption =
     role_dropdown_options.find((opt) => opt.value === newUser.role) ??
     role_dropdown_options[0];
+  const [query, setQuery] = useState('');
 
-  async function handleCreateUser() {
+  const filteredData = useMemo(() => {
+    if (!query) return usersData;
+    return usersData.filter(
+      (user: any) =>
+        user.username.toLowerCase().includes(query.toLowerCase()) ||
+        user.role.toLowerCase().includes(query.toLowerCase()),
+    );
+  }, [usersData, query]);
+
+  async function handleCreateUser(e) {
     try {
+      e.preventDefault();
       const response = await fetchWithBodyData('user/create', newUser, 'POST');
       if (!response) return;
 
@@ -54,7 +65,7 @@ function UsersManager({ newUser, setNewUser }: UsersManagerProps) {
 
   return (
     <section className="users-manager-section">
-      <div className="dashboard-card new-user-section">
+      <form className="dashboard-card new-user-section">
         <h2>New User</h2>
 
         {/* BASIC INFO */}
@@ -131,19 +142,27 @@ function UsersManager({ newUser, setNewUser }: UsersManagerProps) {
           />
         </div>
 
-        <Button label="Create new user" onClick={handleCreateUser} />
-      </div>
+        <Button
+          label="Create new user"
+          onClick={(e) => handleCreateUser(e)}
+          type="submit"
+        />
+      </form>
       {/* USERS LIST */}
-      <div className="dashboard-card">
+      <div className="dashboard-card users-list-container">
         <h2>All Users ({usersData.length})</h2>
-        <InputFieldBorderless label="Search users" />
+        <InputFieldBorderless
+          label="Search users"
+          inputText={query}
+          setInputText={setQuery}
+        />
         <AnimatedList
-          items={usersData as UserType[]}
+          containScroll={false}
+          items={filteredData as UserType[]}
           renderItem={(user: UserType) => <UserItem user={user as UserType} />}
           noDataImage="/img/no_data_found.png"
           noDataAlt="Infinity Boutique Logo"
           className="user-list-section"
-          maxWidth="800px"
         />
       </div>
     </section>
@@ -228,30 +247,19 @@ interface UserItemPropTypes {
 }
 function UserItem({ user }: UserItemPropTypes) {
   if (!user) return;
-  const { openDrawer, updateDrawerContent, isDrawerOpen } = useDrawerModal();
+  const { openDrawer } = useDrawerModal();
   const { showConfirmation } = useConfirmationModal();
-  const { fetchWithBodyData } = useFetchData();
-  useEffect(() => {
-    // Update drawer content when searchParams change and drawer is open
-    if (isDrawerOpen) {
-      updateDrawerContent(<p>TEST</p>, JSON.stringify(user));
-    }
-  }, [user, isDrawerOpen]);
+  const { fetchData } = useFetchData();
 
   async function removeUserHandler() {
     showConfirmation(async () => {
-      const response = await fetchWithBodyData(
-        'user/remove',
-        user._id,
-        'DELETE',
-      );
+      const response = await fetchData(`user/remove/${user._id}`, 'DELETE');
 
       if (!response) {
         notifyError('There was an error while deleting the user');
         return;
       }
-      const result = await response.json();
-      notifySuccess(result.message);
+      notifySuccess(response.message);
     }, `Are you sure you want to delete user ${user.username}?`);
   }
 
@@ -266,7 +274,7 @@ function UserItem({ user }: UserItemPropTypes) {
       <button
         className={`user-edit-btn`}
         onClick={() => {
-          openDrawer(<p>TEST</p>, JSON.stringify(user));
+          openDrawer(<EditUserComponent user={user} />, JSON.stringify(user));
         }}
       >
         <MdEdit style={{ color: 'var(--primaryDark)', fontSize: '26px' }} />
@@ -275,5 +283,148 @@ function UserItem({ user }: UserItemPropTypes) {
         <MdDelete style={{ color: 'var(--primaryDark)', fontSize: '26px' }} />
       </button>
     </div>
+  );
+}
+
+interface EditUserComponentTypes {
+  user: UserType;
+}
+function EditUserComponent({ user }: EditUserComponentTypes) {
+  const { closeDrawer, isDrawerOpen } = useDrawerModal();
+  const submitRef = useRef<HTMLButtonElement>(null);
+  const [updatedUser, setUpdatedUser] = useState(user);
+  const { fetchWithBodyData } = useFetchData();
+  // useEffect(() => {
+  //   betterConsoleLog('>updatedUser', updatedUser);
+  // }, [updatedUser]);
+  const { getRoleDropdownOptions } = useUser();
+  const role_dropdown_options = getRoleDropdownOptions();
+  if (!updatedUser) return;
+  const selectedRoleOption =
+    role_dropdown_options.find(
+      (opt) => opt.value.toLowerCase() === updatedUser.role?.toLowerCase(),
+    ) ?? role_dropdown_options[0];
+
+  async function handleUpdateUser(e) {
+    try {
+      e.preventDefault();
+      const response = await fetchWithBodyData(
+        'user/update',
+        updatedUser,
+        'PATCH',
+      );
+      if (!response) return;
+
+      const parsed = await response.json();
+
+      if (response.status === 200) {
+        notifySuccess(parsed.message);
+        closeDrawer();
+      } else {
+        notifyError(parsed.message);
+      }
+    } catch (error) {
+      betterConsoleLog('Error while creating a new user', error);
+      notifyError('Error while creating a new user');
+    }
+  }
+
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if (user === updatedUser) return;
+      if (e.key === 'Enter' && isDrawerOpen) {
+        e.preventDefault();
+        submitRef.current?.click();
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isDrawerOpen, user, updatedUser]);
+
+  return (
+    <form className="edit-user-modal-container scroll-styles">
+      <h2>Edit User</h2>
+      <div className="edit-user-info-container">
+        <InputFieldBorderless
+          label="Username"
+          inputText={updatedUser.username}
+          setInputText={(val) =>
+            setUpdatedUser((prev) => ({
+              ...prev,
+              username: val,
+            }))
+          }
+        />
+        <InputFieldBorderless
+          label="Password"
+          inputText={updatedUser.password}
+          showPasswordBtn={true}
+          type="password"
+          setInputText={(val) =>
+            setUpdatedUser((prev) => ({
+              ...prev,
+              password: val,
+            }))
+          }
+        />
+        <Dropdown
+          value={selectedRoleOption}
+          options={role_dropdown_options}
+          defaultValue={selectedRoleOption}
+          onSelect={(selected) =>
+            setUpdatedUser((prev) => ({ ...prev, role: selected.value }))
+          }
+        />
+      </div>
+
+      {/* PERMISSIONS */}
+      <div className="edit-user-permissions-container">
+        <UserPermissionRow
+          label="Category"
+          newUser={updatedUser}
+          setNewUser={setUpdatedUser as any}
+          permission="category"
+        />
+        <UserPermissionRow
+          label="Color"
+          newUser={updatedUser}
+          setNewUser={setUpdatedUser as any}
+          permission="color"
+        />
+        <UserPermissionRow
+          label="Courier"
+          newUser={updatedUser}
+          setNewUser={setUpdatedUser as any}
+          permission="courier"
+        />
+        <UserPermissionRow
+          label="Supplier"
+          newUser={updatedUser}
+          setNewUser={setUpdatedUser as any}
+          permission="supplier"
+        />
+        <UserPermissionRow
+          label="Order"
+          newUser={updatedUser}
+          setNewUser={setUpdatedUser as any}
+          permission="order"
+        />
+        <UserPermissionRow
+          label="Product"
+          newUser={updatedUser}
+          setNewUser={setUpdatedUser as any}
+          permission="product"
+        />
+      </div>
+
+      <Button
+        label="Update user"
+        onClick={(e) => handleUpdateUser(e)}
+        className="update-user-button"
+        type="submit"
+        ref={submitRef}
+      />
+    </form>
   );
 }

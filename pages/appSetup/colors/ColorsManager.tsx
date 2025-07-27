@@ -4,6 +4,7 @@ import { betterErrorLog } from '../../../util-methods/log-methods';
 import {
   notifyError,
   notifySuccess,
+  notifyWarrning,
 } from '../../../components/util-components/Notify';
 import SingleInputForm from '../../../components/util-components/SingleInputForm';
 import ColorsList from './ColorsList';
@@ -12,6 +13,7 @@ import { useAuth } from '../../../store/auth-context';
 import { useFetchData } from '../../../hooks/useFetchData';
 import { useFilterByName } from '../../../hooks/useFilterByName';
 import { useColor } from '../../../store/colors-context';
+import { useUser } from '../../../store/user-context';
 
 function ColorsManager() {
   const [color, setColor] = useState('');
@@ -20,9 +22,14 @@ function ColorsManager() {
   const { fetchWithBodyData } = useFetchData();
   const { colors } = useColor();
   const filteredColors = useFilterByName(colors, searchTerm);
+  const { user } = useUser();
 
   const addColor = React.useCallback(async () => {
     try {
+      if (!user?.permissions.color.add) {
+        notifyWarrning('You do not have permission to add color');
+        return;
+      }
       const response = await fetchWithBodyData(
         'colors/add',
         { name: color, colorCode: '' },

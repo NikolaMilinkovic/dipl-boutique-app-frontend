@@ -10,13 +10,16 @@ import { useUser } from '../../store/user-context';
 
 function Navbar() {
   const { isAuthenticated, logout } = useAuth();
-  const { clearUser } = useUser();
+  const { clearUser, user } = useUser();
   const navRef = useRef<HTMLElement>(null);
 
   // HOTKEY NAVIGATION
   const navigate = useNavigate();
   const location = useLocation();
-  const navItems = ['/', '/orders', '/products', '/app-setup'];
+  let navItems: string[] = [];
+  if (user?.role === 'admin')
+    navItems = ['/dashboard', '/', '/products', '/app-setup'];
+  if (user?.role !== 'admin') navItems = ['/', '/products', '/app-setup'];
   function showNavbar() {
     navRef?.current?.classList.toggle('responsive_nav');
   }
@@ -43,7 +46,7 @@ function Navbar() {
   return (
     <header className="fade">
       {/* LOGO */}
-      <NavLink className="nav-link" to="/" onClick={showNavbar}>
+      <NavLink className="nav-link" to="/orders" onClick={showNavbar}>
         <img
           src="/img/infinity-white.png"
           alt="Infinity Boutique Logo"
@@ -53,12 +56,18 @@ function Navbar() {
 
       <nav ref={navRef}>
         {/* DASHBOARD */}
-        <NavButton to="/" onClick={showNavbar} icon={<MdDashboard />}>
-          Dashboard
-        </NavButton>
+        {user && user.role === 'admin' && (
+          <NavButton
+            to="/dashboard"
+            onClick={showNavbar}
+            icon={<MdDashboard />}
+          >
+            Dashboard
+          </NavButton>
+        )}
 
         {/* ORDERS */}
-        <NavButton to="/orders" onClick={showNavbar} icon={<MdInventory2 />}>
+        <NavButton to="/" onClick={showNavbar} icon={<MdInventory2 />}>
           Orders
         </NavButton>
 

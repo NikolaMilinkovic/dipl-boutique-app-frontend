@@ -9,6 +9,7 @@ import ProductsManager from '../../pages/products/ProductsManager';
 import OrdersManager from '../../pages/orders/OrdersManager';
 import Navbar from './Navbar';
 import Footer from '../footer/Footer';
+import { useUser } from '../../store/user-context';
 
 /**
  * AUTH > Imamo 2 stacka koji se nalaze u Navigation metodi
@@ -23,6 +24,7 @@ import Footer from '../footer/Footer';
  */
 function Navigation() {
   const authCtx = useContext(AuthContext);
+  const { user } = useUser();
 
   return (
     <>
@@ -31,8 +33,10 @@ function Navigation() {
         <>
           <Navbar />
           <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/orders" element={<OrdersManager />} />
+            {user && user.role === 'admin' && (
+              <Route path="/dashboard" element={<Dashboard />} />
+            )}
+            <Route path="/" element={<OrdersManager />} />
             <Route path="/products" element={<ProductsManager />} />
             <Route path="/app-setup" element={<AppSetup />} />
             <Route path="/logout" element={<Login />} />

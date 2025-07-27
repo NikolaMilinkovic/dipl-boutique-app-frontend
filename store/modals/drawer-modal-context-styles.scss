@@ -8,6 +8,7 @@
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease;
+  scroll-behavior: contain;
 
   &.visible {
     opacity: 1;

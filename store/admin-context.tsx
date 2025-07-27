@@ -8,11 +8,9 @@ import {
 import { NewUserTypes, User, UserType } from '../global/types';
 import { useUser } from './user-context';
 import { useFetchData } from '../hooks/useFetchData';
-import {
-  notifyError,
-  notifySuccess,
-} from '../components/util-components/Notify';
+import { notifyError } from '../components/util-components/Notify';
 import { betterConsoleLog } from '../util-methods/log-methods';
+import { useSocket } from './socket-context';
 
 interface AdminContextTypes {
   usersData: User[];
@@ -21,11 +19,9 @@ interface AdminContextTypes {
   setNewUser: (user: NewUserTypes) => void;
   getDefaultUserObject: () => NewUserTypes;
 }
-
 interface AdminContextProviderProps {
   children: ReactNode;
 }
-
 export const AdminContext = createContext<AdminContextTypes>({
   usersData: [],
   setUsersData: () => {},
@@ -59,7 +55,8 @@ export const AdminContext = createContext<AdminContextTypes>({
 });
 
 export function AdminContextProvider({ children }: AdminContextProviderProps) {
-  const { user } = useUser();
+  const { socket } = useSocket();
+  const { user, setUser } = useUser();
   const { fetchWithBodyData } = useFetchData();
   const [usersData, setUsersData] = useState<UserType[]>([]);
   const [newUser, setNewUser] = useState<NewUserTypes>({
@@ -99,7 +96,6 @@ export function AdminContextProvider({ children }: AdminContextProviderProps) {
       },
     },
   });
-
   function getDefaultUserObject() {
     return {
       username: '',
@@ -140,7 +136,7 @@ export function AdminContextProvider({ children }: AdminContextProviderProps) {
     };
   }
 
-  useEffect(() => {
+  async function handleConnect() {
     async function getAllUsers(user) {
       if (usersData.length !== 0) return;
       if (!user) {
@@ -157,15 +153,44 @@ export function AdminContextProvider({ children }: AdminContextProviderProps) {
         if (!response) return;
         const parsed = (await response.json()) as any;
         if (response.status === 200) {
-          betterConsoleLog('> Users', parsed.users);
           setUsersData(parsed.users);
         } else {
           notifyError(parsed.message);
         }
       }
     }
-    getAllUsers(user);
-  }, [user]);
+    await getAllUsers(user);
+  }
+
+  async function handleNewUserAdded(user) {
+    setUsersData((prev) => [user, ...prev]);
+  }
+  async function handleRemoveUser(id: string) {
+    setUsersData((prev) => prev.filter((user) => user._id !== id));
+  }
+  async function handleUpdateUser(updatedUser) {
+    setUsersData((prev) =>
+      prev.map((user) => (user._id === updatedUser._id ? updatedUser : user)),
+    );
+    if (updatedUser._id === user?.id) {
+      setUser(updatedUser);
+    }
+  }
+
+  useEffect(() => {
+    if (!socket) return;
+    socket.on('connect', handleConnect);
+    socket.on('newUserAdded', handleNewUserAdded);
+    socket.on('removeUser', handleRemoveUser);
+    socket.on('updateUser', handleUpdateUser);
+
+    return () => {
+      socket.off('connect', handleConnect);
+      socket.off('newUserAdded', handleNewUserAdded);
+      socket.off('removeUser', handleRemoveUser);
+      socket.off('updateUser', handleUpdateUser);
+    };
+  }, [socket, user]);
 
   const value: AdminContextTypes = {
     usersData,

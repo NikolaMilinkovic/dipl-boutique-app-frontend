@@ -463,3 +463,24 @@ template {
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
   }
 }
+
+.scroll-styles {
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--primaryDark);
+    border-radius: 4px;
+    transition: background 0.3s ease;
+
+    &:hover {
+      background: color-mix(in srgb, var(--primaryDark) 80%, black 20%);
+    }
+  }
+}

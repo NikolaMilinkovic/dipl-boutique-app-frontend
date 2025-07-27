@@ -12,6 +12,7 @@ interface AnimatedListProps<T> {
   className?: string;
   maxWidth?: string;
   containerStyles?: any;
+  containScroll?: boolean;
 }
 
 function AnimatedList<T>({
@@ -21,6 +22,7 @@ function AnimatedList<T>({
   noDataAlt = 'No data found',
   className = '',
   containerStyles,
+  containScroll = true,
 }: AnimatedListProps<T>) {
   // Using the custom hook for scroll animations
   const { visibleItems, containerRef } = useScrollAnimation(items);
@@ -57,7 +59,11 @@ function AnimatedList<T>({
     >
       {items && items.length > 0 ? (
         <>
-          <div className="animated-list" ref={containerRef}>
+          <div
+            className="animated-list"
+            ref={containerRef}
+            style={{ overscrollBehavior: containScroll ? 'contain' : 'auto' }}
+          >
             {items.map((item, index) => (
               <div
                 key={(item as any)._id || `item_${index}`}

@@ -6,6 +6,8 @@ import { MdCheck, MdEdit } from 'react-icons/md';
 import DisplayOrderProduct from './DisplayOrderProduct';
 import { useImagePreviewModal } from '../../../store/modals/image-preview-modal-context';
 import { useEditOrder } from '../../../store/modals/edit-order-modal-context';
+import { useUser } from '../../../store/user-context';
+import { betterConsoleLog } from '../../../util-methods/log-methods';
 
 interface SelectedOrdersTypes {
   _id: string;
@@ -33,7 +35,8 @@ const OrderItem: React.FC<PropTypes> = ({
   const [isExpanded, setIsExpanded] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
   const [contentHeight, setContentHeight] = useState('0px');
-  const { openDrawer, closeDrawer } = useEditOrder();
+  const { openDrawer } = useEditOrder();
+  const { user } = useUser();
 
   useEffect(() => {
     if (contentRef.current) {
@@ -131,15 +134,21 @@ const OrderItem: React.FC<PropTypes> = ({
             </button>
           )
         ) : (
-          <button
-            className={`order-item-control-btn ${isHighlighted ? 'order-item-control-highlighted-btn' : ''}`}
-            onClick={(e) => {
-              e.stopPropagation();
-              openDrawer(order);
-            }}
-          >
-            <MdEdit style={{ color: 'var(--primaryDark)', fontSize: '26px' }} />
-          </button>
+          <>
+            {user && user.permissions.order.edit && (
+              <button
+                className={`order-item-control-btn ${isHighlighted ? 'order-item-control-highlighted-btn' : ''}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  openDrawer(order);
+                }}
+              >
+                <MdEdit
+                  style={{ color: 'var(--primaryDark)', fontSize: '26px' }}
+                />
+              </button>
+            )}
+          </>
         )}
         {order.deliveryRemark && <span className="note-indicator">NOTE</span>}
         {order.internalRemark && <span className="note-indicator">NOTE</span>}

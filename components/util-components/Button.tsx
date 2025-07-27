@@ -8,6 +8,7 @@ interface ButtonPropStyles {
   type?: 'button' | 'submit' | 'reset';
   className?: string;
   tabIndex?: number;
+  ref?: any;
 }
 
 function Button({
@@ -16,9 +17,11 @@ function Button({
   type = 'button',
   className = '',
   tabIndex,
+  ref,
 }: ButtonPropStyles) {
   return (
     <button
+      ref={ref}
       className={`button ${className}`}
       onClick={onClick}
       type={type}
