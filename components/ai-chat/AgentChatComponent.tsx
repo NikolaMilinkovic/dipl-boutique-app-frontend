@@ -72,7 +72,7 @@ function AgentChatComponent() {
       >
         {/* HEADER */}
         <div className="chat-header" onClick={handleClick}>
-          <h3>Alfi help chatbot</h3>
+          <h3>Infi help chatbot</h3>
           <MdClose />
         </div>
 
@@ -157,24 +157,3 @@ function AgentChatComponent() {
 }
 
 export default AgentChatComponent;
-
-// function addTestMessage() {
-//   setMessages((prev) => [
-//     ...prev,
-//     {
-//       author: 'AI',
-//       text: `Hello! Here’s a **sample response** demonstrating formatting capabilities:
-// - **Bold text** for emphasis
-// - Bullet points for clarity
-// - Inline [links](https://openai.com) for reference
-
-// Feel free to explore:
-// 1. **Documentation:** [OpenAI Docs](https://platform.openai.com/docs)
-// 2. **Examples:** [OpenAI Examples](https://platform.openai.com/examples)
-
-// If you want, I can also help with **code snippets**, **explanations**, or anything else!
-
-// *Happy to assist!*`,
-//     },
-//   ]);
-// }

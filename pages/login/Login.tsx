@@ -1,17 +1,12 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import './login.scss';
-import { useUser } from '../../store/user-context';
 import InputField from '../../components/util-components/InputField';
 import Button from '../../components/util-components/Button';
-import {
-  notifyError,
-  notifySuccess,
-} from '../../components/util-components/Notify';
+import { notifyError } from '../../components/util-components/Notify';
 import { useAuth } from '../../store/auth-context';
 
 function Login() {
   const date = new Date();
-  const { user, setUser, clearUser } = useUser();
   const { login } = useAuth();
   const [formData, setFormData] = useState({
     username: '',
@@ -51,7 +46,7 @@ function Login() {
             id="username-input"
             showClearBtn={true}
             setInputText={(text) =>
-              setFormData((prev) => ({ ...prev, username: text }))
+              setFormData((prev) => ({ ...prev, username: text as string }))
             }
           />
           <InputField
@@ -61,7 +56,7 @@ function Login() {
             type="password"
             showPasswordBtn={true}
             setInputText={(text) =>
-              setFormData((prev) => ({ ...prev, password: text }))
+              setFormData((prev) => ({ ...prev, password: text as string }))
             }
           />
         </div>

@@ -5,7 +5,6 @@ import ContextProvider from './store/context-provider';
 import SplashScreen from './pages/splashScreen/SplashScreen';
 import Navigation from './components/navigation/Navigation';
 import { Bounce, ToastContainer } from 'react-toastify';
-import { useFetchData } from './hooks/useFetchData';
 import { useUser } from './store/user-context';
 
 function Root() {
@@ -13,7 +12,6 @@ function Root() {
   const [showSplash, setShowSplash] = useState(true);
   const authCtx = useContext(AuthContext);
   const { setUser, fetchUserDataViaLocalStorage } = useUser();
-  const { fetchData } = useFetchData();
 
   /**
    * Checks the token in the localStorage upon app startup
