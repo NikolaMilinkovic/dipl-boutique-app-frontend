@@ -2,12 +2,13 @@ import React, { createContext, useState, ReactNode, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { notifyError } from '../components/util-components/Notify';
 import { useUser } from './user-context';
-import { User } from '../global/types';
+import { User, UserType } from '../global/types';
+import { betterConsoleLog } from '../util-methods/log-methods';
 interface LoginResultType {
   isAuthenticated: boolean;
   message: string;
   token: string;
-  user: User;
+  user: UserType;
 }
 interface AuthContextTypes {
   token: string | null;
@@ -85,7 +86,8 @@ function AuthContextProvider({ children }: AuthContextProviderType) {
 
       navigate('/');
     } catch (err) {
-      setLoginErrorMessage(`Issue logging in user: ${err}`);
+      notifyError('There was an issue during login, please try again later.');
+      betterConsoleLog(`Issue logging in user:`, err);
     }
   }
 

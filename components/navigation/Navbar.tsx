@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import './navbar.scss';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { MdDashboard, MdInventory2, MdSettings } from 'react-icons/md';

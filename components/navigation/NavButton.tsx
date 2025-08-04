@@ -17,7 +17,7 @@ const NavButton = ({ to, onClick, icon, children, exact }: NavButtonProps) => {
       className={({ isActive }) =>
         isActive ? 'nav-link nav-link-active' : 'nav-link'
       }
-      end={exact} // exact matching if needed
+      end={exact}
     >
       {React.cloneElement(icon as React.ReactElement, {
         style: { marginRight: '8px', marginBottom: '3px' },

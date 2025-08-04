@@ -1,4 +1,3 @@
-import React from 'react';
 import './footer.scss';
 import { FaCode, FaGithub } from 'react-icons/fa';
 import { NavLink } from 'react-router-dom';
