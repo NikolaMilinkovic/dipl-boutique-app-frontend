@@ -1,10 +1,10 @@
-import React, { ReactNode } from 'react';
+import React, { ReactElement, ReactNode } from 'react';
 import { NavLink } from 'react-router-dom';
 
 interface NavButtonProps {
   to: string;
   onClick?: () => void;
-  icon: ReactNode;
+  icon: ReactElement;
   children: ReactNode;
   exact?: boolean;
 }
@@ -19,7 +19,7 @@ const NavButton = ({ to, onClick, icon, children, exact }: NavButtonProps) => {
       }
       end={exact}
     >
-      {React.cloneElement(icon as React.ReactElement, {
+      {React.cloneElement(icon as any, {
         style: { marginRight: '8px', marginBottom: '3px' },
         className: 'nav-icon',
       })}
