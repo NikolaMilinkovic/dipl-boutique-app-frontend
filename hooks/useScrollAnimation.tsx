@@ -30,14 +30,20 @@ export function useIntersectionObserver(
     if (!items || items.length === 0) return;
 
     // Reset visible items when items change
-    setVisibleItems(new Set());
+    // setVisibleItems(new Set());
+    const newSet = new Set();
 
     observerRef.current = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           const index = parseInt(entry.target.dataset.index);
           if (!isNaN(index)) {
-            setVisibleItems((prev) => new Set([...prev, index]));
+            setVisibleItems((prev) => {
+              if (prev.has(index)) return prev;
+              const updated = new Set(prev);
+              updated.add(index);
+              return updated;
+            });
           }
         }
       });
@@ -54,7 +60,7 @@ export function useIntersectionObserver(
       observerRef.current = null;
     };
   }, [
-    items,
+    items.length, // ✅ Only re-run if length changes
     selector,
     delay,
     defaultOptions.threshold,

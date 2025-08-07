@@ -13,9 +13,9 @@ interface ConfirmModalProps {
 const ConfirmationModal: React.FC<ConfirmModalProps> = ({
   isVisible,
   onConfirm,
-  onConfirmBtnText = 'Nastavi',
+  onConfirmBtnText = 'Continue',
   onCancel,
-  onCancelBtnText = 'Odustani',
+  onCancelBtnText = 'Cancel',
   message,
 }) => {
   if (!isVisible) return null;
@@ -25,7 +25,7 @@ const ConfirmationModal: React.FC<ConfirmModalProps> = ({
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <img src="/img/infinity.png" alt="Infinity" className="modal-image" />
         <p className="modal-text">
-          {message || 'Da li sigurno želiš da nastaviš dalje sa ovom akcijom?'}
+          {message || 'Are you certain you wish to continue with this action?'}
         </p>
         <div className="button-container">
           <button className="modal-button" onClick={onCancel}>

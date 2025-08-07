@@ -121,7 +121,7 @@ function OrdersFilterDrawerControls({ searchParams, setSearchParams }) {
 
       {/* PACKED */}
       <div>
-        <h3>Processed</h3>
+        <h3>Packed</h3>
         <div className="order-filters-packed">
           <Checkbox
             label="Packed"

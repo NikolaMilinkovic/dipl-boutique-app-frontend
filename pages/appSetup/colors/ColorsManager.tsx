@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import './colorsManager.scss';
 import { betterErrorLog } from '../../../util-methods/log-methods';
 import {
@@ -7,24 +7,24 @@ import {
   notifyWarrning,
 } from '../../../components/util-components/Notify';
 import SingleInputForm from '../../../components/util-components/SingleInputForm';
-import ColorsList from './ColorsList';
 import InputField from '../../../components/util-components/InputField';
 import { useAuth } from '../../../store/auth-context';
 import { useFetchData } from '../../../hooks/useFetchData';
 import { useFilterByName } from '../../../hooks/useFilterByName';
 import { useColor } from '../../../store/colors-context';
 import { useUser } from '../../../store/user-context';
+import AnimatedList from '../../../components/lists/AnimatedList';
+import ColorItem from './ColorItem';
 
 function ColorsManager() {
   const [color, setColor] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
-  const { token } = useAuth();
   const { fetchWithBodyData } = useFetchData();
   const { colors } = useColor();
   const filteredColors = useFilterByName(colors, searchTerm);
   const { user } = useUser();
 
-  const addColor = React.useCallback(async () => {
+  const addColor = async () => {
     try {
       if (!user?.permissions.color.add) {
         notifyWarrning('You do not have permission to add color');
@@ -49,7 +49,12 @@ function ColorsManager() {
     } catch (err) {
       betterErrorLog('> Error while adding a new color', err);
     }
-  }, [color, token]);
+  };
+
+  const renderColorItem = useCallback(
+    (color) => <ColorItem data={color} />,
+    [],
+  );
 
   return (
     <div className="app-setup-page-wrapper">
@@ -74,7 +79,14 @@ function ColorsManager() {
           />
         </div>
       </div>
-      <ColorsList colors={filteredColors} />
+      <AnimatedList
+        items={filteredColors}
+        renderItem={renderColorItem}
+        noDataImage="/img/no_data_found.png"
+        noDataAlt="Infinity Boutique Logo"
+        className="color-list-section"
+        maxWidth="800px"
+      />
     </div>
   );
 }

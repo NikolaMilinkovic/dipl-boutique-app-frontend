@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react';
 import { Tabs, Tab } from '../../components/tabs/Tabs';
 import ColorsManager from './colors/ColorsManager';
 import './appStup.scss';

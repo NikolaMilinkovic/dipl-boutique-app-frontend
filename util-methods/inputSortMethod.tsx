@@ -32,8 +32,6 @@ export const handleBuyerDataInputSort = async (
         body: JSON.stringify({ orderData: buyerInfo }),
       },
     );
-
-    // Handle errors
     if (!response.ok) {
       const parsedResponse = await response.json();
       notifyError(parsedResponse.message);

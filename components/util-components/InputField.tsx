@@ -4,12 +4,12 @@ import './inputField.scss';
 
 interface InputFieldProps {
   label: string;
-  inputText: string | number;
+  inputText: string;
   id?: string;
   type?: string;
   showPasswordBtn?: boolean;
   showClearBtn?: boolean;
-  setInputText: (text: string | number) => void;
+  setInputText: (text: string) => void;
   backgroundColor?: string;
   tabIndex?: number;
   customClass?: any;

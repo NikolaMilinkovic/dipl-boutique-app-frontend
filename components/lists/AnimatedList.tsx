@@ -1,4 +1,4 @@
-import { useEffect, useState, ComponentType } from 'react';
+import React, { useEffect, useState, ComponentType } from 'react';
 import { useScrollAnimation } from '../../hooks/useScrollAnimation';
 import './animatedList.scss';
 
@@ -24,7 +24,6 @@ function AnimatedList<T>({
   containerStyles,
   containScroll = true,
 }: AnimatedListProps<T>) {
-  // Using the custom hook for scroll animations
   const { visibleItems, containerRef } = useScrollAnimation(items);
 
   useEffect(() => {
@@ -85,4 +84,4 @@ function AnimatedList<T>({
   );
 }
 
-export default AnimatedList;
+export default React.memo(AnimatedList) as typeof AnimatedList;
